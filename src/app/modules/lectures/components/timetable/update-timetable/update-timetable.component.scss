@@ -1,0 +1,50 @@
+@import "/src/variables";
+#updateTimeTable {
+    height: calc(100vh - #{$app-header} - #{$app-content-padding} * 2);
+    width: calc(100vw - #{$app-sidenav} - #{$app-content-padding} * 2);
+}
+#updateTimetableForm {
+    height: calc(100% - #{$app-content-header});
+    position: relative;
+    overflow-y: scroll;
+}
+table {
+    table-layout: fixed;
+    border-collapse: separate;
+    width: 100%;
+    thead {
+        height: 50px;
+        z-index: 1;
+        background-color: $app-body-color;
+        //-webkit-transform: translateZ(0);
+    }
+    .slot {
+        width: 50px;
+    }
+    .time {
+        width: 100px;
+    }
+    .day {
+        padding: 0 15px;
+        width: calc((100% - 300px - 50px )/ 2);
+    }
+}
+::ng-deep #updateTimeTable {
+    .ng-select {
+        width: 100%;
+    }
+    .ng-select-container {
+        width: 100%;
+        min-height: 45px;
+        height: 45px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        border-radius: 0.2rem;
+    }
+}
+.ng-select.custom {
+    width: 100%;
+}
+.ng-select.custom .ng-select-container  {
+    width: 100%;
+}

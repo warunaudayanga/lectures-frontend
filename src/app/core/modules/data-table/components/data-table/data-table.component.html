@@ -1,0 +1,52 @@
+<div #tableContainer class="h-100 table-container">
+    <virtual-scroller class="h-100" #scroll [items]="dataSource | paginate: { itemsPerPage: itemsPerPage , currentPage: currentPage, totalItems: totalItems }" [enableUnequalChildrenSizes]="true">
+        <table class="table data-table" data-data-table>
+            <ng-container *ngIf="data">
+                <!--suppress JSUnusedGlobalSymbols -->
+                <thead #header>
+                <tr>
+                    <th scope="row" colspan="100">
+                        <div class="">
+                            <input #search type="search" class="search form-control form-control-sm mt-3" id="search" placeholder="Search"
+                                   (keyup)="onSearch(search.value)" (search)="onSearch(search.value, $event)">
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th *ngFor="let heading of data.headers, let i = index" [style]="getStyle(i)" (click)="sortData(data.keys[i])">
+                        {{heading}}
+                        <i class="icofont" [matBadge]="getSortPriority(data.keys[i])"  [ngClass]="getSortIcon(data.keys[i])"></i>
+                    </th>
+                    <th *ngIf="data.option" scope="col" class="data-table-options" [style]="'width: ' + (data.option?.width ?? 'auto')">
+                        <button class="btn btn-sm btn-option {{getColorClass()}}"
+                                (click)="onOption()"
+                                [innerHTML]="getInnerHTML()"
+                                [disabled]="getDisabled()" data-key="NumpadAdd"></button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody #container>
+                <tr *ngFor="let item of scroll.viewPortItems, let i = index; trackBy: trackItem" [class.selected]="item.id === selectedId"
+                    [id]="item.id"
+                    (click)="select(i, item.id)">
+                    <td *ngFor="let key of data.keys, let i = index" [classList]="getClass(i)" [style]="getStyle(i)" [innerHTML]="getValue(item, key, i)"></td>
+                    <td class="data-table-options" *ngIf="data.option" [style]="'width: ' + (data.option?.width ?? 'auto')">
+                        <!--suppress JSUnusedGlobalSymbols -->
+                        <ng-container *ngFor="let option of data.option?.common, let i = index">
+                            <button class="btn btn-sm btn-option {{getColorClass(i)}}"
+                                    (click)="onOption(item, i)" [innerHTML]="getInnerHTML(i)"
+                                    [disabled]="getDisabled(i, item.id)" [class.d-none]="getDisabled(i, item.id)"></button>
+                        </ng-container>
+                    </td>
+                </tr>
+                </tbody>
+            </ng-container>
+        </table>
+    </virtual-scroller>
+</div>
+
+<div *ngIf="loading" class="loading-backdrop position-absolute">
+    <div class="loading" data-key-loader></div>
+</div>
+
+<app-pagination (pageChange)="changePage($event)"></app-pagination>

@@ -1,0 +1,24 @@
+.view-dialog {
+    .view-table {
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
+        tr:last-child {
+            td, th {
+                border-bottom: none;
+            }
+        }
+        td b {
+            padding-right: 10px;
+        }
+    }
+
+    .meta-table * {
+        font-family: Consolas, serif;
+        font-size: 14px;
+    }
+}
+mat-dialog-content {
+    overflow: hidden;
+    overflow-y: auto;
+}

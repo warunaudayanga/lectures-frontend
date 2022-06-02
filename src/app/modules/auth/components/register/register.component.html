@@ -1,0 +1,26 @@
+<div class="container h-100">
+    <div class="row h-100">
+        <div class="offset-md-3 offset-lg-3 offset-xl-4 col-md-6 col-lg-6 col-xl-4">
+            <form [formGroup]="registerForm" class="d-flex flex-column justify-content-center h-100">
+                <div class="mb-3">
+                    <label for="firstName" class="form-label col-form-label-lg">First Name</label>
+                    <input type="text" class="form-control form-control-lg" id="firstName" formControlName="firstName">
+                </div>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label col-form-label-lg">Last Name</label>
+                    <input type="text" class="form-control form-control-lg" id="lastName" formControlName="lastName">
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label col-form-label-lg">Username</label>
+                    <input type="text" class="form-control form-control-lg" id="username" formControlName="username">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label col-form-label-lg">Password</label>
+                    <input type="password" class="form-control form-control-lg" id="password" formControlName="password">
+                </div>
+                <button type="button" class="btn btn-lg btn-primary d-block mt-3 mx-auto" (click)="register()">Register</button>
+                <button type="button" class="btn btn-lg btn-link d-block mt-3 mx-auto" routerLink="/auth/login">Login</button>
+            </form>
+        </div>
+    </div>
+</div>

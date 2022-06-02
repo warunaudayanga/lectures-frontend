@@ -1,7 +1,15 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { PageNotFoundComponent } from "./common/components";
+import { RouteGuard } from "./core/guards";
+import { AuthGuard } from "./modules/auth/guards";
 
-const routes: Routes = [];
+const routes: Routes = [
+    { path: "auth", loadChildren: () => import("./modules/auth/auth.module").then(m => m.AuthModule), canActivate: [RouteGuard] },
+    { path: "user", loadChildren: () => import("./modules/user/user.module").then(m => m.UserModule), canActivate: [AuthGuard] },
+    { path: "", loadChildren: () => import("./modules/lectures/lectures.module").then(m => m.LecturesModule), canActivate: [AuthGuard] },
+    { path: "**", component: PageNotFoundComponent },
+];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

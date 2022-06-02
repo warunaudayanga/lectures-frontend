@@ -83,7 +83,7 @@ module.exports = {
           "property"
         ],
         "dot-notation": [
-          "error",
+          "off",
           {
             "allowKeywords": true
           }
@@ -136,7 +136,7 @@ module.exports = {
           "error",
           "windows"
         ],
-        "lines-around-comment": "error",
+        "lines-around-comment": "off",
         "lines-between-class-members": "error",
         "max-classes-per-file": "error",
         "max-depth": "off",

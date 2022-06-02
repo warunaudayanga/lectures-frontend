@@ -1,0 +1,44 @@
+<div id="updateTimeTable">
+    <div class="content-header">
+        <h1 class="fw-bold text-center mb-0">Update Timetable</h1>
+        <div class="mb-3 d-flex justify-content-end">
+            <button class="btn btn-sm btn-light" routerLink="/timetable">Back</button>
+            <button class="btn btn-sm btn-primary ms-3" (click)="save()">Save</button>
+        </div>
+    </div>
+    <div id="updateTimetableForm">
+        <table class="table">
+            <thead class="position-sticky top-0">
+            <tr class="">
+                <th class="slot"><h3 class="text-center">SLOT</h3></th>
+                <th class="time"><h3 class="text-center">TIME</h3></th>
+                <th class="day">
+                    <h3 class="text-center mb-0">SATURDAY</h3>
+                    <div class="text-center">Module / Lecturer</div>
+                </th>
+                <th class="day">
+                    <h3 class="text-center mb-0">SUNDAY</h3>
+                    <div class="text-center">Module / Lecturer</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let slot of slots">
+                <td class="slot text-center pt-3">{{slot.number}}</td>
+                <td class="time text-center pt-3">
+                    <div class="time-from">{{getTime(slot.startAt)}}</div>
+                    -
+                    <div class="time-to">{{getTime(slot.endAt)}}</div>
+                </td>
+                <td *ngFor="let entry of getDays(slot)" class="day pt-3">
+                    <ng-select class="app-ng-select mt-1 mb-2" [items]="modules" bindLabel="name" [(ngModel)]="entry.module"></ng-select>
+                    <ng-select class="app-ng-select mb-1" [items]="lecturers" bindLabel="name" [(ngModel)]="entry.lecturer">
+                        <ng-option *ngFor="let lecturer of lecturers"  [value]="lecturer"></ng-option>
+                    </ng-select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

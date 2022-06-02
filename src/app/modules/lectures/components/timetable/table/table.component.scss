@@ -1,0 +1,32 @@
+@import "src/variables";
+
+table, th, td {
+    border: 1px solid $app-border-color;
+    border-collapse: collapse;
+}
+table {
+    th, td {
+        padding: 15px;
+    }
+    .slot {
+        text-align: center;
+    }
+    .time {
+        text-align: center;
+        .time-from, .time-to {
+            white-space: nowrap;
+        }
+    }
+    .module {
+        font-weight: bold;
+        .module-code {
+            color: darkgreen;
+        }
+        .module-name {
+
+        }
+    }
+    .lecturer {
+
+    }
+}
