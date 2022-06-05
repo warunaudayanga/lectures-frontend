@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, take } from "rxjs";
 import { environment } from "../../../../environments/environment";
 import { Service } from "../../../core/services";
-import { RoleEntity } from "../components/interfaces";
+import { RoleEntity } from "../interfaces";
 import { IStatusResponse } from "../../../core/interfaces";
 
 export const ROLE_URL = `${environment.apiUrl}/role`;

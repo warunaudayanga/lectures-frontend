@@ -2,8 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { AppService } from "../../../../../app.service";
 import { SlotService, CourseModuleService, LecturerService, TimetableService } from "../../../services";
 import moment from "moment";
-import { CourseModuleEntity, SlotEntity, LecturerEntity, TimeTableEntryEntity, TimeTableRow, TimeTableData, TimetablePayload } from "../../../interfaces";
+import { CourseModuleEntity, SlotEntity, LecturerEntity, TimetableEntryEntity, TimeTableRow, TimeTableEntryData, TimetablePayload } from "../../../interfaces";
 import { Day } from "../../../enums";
+import { HttpError } from "../../../../../core/interfaces";
+import { EnumValue } from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
+import { CommonError } from "../../../../../core/enums";
 
 @Component({
     selector: "app-update-timetable",
@@ -20,12 +23,12 @@ export class UpdateTimetableComponent implements OnInit {
 
     days?: Day[];
 
-    timeTableData?: TimeTableData;
+    timeTableData?: TimeTableEntryData;
 
     tableRows: TimeTableRow[] = [];
 
     constructor(
-        private readonly appService: AppService,
+        private readonly app: AppService,
         private readonly slotService: SlotService,
         private readonly moduleService: CourseModuleService,
         private readonly lecturerService: LecturerService,
@@ -45,7 +48,8 @@ export class UpdateTimetableComponent implements OnInit {
                 next: slots => {
                     this.slots = slots;
                 },
-                error: err => {
+                error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.app.error(err.error?.message ?? CommonError.ERROR);
                     AppService.log(err);
                 },
             });
@@ -57,7 +61,8 @@ export class UpdateTimetableComponent implements OnInit {
                 next: res => {
                     this.modules = res.data;
                 },
-                error: err => {
+                error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.app.error(err.error?.message ?? CommonError.ERROR);
                     AppService.log(err);
                 },
             });
@@ -69,7 +74,8 @@ export class UpdateTimetableComponent implements OnInit {
                 next: res => {
                     this.lecturers = res.data;
                 },
-                error: err => {
+                error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.app.error(err.error?.message ?? CommonError.ERROR);
                     AppService.log(err);
                 },
             });
@@ -86,15 +92,16 @@ export class UpdateTimetableComponent implements OnInit {
                         this.days?.forEach(day => {
                             const entry = this.timeTableData?.[day]?.find(e => e.slot.number === slot.number);
                             if (entry) {
-                                row.data[day] = entry as TimeTableEntryEntity;
+                                row.data[day] = entry as TimetableEntryEntity;
                             } else {
-                                row.data[day] = { slot, day } as TimeTableEntryEntity;
+                                row.data[day] = { slot, day } as TimetableEntryEntity;
                             }
                         });
                         this.tableRows.push(row);
                     });
                 },
-                error: err => {
+                error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.app.error(err.error?.message ?? CommonError.ERROR);
                     AppService.log(err);
                 },
             });
@@ -104,7 +111,7 @@ export class UpdateTimetableComponent implements OnInit {
         return moment(`2000-01-01 ${time}`).format("hh:mm a");
     }
 
-    getDays(slot: SlotEntity): TimeTableEntryEntity[] | undefined {
+    getDays(slot: SlotEntity): TimetableEntryEntity[] | undefined {
         const row = this.tableRows.find(r => r.slot.number === slot.number)!;
         if (row) {
             return Object.values(row.data);
@@ -114,10 +121,22 @@ export class UpdateTimetableComponent implements OnInit {
 
     save(): void {
         const payload: TimetablePayload = { create: [], update: [], delete: [] };
+        let err: boolean = false;
         this.tableRows.forEach(row => {
             for (let [, entry] of Object.entries(row.data)) {
-                if (entry.module && !entry.lecturer || entry.lecturer && !entry.module) {
-                    this.appService.error("Both module and lecturer has to be selected!");
+                const { module: m, lecturer: l1, lecturerL2: l2 } = entry;
+                const g = m?.grouped;
+                if (m && !g) {
+                    entry.lecturerL2 = undefined;
+                    entry.documentsUrlL2 = undefined;
+                    entry.recordingsUrlL2 = undefined;
+                }
+                if (
+                    m && g && (!l1 && !l2) ||
+                    m && !g && !l1 ||
+                    !m && l1
+                ) {
+                    err = true;
                     return;
                 } else if (!entry.module && !entry.lecturer && entry.id) {
                     payload.delete.push(entry.id);
@@ -128,13 +147,18 @@ export class UpdateTimetableComponent implements OnInit {
                 }
             }
         });
+        if (err) {
+            this.app.error("Both module and lecturer has to be selected!");
+            return;
+        }
         this.timetableService.saveTimetable(payload)
             .subscribe({
-                next: value => {
-                    // eslint-disable-next-line no-console
-                    console.log(value);
+                next: () => {
+                    this.app.success("Timetable successfully saved.");
+                    this.app.load("/timetable");
                 },
-                error: err => {
+                error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.app.error(err.error?.message ?? CommonError.ERROR);
                     AppService.log(err);
                 },
             });

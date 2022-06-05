@@ -1,7 +1,7 @@
-import { TimeTableEntryEntity } from "./timetable-entry.interface";
+import { TimetableEntryEntity } from "./timetable-entry.interface";
 
 export interface TimetablePayload {
-    create: TimeTableEntryEntity[],
-    update: TimeTableEntryEntity[],
+    create: TimetableEntryEntity[],
+    update: TimetableEntryEntity[],
     delete: number[]
 }

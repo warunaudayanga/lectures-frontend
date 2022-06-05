@@ -9,11 +9,15 @@ import { LoaderService } from "./core/modules/loader";
 import { DialogService } from "./core/modules/dialog";
 import { IObject } from "./core/interfaces";
 import { BaseEntity } from "./core/entity";
+import { AuthService } from "./modules/auth/services";
+import { Permission } from "./modules/auth/enum/permission.enum";
 
 @Injectable({
     providedIn: "root",
 })
 export class AppService {
+
+    public Do = Permission;
 
     private readonly _width: number;
 
@@ -24,6 +28,7 @@ export class AppService {
         private readonly dialog: DialogService,
         public readonly toast: ToastrService,
         private readonly loader: LoaderService,
+        private readonly authService: AuthService,
         // , private readonly swUpdate: SwUpdate
     ) {
         this._width = window.innerWidth;
@@ -37,6 +42,11 @@ export class AppService {
         //     console.log("old version was", event.previous);
         //     console.log("new version is", event.current);
         // });
+    }
+
+    can(Do?: Permission): boolean {
+        if (!Do) return true;
+        return Boolean(this.authService.user?.role?.permissions.includes(Do));
     }
 
     get width(): number {

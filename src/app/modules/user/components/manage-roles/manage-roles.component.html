@@ -5,6 +5,7 @@
         [data]="data"
         (afterInit)="afterDataTableInit($event)"
         (filter)="onFilter($event)"
+        (sort)="onSort($event)"
         (pageChange)="changePage($event)"
         (option)="add()"
         (optionA)="view($event)"

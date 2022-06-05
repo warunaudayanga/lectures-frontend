@@ -12,7 +12,7 @@ export interface InteractedBy {
 }
 
 export interface BaseEntity {
-    id: 8;
+    id: number;
     status: Status;
     createdAt: string;
     updatedAt: string;

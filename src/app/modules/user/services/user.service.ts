@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, take } from "rxjs";
-import { environment } from "../../../../environments/environment";
+import { Observable } from "rxjs";
 import { Service } from "../../../core/services";
 import { UserEntity } from "../../auth/interfaces";
-
-export const COURSE_URL = `${environment.apiUrl}/course`;
+import { IStatusResponse } from "../../../core/interfaces";
+import { RoleEntity } from "../interfaces";
 
 @Injectable({
     providedIn: "root",
@@ -16,8 +15,7 @@ export class UserService extends Service<UserEntity> {
         super(http, "/user");
     }
 
-    getTypes(): Observable<string[]> {
-        return this.http.get<string[]>(`${COURSE_URL}/types`)
-            .pipe(take(1));
+    changeRole<T extends Partial<UserEntity>>(id: number, role: RoleEntity): Observable<IStatusResponse> {
+        return this.http.patch<IStatusResponse>(`${this.apiUrl}/${id}/role`, { role });
     }
 }

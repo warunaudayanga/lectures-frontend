@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, take } from "rxjs";
-import { TimeTableData, TimetablePayload } from "../interfaces";
+import { TimeTableEntryData, TimetablePayload } from "../interfaces";
 import { environment } from "../../../../environments/environment";
 
 export const TIMETABLE_URL = `${environment.apiUrl}/timetable`;
@@ -13,8 +13,8 @@ export class TimetableService {
 
     constructor(private readonly http: HttpClient) {}
 
-    getTimetableData(): Observable<TimeTableData> {
-        return this.http.get<TimeTableData>(`${TIMETABLE_URL}`)
+    getTimetableData(): Observable<TimeTableEntryData> {
+        return this.http.get<TimeTableEntryData>(`${TIMETABLE_URL}`)
             .pipe(take(1));
     }
 

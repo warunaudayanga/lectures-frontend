@@ -1,0 +1,53 @@
+<div id="appForm">
+    <form #form *ngIf="formData && init() && formGroup" (ngSubmit)="submitForm()" [formGroup]="formGroup" class="pt-3">
+        <ng-container class="input-group" *ngFor="let formControl of formData, let f = index">
+            <div class="row g-3 align-items-center mb-3">
+                <div class="col-4">
+                    <label *ngIf="formControl.type !== 'hidden'" [for]="getName(formControl.name)" class="col-form-label" [innerHTML]="getLabel(formControl.name, formControl.label) + (formControl.required? requiredHTML :'')"></label>
+                </div>
+                <div class="col-8">
+                    <ng-container *ngIf="normalTypes.includes(formControl.type)">
+                        <input class="form-control" [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"
+                               [name]="formControl.name" [type]="formControl.type" [id]="getName(formControl.name)"
+                               [placeholder]="formControl.unchanged ? '\<unchanged\>' : ''" [ngClass]="formControl.styleClass ?? []"
+                               formControlName="{{getName(formControl.name)}}" [required]="!!formControl.required">
+                    </ng-container>
+                    <ng-container *ngIf="formControl.type === 'date'">
+                        <input #elem class="form-control" [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"
+                               type="text" placeholder="YYYY-MM-DD" [name]="formControl.name" [id]="getName(formControl.name)" [ngClass]="formControl.styleClass ?? []"
+                               (bsValueChange)="dateChange($event, elem)" formControlName="{{getName(formControl.name)}}" [required]="!!formControl.required"
+                               bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'YYYY-MM-DD', returnFocusToInput: true }">
+                    </ng-container>
+                    <ng-container *ngIf="formControl.type === 'select' && formControl.options">
+                        <ng-container *ngIf="formControl.options.labelKey">
+                            <ng-select #select [attr.data-name]="getName(formControl.name)" [class]="size" [ngClass]="formControl.styleClass ?? []"
+                                       formControlName="{{getName(formControl.name)}}" [id]="getName(formControl.name)"
+                                       [clearable]="!formControl.required" (close)="focusNext(getName(formData[f + 1]?.name))"
+                                       [searchable]="formControl.options.searchable ?? false" [multiple]="formControl.options.multiple ?? false"
+                                       [closeOnSelect]="!(formControl.options.multiple ?? false)" appendTo="body"
+                                       [items]="formControl.options.values" [bindLabel]="toString(formControl.options.labelKey)">
+                            </ng-select>
+                        </ng-container>
+                        <ng-container *ngIf="!formControl.options.labelKey">
+                            <ng-select #select [attr.data-name]="getName(formControl.name)" [class]="size" [ngClass]="formControl.styleClass ?? []"
+                                       formControlName="{{getName(formControl.name)}}" [id]="getName(formControl.name)"
+                                       [clearable]="!formControl.required" (close)="focusNext(getName(formData[f + 1]?.name))"
+                                       [searchable]="formControl.options.searchable ?? false" [multiple]="formControl.options.multiple ?? false"
+                                       [closeOnSelect]="!(formControl.options.multiple ?? false)" appendTo="body">
+                                <ng-option *ngFor="let value of getValues(formControl.options), let i = index" [value]="value">
+                                    {{getOptionLabel(formControl.options, i)}}</ng-option>
+                            </ng-select>
+                        </ng-container>
+
+                    </ng-container>
+                    <ng-container *ngIf="formControl.type === 'checkbox'">
+                        <mat-slide-toggle [id]="getName(formControl.name)" [name]="getName(formControl.name)"
+                                          [ngClass]="formControl.styleClass ?? []"
+                                          formControlName="{{getName(formControl.name)}}"></mat-slide-toggle>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+        <button #submitButton type="submit" class="d-none"></button>
+    </form>
+</div>

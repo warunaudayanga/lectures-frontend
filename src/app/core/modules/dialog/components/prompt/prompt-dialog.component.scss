@@ -1,15 +1,1 @@
-@import "src/variables";
 
-.ng-select.ng-select-single .ng-select-container {
-    height: 31px;
-}
-.ng-select ng-dropdown-panel > div {
-    z-index: 2;
-}
-
-::ng-deep .prompt-dialog {
-    .ng-select .ng-select-container .ng-value-container {
-        max-height: 150px !important;
-        overflow-y: auto !important;
-    }
-}

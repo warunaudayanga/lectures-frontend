@@ -1,8 +1,9 @@
 import { DialogLevel } from "../enums";
-import { FormGroup, ValidatorFn } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 import { PromptDialogComponent } from "../components";
 import { Columns, CSSLength, IObject, ObjectKeys } from "./common.interfaces";
 import { BaseEntity } from "../../../entity";
+import { FormControlData } from "../../form-validation/interfaces";
 
 export interface DialogButtons {
     ok?: string;
@@ -36,25 +37,6 @@ export interface ViewOptions<Entity extends BaseEntity, cols extends number, Sub
 }
 
 export type ViewData<Entity extends BaseEntity, cols extends number, SubEntity = IObject> = ViewOptions<Entity, cols, SubEntity>;
-
-export interface FormControlData<Entity, SubEntity = IObject> {
-    type: "checkbox" | "color" | "date" | "datetime-local" |
-        "email" | "file" | "hidden" | "image" | "month" | "number" |
-        "password" | "radio" | "range" | "reset" | "search" |
-        "submit" | "tel" | "text" | "time" | "url" | "week" | "select";
-    label: string;
-    // @ts-ignore
-    name: keyof Entity | keyof SubEntity | `${keyof Entity}.${keyof SubEntity}` | string | number | symbol;
-    options?: {
-        values: string[],
-        labels?: string[],
-        multiple?: boolean
-    }
-    value?: string | number;
-    required?: boolean;
-    unchanged?: boolean;
-    validators?: ValidatorFn[]
-}
 
 export interface PromptOptions<Entity, SubEntity = IObject> extends DialogOptions {
     formData: FormControlData<Entity, SubEntity>[],

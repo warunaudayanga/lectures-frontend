@@ -1,4 +1,4 @@
-import { UserEntity } from "./user.interface";
+import { UserEntity } from "../../user/interfaces/user.interface";
 
 export interface TokenData {
     token: string,

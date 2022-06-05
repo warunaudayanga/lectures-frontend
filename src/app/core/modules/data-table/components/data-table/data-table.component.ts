@@ -110,7 +110,7 @@ export class DataTableComponent implements AfterViewInit, AfterContentChecked, O
         const tableContainer = this.tableContainer?.nativeElement as HTMLDivElement;
         const innerHeight = getDimensions(tableContainer).height;
         this.itemsPerPage = Math.floor(innerHeight / environment.tables.row.height - 2);
-        tableContainer.style.maxHeight = (innerHeight - innerHeight % environment.tables.row.height) + "px";
+        tableContainer.style.maxHeight = (innerHeight - innerHeight % environment.tables.row.height - environment.tables.row.height) + "px";
         this.afterInit.emit(this.itemsPerPage);
     }
 

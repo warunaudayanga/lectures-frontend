@@ -1,0 +1,26 @@
+@import "src/variables";
+
+:host {
+    display: block;
+}
+
+::ng-deep #appForm {
+    .ng-select .ng-select-container .ng-value-container {
+        max-height: 150px !important;
+        overflow-y: auto !important;
+    }
+    .ng-select.ng-select-single {
+        &:not(.small) .ng-select-container {
+           height: 38px;
+        }
+        &.small .ng-select-container {
+            height: 31px;
+        }
+        &.large .ng-select-container {
+            height: 48px;
+        }
+    }
+    .ng-select ng-dropdown-panel > div {
+        z-index: 2;
+    }
+}

@@ -11,6 +11,11 @@ import { ResponseInterceptor } from "./core/interceptors";
 import { HomeComponent } from "./modules/lectures/components";
 import { ToastrModule } from "ngx-toastr";
 import { AppCommonModule } from "./common";
+import { MAT_DATE_FORMATS, MatNativeDateModule } from "@angular/material/core";
+import { MatInputModule } from "@angular/material/input";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
+import { DATE_FORMAT_FOR_MAT } from "./core/data";
 
 @NgModule({
     declarations: [
@@ -22,6 +27,10 @@ import { AppCommonModule } from "./common";
         HttpClientModule,
         AppRoutingModule,
         BrowserAnimationsModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatMomentDateModule,
         DialogModule,
         ToastrModule.forRoot(),
         AppCommonModule,
@@ -30,6 +39,7 @@ import { AppCommonModule } from "./common";
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ResponseInterceptor, multi: true },
+        { provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT_FOR_MAT },
     ],
     bootstrap: [AppComponent],
 })

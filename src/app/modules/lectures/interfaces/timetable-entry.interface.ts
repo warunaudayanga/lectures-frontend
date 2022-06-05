@@ -5,7 +5,8 @@ import { LecturerEntity } from "./lecturer.interface";
 import { Day } from "../enums";
 import { SlotEntity } from "./slot.interface";
 
-export interface TimeTableEntryEntity extends BaseEntity {
+export interface TimetableEntryEntity extends BaseEntity {
+    hasL2?: boolean;
     year: number;
     fromDate: string;
     toDate: null;
@@ -15,5 +16,11 @@ export interface TimeTableEntryEntity extends BaseEntity {
     course: CourseEntity;
     module: CourseModuleEntity;
     lecturer: LecturerEntity;
+    lecturerL2?: LecturerEntity | null;
     slot: SlotEntity;
+    slotL2?: SlotEntity;
+    recordingsUrl?: string;
+    documentsUrl?: string;
+    recordingsUrlL2?: string;
+    documentsUrlL2?: string;
 }

@@ -1,17 +1,18 @@
 import { Component, ViewChild } from "@angular/core";
-import { DataTable, DataTableData } from "../../../../core/modules/data-table/interfaces";
+import { Columns, DataTable, DataTableData, Option } from "../../../../core/modules/data-table/interfaces";
 import { AppService } from "../../../../app.service";
 import { DialogService } from "../../../../core/modules/dialog";
 import { LecturerService } from "../../services";
-import { rowHeight, statusFormat, statusWidth, tableOptions, userNameWidth } from "../../../../core/data";
+import { rowHeight, statusFormat, statusWidth, userNameWidth } from "../../../../core/data";
 import { LecturerEntity } from "../../interfaces";
-import { FormControlData, ViewOptions } from "../../../../core/modules/dialog/interfaces";
+import { ViewOptions } from "../../../../core/modules/dialog/interfaces";
 import { Validators } from "@angular/forms";
 import { toTitleCase } from "../../../../core/utils";
 import { EntityComponent } from "../../../../core/components";
-import { ErrorResponse, HttpError } from "../../../../core/interfaces";
+import { HttpError } from "../../../../core/interfaces";
 import { EnumValue } from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
 import { CommonError } from "../../../../core/enums";
+import { FormControlData } from "../../../../core/modules/form-validation/interfaces";
 
 @Component({
     selector: "app-lecturer",
@@ -25,13 +26,13 @@ export class LecturerComponent extends EntityComponent<LecturerEntity> {
     titles?: string[];
 
     constructor(
-        private readonly appService: AppService,
+        protected readonly app: AppService,
         private readonly dialogService: DialogService,
         private readonly lecturerService: LecturerService,
     ) {
-        super(appService, dialogService, lecturerService, { name: "lecturer", key: "" });
+        super(app, dialogService, lecturerService, { name: "lecturer", key: "" });
         this.data = {
-            dataSource: [], totalItems: 0, rowHeight, option: tableOptions,
+            dataSource: [], totalItems: 0, rowHeight,
             headers: ["Name", "Email", "Mobile", "Status", "Changed By"],
             keys: ["name", "email", "mobile", "status", "createdBy.name"],
             searchKeys: ["name", "email", "mobile"],
@@ -39,6 +40,21 @@ export class LecturerComponent extends EntityComponent<LecturerEntity> {
             aligns: ["left", "center", "center", "center", "center"],
             classOf: { 5: ["consolas"] },
             formatOf: { 4: statusFormat },
+            option: {
+                width: "175px",
+                main: { html: "<i class='icofont icofont-ui-add'></i>",
+                    colorClass: "btn-app-primary-invert", disabled: !this.app.can(this.app.Do.LECTURER_CREATE) },
+                common: [
+                    { html: "<i class='icofont icofont-ui-note'></i>",
+                        colorClass: "btn-app-primary", disabled: !this.app.can(this.app.Do.LECTURER_GET) },
+                    { html: "<i class='icofont icofont-ui-edit'></i>",
+                        colorClass: "btn-warning", disabled: !this.app.can(this.app.Do.LECTURER_UPDATE) },
+                    { html: "<i class='icofont icofont-ui-fire-wall'></i>",
+                        colorClass: "btn-dark", disabled: !this.app.can(this.app.Do.LECTURER_UPDATE_STATUS) },
+                    { html: "<i class='icofont icofont-ui-delete'></i>",
+                        colorClass: "btn-danger", disabled: !this.app.can(this.app.Do.LECTURER_DELETE) },
+                ] as Columns<Option, 4>,
+            },
         } as DataTableData<LecturerEntity, 5>;
     }
 
@@ -48,10 +64,10 @@ export class LecturerComponent extends EntityComponent<LecturerEntity> {
                 next: titles => {
                     this.titles = titles;
                 },
-                error: (err: HttpError<ErrorResponse<EnumValue & CommonError>>) => {
+                error: (err: HttpError<EnumValue & CommonError>) => {
                     this.loading = false;
-                    AppService.log(err);
                     this.app.error(err.error?.message ?? CommonError.ERROR);
+                    AppService.log(err);
                 },
             });
     }
@@ -68,7 +84,7 @@ export class LecturerComponent extends EntityComponent<LecturerEntity> {
                 validators: [Validators.email] },
             { type: "text", name: "mobile", label: "Phone", value: lecturer?.mobile ?? "",
                 validators: [Validators.max(12)] },
-        ] as FormControlData<LecturerEntity, undefined>[];
+        ] as FormControlData<LecturerEntity>[];
     }
 
     protected viewDialogData(lecturer: LecturerEntity): ViewOptions<LecturerEntity, 6> {

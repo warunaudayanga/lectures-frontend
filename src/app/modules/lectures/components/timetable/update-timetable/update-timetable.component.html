@@ -24,17 +24,53 @@
             </thead>
             <tbody>
             <tr *ngFor="let slot of slots">
-                <td class="slot text-center pt-3">{{slot.number}}</td>
-                <td class="time text-center pt-3">
-                    <div class="time-from">{{getTime(slot.startAt)}}</div>
-                    -
-                    <div class="time-to">{{getTime(slot.endAt)}}</div>
+                <td class="slot text-center py-3">
+                    <div class="h-100 d-flex flex-column">
+                        <div>{{slot.number}}</div>
+                    </div>
                 </td>
-                <td *ngFor="let entry of getDays(slot)" class="day pt-3">
-                    <ng-select class="app-ng-select mt-1 mb-2" [items]="modules" bindLabel="name" [(ngModel)]="entry.module"></ng-select>
-                    <ng-select class="app-ng-select mb-1" [items]="lecturers" bindLabel="name" [(ngModel)]="entry.lecturer">
-                        <ng-option *ngFor="let lecturer of lecturers"  [value]="lecturer"></ng-option>
-                    </ng-select>
+                <td class="time text-center py-3">
+                    <div class="h-100 d-flex flex-column">
+                        <div class="time-from">{{getTime(slot.startAt)}}</div>
+                        -
+                        <div class="time-to">{{getTime(slot.endAt)}}</div>
+                    </div>
+                </td>
+                <td *ngFor="let entry of getDays(slot)" class="day py-3">
+                    <span class="fw-bold mt-1 mb-1">Module</span>
+                    <ng-select class="app-ng-select" [class.mb-2]="entry.module?.grouped === true" [items]="modules" bindLabel="name" [(ngModel)]="entry.module"></ng-select>
+                    <div class="row">
+                        <div *ngIf="entry.module?.grouped === true" class="l-col">
+                            <div class="l">L1</div>
+                            <div class="l">L2</div>
+                        </div>
+                        <div class="col">
+                            <div [class.mt-3]="entry.module?.grouped === true">
+                                <span class="fw-bold mb-1">Lecturer</span>
+                                <ng-select class="app-ng-select mb-2" [items]="lecturers" bindLabel="name" [(ngModel)]="entry.lecturer"></ng-select>
+                                <div class="mb-2">
+                                    <span class="fw-bold mb-1">Recordings URL</span>
+                                    <input type="search" class="form-control form-control-sm" [(ngModel)]="entry.recordingsUrl">
+                                </div>
+                                <div class="mb-2">
+                                    <span class="fw-bold mb-1">Documents URL</span>
+                                    <input type="search" class="form-control form-control-sm" [(ngModel)]="entry.documentsUrl">
+                                </div>
+                            </div>
+                            <div *ngIf="entry.module?.grouped === true" class="mt-3">
+                                <span class="fw-bold mb-1">Lecturer</span>
+                                <ng-select class="app-ng-select mb-2" [items]="lecturers" bindLabel="name" [(ngModel)]="entry.lecturerL2"></ng-select>
+                                <div class="mb-2">
+                                    <span class="fw-bold mb-1">Recordings URL</span>
+                                    <input type="search" class="form-control form-control-sm" [(ngModel)]="entry.recordingsUrlL2">
+                                </div>
+                                <div class="mb-2">
+                                    <span class="fw-bold mb-1">Documents URL</span>
+                                    <input type="search" class="form-control form-control-sm" [(ngModel)]="entry.documentsUrlL2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
             </tbody>

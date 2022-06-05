@@ -1,51 +1,17 @@
 <div class="prompt-dialog" data-dialog>
-    <form (ngSubmit)="submit()" [formGroup]="formGroup">
     <div mat-dialog-title class="">
         <i class="dialog-icon {{style.icon}} text-{{style.colorClass}}"></i>
         <span class="dialog-title">{{dialogData.title}}</span>
     </div>
     <mat-dialog-content>
         <span *ngIf="dialogData.message">{{dialogData.message}}</span>
-        <ng-container class="input-group" *ngFor="let formControl of dialogData.formData, let i = index">
-            <div class="row g-3 align-items-center mb-3">
-                <div class="col-4">
-                    <label *ngIf="formControl.type !== 'hidden'" [for]="getName(formControl.name)" class="col-form-label" [innerHTML]="getLabel(formControl.label, formControl.name) + (formControl.required? requiredHTML :'')"></label>
-                </div>
-                <div class="col-8">
-                    <ng-container *ngIf="normalTypes.includes(formControl.type)">
-                        <input class="form-control form-control-sm" [name]="formControl.name"
-                               [type]="formControl.type" [id]="getName(formControl.name)" [placeholder]="formControl.unchanged ? '\<unchanged\>' : ''"
-                               formControlName="{{getName(formControl.name)}}" [required]="!!formControl.required">
-                    </ng-container>
-<!--                    <ng-container *ngIf="formControl.type === 'date'">-->
-<!--                        <input #elem class="form-control form-control-sm" type="text" placeholder="YYYY-MM-DD"-->
-<!--                               [name]="formControl.name" [id]="getName(formControl.name)" (bsValueChange)="dateChange($event, elem)"-->
-<!--                               formControlName="{{getName(formControl.name)}}" [required]="!!formControl.required" bsDatepicker-->
-<!--                               [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'YYYY-MM-DD', returnFocusToInput: true }">-->
-<!--                    </ng-container>-->
-                    <ng-container *ngIf="formControl.type === 'select' && formControl.options">
-                        <ng-select #select [attr.data-name]="getName(formControl.name)"
-                            formControlName="{{getName(formControl.name)}}" [id]="getName(formControl.name)"
-                            [clearable]="!formControl.required" (close)="focusNext(getName(dialogData.formData[i + 1]?.name))"
-                            [searchable]="false" [multiple]="formControl.options.multiple ?? false"
-                            [closeOnSelect]="!(formControl.options.multiple ?? false)"  appendTo="body">
-                            <ng-option *ngFor="let value of formControl.options.values, let i = index" [value]="value">{{getOptionValue(formControl.options, i)}}</ng-option>
-                        </ng-select>
-                    </ng-container>
-                    <ng-container *ngIf="formControl.type === 'checkbox'">
-                        <mat-slide-toggle [id]="getName(formControl.name)" [name]="getName(formControl.name)"
-                                          formControlName="{{getName(formControl.name)}}"></mat-slide-toggle>
-                    </ng-container>
-                </div>
-            </div>
-        </ng-container>
+        <wx-form #form [formData]="dialogData.formData" (onSubmit)="onSubmit($event)"></wx-form>
     </mat-dialog-content>
     <mat-divider></mat-divider>
     <mat-dialog-actions>
         <button type="button" class="btn btn-secondary text-light d-block ms-auto"
                 (click)="close()" data-key="Escape">{{buttons?.cancel ? buttons?.cancel?.toUpperCase(): "CANCEL"}}</button>
-        <button type="submit" class="btn btn-{{style.colorClass}} text-light d-block ms-3">
+        <button type="button" (click)="submit()" class="btn btn-{{style.colorClass}} text-light d-block ms-3">
             {{buttons?.ok ? buttons?.ok?.toUpperCase(): "OK"}}</button>
     </mat-dialog-actions>
-    </form>
 </div>

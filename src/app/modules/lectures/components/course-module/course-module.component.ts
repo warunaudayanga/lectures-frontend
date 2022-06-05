@@ -1,16 +1,17 @@
 import { Component, ViewChild } from "@angular/core";
-import { DataTable, DataTableData } from "../../../../core/modules/data-table/interfaces";
+import { Columns, DataTable, DataTableData, Option } from "../../../../core/modules/data-table/interfaces";
 import { AppService } from "../../../../app.service";
 import { DialogService } from "../../../../core/modules/dialog";
 import { CourseModuleService } from "../../services";
-import { rowHeight, statusFormat, statusWidth, tableOptions, userNameWidth } from "../../../../core/data";
+import { rowHeight, statusFormat, statusWidth, userNameWidth } from "../../../../core/data";
 import { CourseModuleEntity } from "../../interfaces";
 import { HttpError } from "../../../../core/interfaces";
 import { AuthError } from "../../../auth/enum";
-import { FormControlData, ViewOptions } from "../../../../core/modules/dialog/interfaces";
+import { ViewOptions } from "../../../../core/modules/dialog/interfaces";
 import { Validators } from "@angular/forms";
 import { toTitleCase } from "../../../../core/utils";
 import { EntityComponent } from "../../../../core/components";
+import { FormControlData } from "../../../../core/modules/form-validation/interfaces";
 
 @Component({
     selector: "app-module-module",
@@ -24,20 +25,34 @@ export class CourseModuleComponent extends EntityComponent<CourseModuleEntity>{
     departments?: string[];
 
     constructor(
-        private readonly appService: AppService,
+        protected readonly app: AppService,
         private readonly dialogService: DialogService,
         private readonly moduleService: CourseModuleService,
     ) {
-        super(appService, dialogService, moduleService, { name: "module", key: "code" });
+        super(app, dialogService, moduleService, { name: "module", key: "code" });
         this.data = {
-            dataSource: [], totalItems: 0, rowHeight, option: tableOptions,
+            dataSource: [], totalItems: 0, rowHeight,
             headers: ["Name", "Code", "Sem.", "Status", "Changed By"],
             keys: ["name", "code", "semester", "status", "createdBy.name"],
             searchKeys: ["name", "code"],
             widths: ["auto", "auto", "70px", statusWidth, userNameWidth],
             aligns: ["left", "center", "center", "center", "center"],
             classOf: { 8: ["consolas"] },
-            formatOf: { 7: statusFormat },
+            formatOf: { 7: statusFormat }, option: {
+                width: "175px",
+                main: { html: "<i class='icofont icofont-ui-add'></i>",
+                    colorClass: "btn-app-primary-invert", disabled: !this.app.can(this.app.Do.MODULE_CREATE) },
+                common: [
+                    { html: "<i class='icofont icofont-ui-note'></i>",
+                        colorClass: "btn-app-primary", disabled: !this.app.can(this.app.Do.MODULE_GET) },
+                    { html: "<i class='icofont icofont-ui-edit'></i>",
+                        colorClass: "btn-warning", disabled: !this.app.can(this.app.Do.MODULE_UPDATE) },
+                    { html: "<i class='icofont icofont-ui-fire-wall'></i>",
+                        colorClass: "btn-dark", disabled: !this.app.can(this.app.Do.MODULE_UPDATE_STATUS) },
+                    { html: "<i class='icofont icofont-ui-delete'></i>",
+                        colorClass: "btn-danger", disabled: !this.app.can(this.app.Do.MODULE_DELETE) },
+                ] as Columns<Option, 4>,
+            },
         } as DataTableData<CourseModuleEntity, 5>;
     }
 
@@ -48,7 +63,8 @@ export class CourseModuleComponent extends EntityComponent<CourseModuleEntity>{
                     this.departments = departments;
                 },
                 error: (err: HttpError<AuthError>) => {
-                    this.appService.error(err.error.message);
+                    this.app.error(err.error.message);
+                    AppService.log(err);
                 },
             });
     }
@@ -65,7 +81,8 @@ export class CourseModuleComponent extends EntityComponent<CourseModuleEntity>{
                 validators: [Validators.min(1), Validators.max(10)] },
             { type: "text", name: "serial", value: module?.serial ?? "", required: true },
             { type: "checkbox", name: "revised", value: module?.revised ?? true, required: true },
-        ] as FormControlData<CourseModuleEntity, undefined>[];
+            { type: "checkbox", name: "grouped", value: module?.grouped ?? false, required: true },
+        ] as FormControlData<CourseModuleEntity>[];
     }
 
     protected viewDialogData(module: CourseModuleEntity): ViewOptions<CourseModuleEntity, 8> {

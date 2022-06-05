@@ -3,8 +3,8 @@
 
 import { AppService } from "../../app.service";
 import { DialogService } from "../modules/dialog";
-import { ErrorResponse, HttpError, IObject, IPaginatedResponse, IStatusResponse } from "../interfaces";
-import { FormControlData, PromptOptions, PromptResponse, ViewOptions } from "../modules/dialog/interfaces";
+import { HttpError, IObject, IPaginatedResponse, IStatusResponse } from "../interfaces";
+import { PromptOptions, PromptResponse, ViewOptions } from "../modules/dialog/interfaces";
 import { Subject } from "rxjs";
 import { EventEmitter } from "@angular/core";
 import { DialogLevel } from "../modules/dialog/enums";
@@ -15,8 +15,9 @@ import { CommonError, Status } from "../enums";
 import { EnumValue } from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
 import { toFirstCase } from "../utils";
 import { Sort, SortFields } from "../modules/data-table/interfaces/sort-fields.interface";
+import { FormControlData } from "../modules/form-validation/interfaces";
 
-export abstract class EntityComponent<Entity extends BaseEntity & IObject, cols extends number = any, SubEntity = IObject> {
+export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols extends number = any, SubEntity = IObject> {
 
     public abstract dataTable: DataTable
 
@@ -103,10 +104,10 @@ export abstract class EntityComponent<Entity extends BaseEntity & IObject, cols 
     protected afterGetAll(response: IPaginatedResponse<Entity>): void {};
 
     protected generateFormDialog(formData: FormControlData<Entity, any>[], update?: boolean): EventEmitter<PromptResponse> {
-        const options: PromptOptions<IStatusResponse, undefined> = {
-            title: `New ${toFirstCase(this.options.name)}`,
+        const options: PromptOptions<Entity, SubEntity> = {
+            title: `${update ? "Update" : "New"} ${toFirstCase(this.options.name)}`,
             formData,
-            icon: "icofont icofont-ui-add",
+            icon: `icofont ${update ? "icofont-ui-edit" : "icofont-ui-add"}`,
             colorClass: "app-primary",
             buttons: { ok: update ? "Update" : "Save" },
             wait: true,
@@ -126,10 +127,10 @@ export abstract class EntityComponent<Entity extends BaseEntity & IObject, cols 
                     this.afterGetAll(res);
                     this.loading = false;
                 },
-                error: (err: HttpError<ErrorResponse<EnumValue & CommonError>>) => {
+                error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.app.error(err.error?.message ?? CommonError.ERROR);
                     this.loading = false;
                     AppService.log(err);
-                    this.app.error(err.error?.message ?? CommonError.ERROR);
                 },
             });
 
@@ -152,9 +153,9 @@ export abstract class EntityComponent<Entity extends BaseEntity & IObject, cols 
                                 this.app.success(`New ${this.options.name} added successfully`);
                                 this.afterAdd(entity);
                                 this.getAll();
-                            }, error: (err: HttpError<ErrorResponse<EnumValue & CommonError>>) => {
-                                AppService.log(err);
+                            }, error: (err: HttpError<EnumValue & CommonError>) => {
                                 this.app.error(err.error?.message ?? CommonError.ERROR);
+                                AppService.log(err);
                                 this.app.stopLoading();
                             },
                         });
@@ -175,10 +176,10 @@ export abstract class EntityComponent<Entity extends BaseEntity & IObject, cols 
                                 this.app.success(`${toFirstCase(this.options.name)} updated successfully`);
                                 this.afterEdit(successResponse);
                                 this.getAll();
-                            }, error: (err: HttpError<ErrorResponse<EnumValue & CommonError>>) => {
-                                AppService.log(err);
+                            }, error: (err: HttpError<EnumValue & CommonError>) => {
                                 this.app.error(err.error?.message ?? CommonError.ERROR);
                                 this.app.stopLoading();
+                                AppService.log(err);
                             },
                         });
                 }
@@ -192,10 +193,10 @@ export abstract class EntityComponent<Entity extends BaseEntity & IObject, cols 
         this.data.dataSource[index].status = backup.status === Status.ACTIVE ? Status.INACTIVE : Status.ACTIVE;
         this.entityService.changeStatus(entity.id, entity.status)
             .subscribe({
-                error: (error: HttpError<ErrorResponse<EnumValue & CommonError>>) => {
+                error: (error: HttpError<EnumValue & CommonError>) => {
                     this.data.dataSource[index] = backup;
-                    AppService.log(error);
                     this.app.error(error.error?.message ?? CommonError.ERROR);
+                    AppService.log(error);
                 },
             } );
     }
@@ -211,9 +212,9 @@ export abstract class EntityComponent<Entity extends BaseEntity & IObject, cols 
                                 this.entityService.entities = this.entityService.entities?.filter(e => e.id !== entity.id);
                                 this.getAll();
                                 this.dataChangeListener.next(true);
-                            }, error: (err: HttpError<ErrorResponse<EnumValue & CommonError>>) => {
-                                AppService.log(err);
+                            }, error: (err: HttpError<EnumValue & CommonError>) => {
                                 this.app.error(err.error?.message ?? CommonError.ERROR);
+                                AppService.log(err);
                             },
                         });
                 }

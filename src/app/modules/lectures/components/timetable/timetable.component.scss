@@ -1,0 +1,51 @@
+@import "src/variables";
+
+.heading {
+    position: relative;
+    height: 100px;
+}
+.timetable {
+    height: calc(100% - 100px);
+    overflow: auto;
+}
+.courses {
+    width: 250px;
+}
+table {
+    table-layout: fixed;
+    border-collapse: separate;
+    width: 100%;
+    min-width: 750px;
+    thead {
+        z-index: 1;
+        background-color: #fafafa;
+    }
+    th, td {
+        padding: 15px;
+    }
+    .slot {
+        text-align: center;
+        width: 50px;
+    }
+    .time {
+        width: 100px;
+        text-align: center;
+        .time-from, .time-to {
+            white-space: nowrap;
+        }
+    }
+    .module {
+        .module-code {
+            color: darkgreen;
+        }
+        .module-name {
+
+        }
+    }
+    .lecturer {
+    }
+    .l {
+        color: darkorange;
+        font-weight: bold;
+    }
+}

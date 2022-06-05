@@ -1,2 +1,2 @@
 export * from "./auth-data.interface";
-export * from "./user.interface";
+export * from "../../user/interfaces/user.interface";

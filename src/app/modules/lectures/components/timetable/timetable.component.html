@@ -1,7 +1,63 @@
-<div id="timetable">
-    <h1 class="fw-bold text-center">Timetable</h1>
-    <div class="mb-3 d-flex justify-content-end">
-        <button class="btn btn-primary" routerLink="update">Update</button>
+<div id="timetable" class="content">
+    <div class="text-center heading mb-0">
+        <h1 class="fw-bold">Timetable</h1>
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <span class="fw-bold me-3">Course</span>
+                <ng-select *ngIf="courses" [searchable]="false" [clearable]="false" disabled
+                           [items]="courses" class="courses" bindLabel="name" [(ngModel)]="selectedCourse"></ng-select>
+            </div>
+            <button class="btn btn-sm btn-primary update-btn" routerLink="update" [disabled]="!app.can(app.Do.TIMETABLE_UPDATE)">Update</button>
+        </div>
     </div>
-    <timetable-table class="m-auto"></timetable-table>
+    <div class="timetable">
+        <table class="table" role="table">
+            <thead class="position-sticky top-0">
+            <tr>
+                <th class="slot">#</th>
+                <th class="time">Time</th>
+                <th class="module" *ngFor="let day of days">{{day}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let row of tableRows; let i = index">
+                <td class="slot">{{row.slot.number}}</td>
+                <td class="time">
+                    <div class="time-from">{{getTime(row.slot.startAt)}}</div>
+                    <div class="time-to">{{getTime(row.slot.endAt)}}</div>
+                </td>
+                <td *ngFor="let item of row.data | keyvalue:onCompare">
+                    <ng-container *ngIf="item.value">
+                        <div class="module">
+                            <div class="module-code">{{item.value.module.code}}</div>
+                            <div class="module-name fw-bold">{{item.value.module.name}}</div>
+                        </div>
+                        <ng-container *ngIf="item.value.lecturer">
+                            <div class="lecturer small" [class.mt-2]="item.value.module.grouped === true"><span class="l" *ngIf="item.value.module.grouped === true">L1 - </span>{{item.value.lecturer.name}}</div>
+                            <div class="row" [class.mt-2]="item.value.module.grouped === true" [class.ps-4]="item.value.module.grouped === true">
+                                <div class="col" *ngIf="item.value.recordingsUrl">
+                                    <a class="fw-bold small" [href]="item.value.recordingsUrl" target="_blank">View recordings</a>
+                                </div>
+                                <div class="col" *ngIf="item.value.documentsUrl">
+                                    <a class="fw-bold small" [href]="item.value.documentsUrl" target="_blank">View Documents</a>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="item.value.module.grouped === true && item.value.lecturerL2">
+                            <div class="lecturer small mt-2"><span class="l">L2 - </span>{{item.value.lecturerL2?.name}}</div>
+                            <div class="row ps-4" *ngIf="item.value.lecturerL2">
+                                <div class="col" *ngIf="item.value.recordingsUrlL2">
+                                    <a class="fw-bold small" [href]="item.value.recordingsUrlL2" target="_blank">View recordings</a>
+                                </div>
+                                <div class="col" *ngIf="item.value.documentsUrlL2">
+                                    <a class="fw-bold small" [href]="item.value.documentsUrlL2" target="_blank">View Documents</a>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -1,3 +1,5 @@
+import { Permission } from "../../modules/auth/enum/permission.enum";
+
 export interface MenuItem {
     id?: string
     for?: string
@@ -5,6 +7,7 @@ export interface MenuItem {
     path?: string;
     icon: string;
     active?: boolean
+    permission?: Permission;
     children?: MenuItem[];
     opened?: boolean;
 }

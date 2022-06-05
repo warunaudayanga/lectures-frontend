@@ -19,7 +19,7 @@ export class LoginComponent {
     })
 
     constructor(
-        private readonly appService: AppService,
+        private readonly app: AppService,
         private readonly router: Router,
         private readonly authService: AuthService,
     ) { }
@@ -28,11 +28,12 @@ export class LoginComponent {
         this.authService.login(this.loginForm.value)
             .subscribe({
                 next: () => {
-                    this.appService.success("User logged in successfully.");
+                    this.app.success("User logged in successfully.");
                     const ignored = this.router.navigateByUrl("/");
                 },
                 error: (err: HttpError<AuthError>) => {
-                    this.appService.error(err.error.message);
+                    this.app.error(err.error.message);
+                    AppService.log(err);
                 },
             });
     }

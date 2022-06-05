@@ -1,12 +1,17 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { ManageRolesComponent } from "./components/manage-roles/manage-roles.component";
-// import { ManageUserComponent } from "./components/manage-user/manage-user.component";
+import { ManageUserComponent, ManageRolesComponent } from "./components";
+import { RoleGuard } from "../auth/guards";
+import { Permission } from "../auth/enum/permission.enum";
 
 const routes: Routes = [
     { path: "", redirectTo: "roles" },
-    // { path: "manage", component: ManageUserComponent },
-    { path: "roles", component: ManageRolesComponent },
+    { path: "manage", component: ManageUserComponent, canActivate: [RoleGuard], data: {
+        permission: Permission.USER_GET,
+    } },
+    { path: "roles", component: ManageRolesComponent, canActivate: [RoleGuard], data: {
+        permission: Permission.ROLE_GET,
+    } },
 ];
 
 @NgModule({

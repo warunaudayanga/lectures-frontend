@@ -7,5 +7,6 @@ export interface CourseModuleEntity extends BaseEntity {
     credits: number;
     serial: string;
     revised: true;
+    grouped: boolean;
     code: string;
 }

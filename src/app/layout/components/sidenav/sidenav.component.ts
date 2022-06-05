@@ -4,6 +4,7 @@ import { AuthService } from "../../../modules/auth/services";
 import { Subscription } from "rxjs";
 import { menuItems } from "../../data";
 import { NavigationEnd, Router } from "@angular/router";
+import { AppService } from "../../../app.service";
 
 @Component({
     selector: "app-sidenav",
@@ -22,7 +23,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
     routerSubscription!: Subscription;
 
-    constructor(private readonly authService: AuthService, private router: Router) {
+    constructor(public readonly app: AppService, private readonly authService: AuthService, private router: Router) {
         this.routerSubscription = router.events.subscribe({
             next: event => {
                 if (!this.path && event instanceof NavigationEnd) {
@@ -70,5 +71,18 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.loggedInSubscription.unsubscribe();
+    }
+
+    can(item: MenuItem): boolean {
+        if (item.children) {
+            let can = false;
+            for (const child of item.children) {
+                if (this.app.can(child.permission)) {
+                    can = true;
+                }
+            }
+            return can;
+        }
+        return this.app.can(item.permission);
     }
 }

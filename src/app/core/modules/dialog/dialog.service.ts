@@ -4,7 +4,6 @@ import { MatDialog } from "@angular/material/dialog";
 import {
     DialogButtons,
     PromptOptions,
-    FormControlData,
     PromptResponse,
     AlertOptions,
     ViewOptions,
@@ -14,6 +13,7 @@ import { DialogLevel } from "./enums";
 import { Validators } from "@angular/forms";
 import { AlertDialogComponent, ViewDialogComponent, PromptDialogComponent } from "./components";
 import { BaseEntity } from "../../entity";
+import { FormControlData } from "../form-validation/interfaces";
 
 @Injectable({
     providedIn: "root",
@@ -45,7 +45,7 @@ export class DialogService {
         return dialogRef.componentInstance.emitter;
     }
 
-    public prompt(options: PromptOptions<IObject & BaseEntity>): EventEmitter<PromptResponse> {
+    public prompt<Entity extends BaseEntity, SubEntity extends IObject>(options: PromptOptions<Entity, SubEntity>): EventEmitter<PromptResponse> {
         const dialogRef = this.dialog.open(PromptDialogComponent, {
             width: options.width || this.alertWidth,
             disableClose: true,
