@@ -1,0 +1,135 @@
+@import "src/variables";
+.heading {
+    height: 100px;
+}
+.schedule-day {
+    height: calc(100% - 100px);
+    overflow: auto;
+}
+.date {
+    width: 120px;
+    .outline-primary {
+        border-color: $primary !important;
+        border-right: none;
+        color: $primary !important;
+    }
+}
+
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 750px;
+    height: 1px;
+    thead {
+        z-index: 1;
+        background-color: #fafafa;
+    }
+    tbody {
+        border-top: none;
+    }
+    tr, td {
+        height: 100%;
+    }
+    tr.now {
+        background-color: $app-primary-color;
+        color: $app-primary-text-color;
+        .module-code {
+            color: #00b100;
+        }
+        .links {
+            a {
+                color: #629ef6;
+            }
+        }
+        .now-message, .meeting-url a {
+            color: #f30000 !important;
+        }
+        .l {
+            color: #ffc800 !important;
+        }
+    }
+    td {
+        padding: 15px 0;
+        .td-body {
+            height: 100%;
+        }
+        &:first-child .td-body {
+            border-radius: 15px 0 0 15px;
+        }
+        &:last-child .td-body {
+            border-radius: 0 15px 15px 0;
+        }
+    }
+    .slot {
+        width: 50px;
+        text-align: center;
+    }
+    .time {
+        width: 130px;
+        text-align: center;
+        &.has-l2 {
+            padding-top: 76px;
+        }
+        .time-from, .time-to {
+            white-space: nowrap;
+        }
+        .time-from.has-l2 {
+            padding-top: 24px;
+        }
+    }
+    .modules {
+        //width: 250px;
+        .links {
+            width: 200px;
+            text-align: center;
+        }
+        .meeting {
+            &.ps-x {
+                margin-left: 28px !important;
+            }
+        }
+    }
+    .module {
+        font-weight: bold;
+        .module-code {
+            color: darkgreen;
+        }
+        .module-name {
+
+        }
+    }
+    .ending {
+        width: 0;
+    }
+    .lecturer {
+
+    }
+    .meeting {
+        .data {
+            align-items: center;
+        }
+        .meeting-heading {
+            font-weight: bold;
+        }
+    }
+    .time-input {
+        display: inline-block;
+        width: 50px;
+        text-align: right;
+    }
+}
+.l {
+    color: darkorange;
+    font-weight: bold;
+}
+.col-50px {
+    width: 40px;
+    padding-top: 76px;
+    .l {
+        margin-bottom: 176px;
+    }
+}
+.row {
+    margin: 0 !important;
+}

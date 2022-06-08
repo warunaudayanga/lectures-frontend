@@ -1,0 +1,244 @@
+<div id="schedule" class="content">
+    <div class="heading">
+        <h1 class="fw-bold text-center"><span *ngIf="editing">Update </span>Schedule - {{day}}</h1>
+        <div class="mb-3 d-flex align-items-center justify-content-between">
+            <div >
+                <div class="date d-inline-block">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control outline-primary" readonly
+                               [(ngModel)]="date" [matDatepicker]="picker" (dateChange)="onDateChange()">
+                        <button class="btn btn-outline-primary" (click)="picker.open()" [disabled]="editing">
+                            <i class="icofont icofont-ui-calendar"></i>
+                        </button>
+                    </div>
+                    <mat-datepicker #picker></mat-datepicker>
+                </div>
+                <button class="btn btn-sm btn-primary ms-2" (click)="prev()" [disabled]="editing"><i class="icofont icofont-arrow-left"></i></button>
+                <button class="btn btn-sm btn-primary ms-2" (click)="next()" [disabled]="editing"><i class="icofont icofont-arrow-right"></i></button>
+            </div>
+            <div>
+                <button *ngIf="!editing" class="btn btn-primary btn-sm" (click)="editing = true" [disabled]="!app.can(app.Do.SCHEDULE_UPDATE)">Update</button>
+                <button *ngIf="editing" class="btn btn-secondary btn-sm me-2" (click)="editing = false">Cancel</button>
+                <button *ngIf="editing" class="btn btn-primary btn-sm" type="submit" form="form">Save</button>
+            </div>
+        </div>
+    </div>
+    <div class="schedule-day">
+        <form *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="onSubmit()" id="form">
+            <table *ngIf="schedule" class="table" role="table">
+                <thead class="position-sticky top-0">
+                <tr>
+                    <th class="slot">#</th>
+                    <th *ngIf="!editing" class="time">Time</th>
+                    <th class="modules">Modules</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ng-container *ngIf="!editing">
+                    <tr *ngFor="let slot of schedule; let i = index" [class.now]="isNow(slot)">
+                        <td class="slot">{{i + 1}}</td>
+                        <td class="time">
+                            <div class="time-from">
+                                <span>{{getTime(slot.startAt ?? slot.startAtL2)}}</span>
+                                <div class="time-to">{{getTime(slot.endAt ?? slot.endAtL2)}}</div>
+                            </div>
+                        </td>
+                        <td class="modules">
+                            <ng-container>
+                                <div class="module fw-bold mb-1" [class.mb-3]="slot.module?.grouped === true || (generated && slot.module?.grouped === true)">
+                                    <span class="module-code">{{slot.module?.code}}</span>
+                                    -
+                                    <span class="module-name">{{slot.module?.name}}</span>
+                                    <span class="now-message ms-3" *ngIf="isNow(slot)"><i class="icofont icofont-notification"></i> Now on live</span>
+                                </div>
+                                <div class="row" *ngIf="slot.lecturer || (generated && slot.entry?.lecturer)">
+                                    <div class="col">
+                                        <div class="lecturer mb-1"><span class="l" *ngIf="slot.module?.grouped === true || (generated && slot.module?.grouped === true)">L1 - </span>{{slot.lecturer?.name || generated ? slot.entry?.lecturer?.name : ''}}</div>
+                                        <div *ngIf="slot.meetingId && slot.passcode" class="meeting" [class.ps-x]="slot.module?.grouped === true || (generated && slot.module?.grouped === true)">
+                                            <div class="data row">
+                                                <div class="col-6 meeting-id">
+                                                    <div class="meeting-heading">Meeting ID</div>
+                                                    <div>{{slot.meetingId}}</div>
+                                                </div>
+                                                <div class="col-6 passcode">
+                                                    <div class="meeting-heading">Passcode</div>
+                                                    <div>{{slot.passcode}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="links">
+                                        <div class="mb-1 meeting-url" *ngIf="slot.meetingUrl && isNow(slot)">
+                                            <a [href]="slot.meetingUrl" class="fw-bold" target="_blank">Join on zoom</a>
+                                        </div>
+                                        <div class="mb-1" *ngIf="slot.recordingUrl">
+                                            <a [href]="slot.recordingUrl" class="fw-bold" target="_blank">View this session recording</a>
+                                        </div>
+                                        <div class="mb-1" *ngIf="slot.entry?.recordingsUrl">
+                                            <a href="#" class="fw-bold" target="_blank">View module recordings</a>
+                                        </div>
+                                        <div *ngIf="slot.entry?.documentsUrl">
+                                            <a href="#" class="fw-bold" target="_blank">View documents</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3"
+                                     *ngIf="slot.module?.grouped === true && (slot.lecturerL2 || (generated && slot.entry?.lecturerL2))"
+                                     [class.d-none]="slot.startAtL2 && (slot.startAt && slot.startAt !== slot.startAtL2)">
+                                    <div class="col">
+                                        <div class="lecturer mb-1"><span class="l">L2 - </span>{{generated ? slot.entry?.lecturerL2?.name || '' : slot.lecturerL2?.name}}</div>
+                                        <div *ngIf="slot.meetingIdL2 && slot.passcodeL2" class="meeting ps-x">
+                                            <div class="data row">
+                                                <div class="col-6 meeting-id">
+                                                    <div class="meeting-heading">Meeting ID</div>
+                                                    <div>{{slot.meetingIdL2}}</div>
+                                                </div>
+                                                <div class="col-6 passcode">
+                                                    <div class="meeting-heading">Passcode</div>
+                                                    <div>{{slot.passcodeL2}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="links">
+                                        <div class="mb-1 meeting-url" *ngIf="slot.meetingUrlL2">
+                                            <a [href]="slot.meetingUrlL2" class="fw-bold" target="_blank">Join on zoom</a>
+                                        </div>
+                                        <div class="mb-1" *ngIf="slot.recordingUrlL2">
+                                            <a [href]="slot.recordingUrlL2" class="fw-bold" target="_blank">View this session recording</a>
+                                        </div>
+                                        <div class="mb-1" *ngIf="slot.entry?.recordingsUrlL2">
+                                            <a href="#" class="fw-bold" target="_blank">View module recordings</a>
+                                        </div>
+                                        <div *ngIf="slot.entry?.documentsUrlL2">
+                                            <a href="#" class="fw-bold" target="_blank">View documents</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </ng-container>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container #form *ngIf="editing">
+                    <ng-container formArrayName="forms">
+                        <tr [formGroupName]="i" *ngFor="let line of getForms().controls; let i = index">
+                            <td class="slot">
+                                <div class="td-body">{{i + 1}}<input type="hidden" formControlName="id"></div>
+                            </td>
+                            <td class="modules">
+                                <div class="row">
+                                    <div class="col-50px" *ngIf="isGrouped(i)">
+                                        <div class="l">L1</div>
+                                        <div class="l">L2</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="time" [class.has-l2]="isGrouped(i)">
+                                                <ng-container *ngFor="let l of (isGrouped(i)? ['', 'L2']: [''])">
+                                                    <div class="time-from" [class.has-l2]="l === 'L2'">
+                                                        <div class="fw-bold mb-1">From</div>
+                                                        <input type="number" min="1" max="12" name="hhStart{{i}}"
+                                                               (change)="onTimeChange($event)" formControlName="hhStart{{l}}"
+                                                               class="form-control form-control-sm time-input"> :
+                                                        <input type="number" min="0" max="59" name="mmStart{{i}}"
+                                                               (change)="onTimeChange($event)" formControlName="mmStart{{l}}"
+                                                               class="form-control form-control-sm time-input">
+                                                        <div class="d-flex justify-content-evenly mt-2">
+                                                            <div class="form-check-inline me-0">
+                                                                <input class="form-check-input me-1" type="radio" formControlName="aStart{{l}}" name="aStart{{l}}[{{i}}]" value="am" checked>
+                                                                <label class="form-check-label">am</label>
+                                                            </div>
+                                                            <div class="form-check-inline me-0">
+                                                                <input class="form-check-input me-1" type="radio" formControlName="aStart{{l}}" name="aStart{{l}}[{{i}}]" value="pm">
+                                                                <label class="form-check-label">pm</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="time-to mt-1">
+                                                        <div class="fw-bold mb-1">To</div>
+                                                        <input type="number" min="1" max="12" name="hhEnd{{i}}"
+                                                               (change)="onTimeChange($event)" formControlName="hhEnd{{l}}"
+                                                               class="form-control form-control-sm time-input"> :
+                                                        <input type="number" min="0" max="59" name="mmEnd{{i}}"
+                                                               (change)="onTimeChange($event)" formControlName="mmEnd{{l}}"
+                                                               class="form-control form-control-sm time-input">
+                                                        <div class="d-flex justify-content-evenly mt-2">
+                                                            <div class="form-check-inline me-0">
+                                                                <input class="form-check-input me-1" type="radio" formControlName="aEnd{{l}}" name="aEnd{{l}}[{{i}}]" value="am" checked>
+                                                                <label class="form-check-label">am</label>
+                                                            </div>
+                                                            <div class="form-check-inline me-0">
+                                                                <input class="form-check-input me-1" type="radio" formControlName="aEnd{{l}}" name="aEnd{{l}}[{{i}}]" value="pm">
+                                                                <label class="form-check-label">pm</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                            <div class="col">
+                                                <div class="td-body">
+                                                    <div class="fw-bold mb-1">Module</div>
+                                                    <ng-container>
+                                                        <div class="module">
+                                                            <ng-container *ngIf="modules">
+                                                                <ng-select formControlName="module"  class="w-100" [items]="modules" bindLabel="name"></ng-select>
+                                                            </ng-container>
+                                                        </div>
+                                                        <ng-container *ngFor="let l of (isGrouped(i)? ['', 'L2']: [''])">
+                                                            <div class="fw-bold mt-1 mb-1" [class.mt-3]="isGrouped(i)">Lecturer</div>
+                                                            <div class="lecturer">
+                                                                <ng-container *ngIf="lecturers">
+                                                                    <ng-select formControlName="lecturer{{l}}" class="w-100" [items]="lecturers" bindLabel="name"></ng-select>
+                                                                </ng-container>
+                                                            </div>
+                                                            <div class="meeting mt-1">
+                                                                <div class="data row">
+                                                                    <div class="col-6 meeting-id">
+                                                                        <div class="meeting-heading">Meeting Link</div>
+                                                                        <input type="text" formControlName="meetingUrl{{l}}" class="form-control form-control-sm w-100 mt-1">
+                                                                    </div>
+                                                                    <div class="col-6 passcode">
+                                                                        <div class="meeting-heading">Recording Link</div>
+                                                                        <input type="text" formControlName="recordingUrl{{l}}" class="form-control form-control-sm w-100 mt-1">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="data row mt-1">
+                                                                    <div class="col-6 meeting-id">
+                                                                        <div class="meeting-heading">Meeting ID</div>
+                                                                        <input type="text" formControlName="meetingId{{l}}" class="form-control form-control-sm w-100 mt-1">
+                                                                    </div>
+                                                                    <div class="col-6 passcode">
+                                                                        <div class="meeting-heading">Passcode</div>
+                                                                        <input type="text" formControlName="passcode{{l}}" class="form-control form-control-sm w-100 mt-1">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+<!--                            <td class="links">-->
+<!--                                <div class="td-body">-->
+<!--                                    <ng-container *ngIf="editing">-->
+<!--                                        <div class="fw-bold">Meeting Link</div>-->
+<!--                                        <input type="text" formControlName="meetingUrl" class="form-control form-control-sm w-100 mt-1">-->
+<!--                                        <div class="fw-bold mt-3">Documents Link</div>-->
+<!--                                        <input type="text" formControlName="documentsUrl" class="form-control form-control-sm w-100 mt-1">-->
+<!--                                    </ng-container>-->
+<!--                                </div>-->
+<!--                            </td>-->
+                        </tr>
+                    </ng-container>
+                </ng-container>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+<div class="input-group mt-5 mb-3">
+</div>

@@ -1,0 +1,71 @@
+@import "src/variables";
+
+.table-container {
+    overflow-y: auto;
+}
+.data-table {
+    border-collapse: collapse;
+    min-width: 840px;
+    .search {
+        width: 250px;
+    }
+    thead {
+        //position: sticky;
+        //top: 0;
+        height: calc(#{$app-table-row-height} * 2);
+        background-color: $app-primary-color;
+        color: $app-text-invert-color;
+        z-index: 10;
+        * {
+            border: none;
+        }
+    }
+    tbody {
+        border-top-color: $app-primary-color;
+
+        tr.selected {
+            background-color: $app-active-color;
+            color: $app-active-text-color;
+        }
+        tr:hover {
+            background-color: $app-hover-color;
+            color: $app-hover-text-color;
+            cursor: pointer;
+        }
+    }
+    th {
+        cursor: pointer;
+        i {
+            display: inline-block;
+            width: 14px;
+            height: 15.2px;
+            .mat-badge-content {
+                top: -7px;
+                right: -7px;
+                height: 15px;
+                width: 15px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background-color: transparent !important;
+                font-size: 10px;
+            }
+        }
+    }
+    td, th {
+        vertical-align: middle;
+        padding: 0 10px;
+        &:first-child {
+            padding-left: 20px;
+        }
+        &:last-child {
+            padding-right: 20px;
+        }
+    }
+    .data-table-options {
+        text-align: right;
+        .btn-option:not(:last-child) {
+            margin-right: 5px;
+        }
+    }
+}

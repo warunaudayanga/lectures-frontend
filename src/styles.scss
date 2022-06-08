@@ -1,1 +1,242 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap/scss/variables";
+
+///* Importing Datepicker SCSS file. */
+//@import "~ngx-bootstrap/datepicker/bs-datepicker";
+
+/* Importing Icofont CSS file. */
+@import "~@icon/icofont/icofont.css";
+
+@import "~ngx-toastr/toastr";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "./assets/fonts.googleapis.com/style.css";
+@import "./src/variables";
+
+/* Common */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px 10px #aaa;
+    border: solid 3px transparent;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+    /*background-color: #343a40;*/
+    box-shadow: inset 0 0 10px 10px $app-primary-color;
+    border: solid 3px transparent;
+    border-radius: 5px;
+}
+
+html, body { height: 100%; }
+body {
+    margin: 0;
+    background-color: $app-body-color;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.debug {
+    border: 1px dashed red;
+}
+.nowrap {
+    white-space: nowrap;
+}
+:focus {
+    outline: none;
+}
+
+/* Template */
+.datetime, .interacted-by, .consolas {
+    font-size: small;
+    font-family: Consolas, serif;
+    line-height: 1;
+    * {
+
+    }
+}
+.chip, .tag {
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 4px;
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    padding: 2px 10px;
+    align-items: center;
+    cursor: default;
+    font-size: smaller;
+    font-weight: 500;
+}
+.chip {
+    border-radius: 16px;
+    background-color: #e0e0e0;
+    color: #000000de;
+    &.active {
+        background-color: $info;
+    }
+}
+.tag {
+    padding: 2px 5px;
+    background-color: #e0e0e0;
+    color: #000000de;
+    &.l1 {
+        background-color: $danger;
+        color: #fff;
+    }
+    &.l2 {
+        background-color: $warning;
+        color: #fff;
+    }
+    &.l3 {
+        background-color: $info;
+    }
+
+}
+
+/* Nav bar */
+.profile-menu {
+    position: relative;
+    overflow: revert !important;
+    top: 10px;
+    min-width: revert !important;
+    &:after {
+        position: absolute;
+        content: '';
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid white;
+        right: 19px;
+        bottom: 100%;
+    }
+}
+
+/* Dialog */
+.dialog-container {
+    .mat-dialog-container {
+        border-top: 5px solid;
+        border-color: $app-primary-color;
+    }
+    &.success {
+        .mat-dialog-container {
+            border-color: $success;
+        }
+    }
+    &.info {
+        .mat-dialog-container {
+            border-color: $info;
+        }
+    }
+    &.warning {
+        .mat-dialog-container {
+            border-color: $warning;
+        }
+    }
+    &.error {
+        .mat-dialog-container {
+            border-color: $danger;
+        }
+    }
+}
+
+/* Notification */
+app-notification {
+    .btn-noty {
+        .mat-button-wrapper {
+            padding: 0 !important;
+            line-height: 0;
+        }
+    }
+}
+
+/* Data Table */
+.data-table {
+    tr, td, th {
+        height: $app-table-row-height;
+    }
+}
+
+/* Pagination */
+.has-pagination {
+    padding-bottom: 70px !important;
+}
+
+/* Text */
+.text-app-primary {
+    color: $app-primary-color;
+}
+
+/* Buttons */
+.btn-app-primary {
+    background-color: $app-primary-color;
+    color: $app-text-invert-color;
+}
+.btn-app-primary:hover,
+.btn-app-primary:active,
+.btn-app-primary:focus {
+    background-color: $app-primary-color;
+    color: $app-text-invert-color;
+    opacity: 0.9;
+}
+.btn-warning:disabled {
+
+}
+.btn-app-primary-invert {
+    background-color: $app-text-invert-color;
+    color: $app-primary-color;
+}
+.btn-warning,
+.btn-info {
+    &,
+    &:hover,
+    &:focus,
+    &:disabled {
+        color: white;
+    }
+}
+.mat-badge-content {
+    background-color: $app-badge-color !important;
+    color: $app-text-invert-color !important;
+}
+
+/* NG Select */
+.ng-option {
+    &.ng-option-selected {
+        background-color: $app-primary-color !important;
+        color: $app-hover-text-color !important;
+        .ng-option-label {
+            font-weight: normal !important;
+        }
+    }
+    &.ng-option-marked {
+        background-color: $app-secondary-color !important;
+        color: $app-hover-text-color !important;
+        .ng-option-label {
+            font-weight: normal !important;
+        }
+    }
+    .ng-option-label{
+        white-space: break-spaces;
+    }
+}
+.ng-value-container {
+    .ng-value {
+        white-space: normal !important;
+    }
+}
+
+.mat-slide-toggle.mat-checked {
+    .mat-slide-toggle-bar {
+        background-color: $app-hover-color;
+    }
+    .mat-slide-toggle-thumb {
+        background-color: $app-secondary-color;
+    }
+}

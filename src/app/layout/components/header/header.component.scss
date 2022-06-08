@@ -1,0 +1,11 @@
+@import "../../../../variables";
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: $app-header;
+    width: 100vw;
+    background-color: $app-primary-color;
+    color: $app-primary-text-color;
+}

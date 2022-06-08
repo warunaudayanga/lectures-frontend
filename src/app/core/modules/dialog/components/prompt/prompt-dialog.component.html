@@ -1,0 +1,17 @@
+<div class="prompt-dialog" data-dialog>
+    <div mat-dialog-title class="">
+        <i class="dialog-icon {{style.icon}} text-{{style.colorClass}}"></i>
+        <span class="dialog-title">{{dialogData.title}}</span>
+    </div>
+    <mat-dialog-content>
+        <span *ngIf="dialogData.message">{{dialogData.message}}</span>
+        <wx-form #form [formData]="dialogData.formData" (onSubmit)="onSubmit($event)"></wx-form>
+    </mat-dialog-content>
+    <mat-divider></mat-divider>
+    <mat-dialog-actions>
+        <button type="button" class="btn btn-secondary text-light d-block ms-auto"
+                (click)="close()" data-key="Escape">{{buttons?.cancel ? buttons?.cancel?.toUpperCase(): "CANCEL"}}</button>
+        <button type="button" (click)="submit()" class="btn btn-{{style.colorClass}} text-light d-block ms-3">
+            {{buttons?.ok ? buttons?.ok?.toUpperCase(): "OK"}}</button>
+    </mat-dialog-actions>
+</div>

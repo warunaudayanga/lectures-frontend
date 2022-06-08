@@ -1,0 +1,27 @@
+@import "../../../../variables";
+
+#content {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    padding: $app-content-padding;
+    &.logged {
+        top: $app-header;
+        left: $app-sidenav;
+        width: calc(100vw - #{$app-sidenav});
+        height: calc(100vh - #{$app-header});
+    }
+}
+::ng-deep {
+    #content {
+        .content-header {
+            height: $app-content-header;
+        }
+        .content {
+            height: calc(100vh - #{$app-header} - #{$app-content-padding} * 2);
+        }
+        .content-header ~ .content {
+            height: calc(100vh - #{$app-header} - #{$app-content-padding} * 2 - #{$app-content-header});
+        }
+    }
+}

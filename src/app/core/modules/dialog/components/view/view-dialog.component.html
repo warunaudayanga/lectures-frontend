@@ -1,0 +1,28 @@
+<div class="alert-dialog view-dialog" data-dialog>
+    <div mat-dialog-title class="text-center">
+        <i class="dialog-icon {{viewData.icon || 'icofont icofont-ui-note'}} text-{{viewData.colorClass || 'app-primary'}}"></i>
+        <span class="dialog-title">{{viewData.title}}</span>
+    </div>
+    <mat-dialog-content>
+        <p *ngIf="viewData.message">{{viewData.message}}</p>
+        <table class="table view-table">
+            <tbody>
+            <tr *ngFor="let key of viewData.keys, let i = index">
+                <th scope="row">{{viewData.headers[i]}}</th>
+                <th>{{viewData.omitSeparator?.includes(i + 1)? '': ':'}}</th>
+                <td class="" [innerHTML]="getValue(viewData.entity, key, i)"></td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="view-table meta-table mt-3">
+            <tr *ngIf="viewData.entity.createdBy"><th scope="row">Created By</th><td><b>:</b> {{viewData.entity.createdBy.firstName}} {{viewData.entity.createdBy.lastName}}</td></tr>
+            <tr *ngIf="viewData.entity.createdAt"><th scope="row">Created At</th><td><b>:</b> {{viewData.entity.createdAt | amDateFormat: 'YYYY-MM-DD / hh:mm:ss a'}}</td></tr>
+            <tr *ngIf="viewData.entity.updatedBy"><th scope="row">Updated By</th><td><b>:</b> {{viewData.entity.updatedBy.firstName}} {{viewData.entity.updatedBy.lastName}}</td></tr>
+            <tr *ngIf="viewData.entity.updatedAt"><th scope="row">Updated At</th><td><b>:</b> {{viewData.entity.updatedAt | amDateFormat: 'YYYY-MM-DD / hh:mm:ss a'}}</td></tr>
+        </table>
+    </mat-dialog-content>
+    <mat-divider></mat-divider>
+    <mat-dialog-actions>
+        <button type="button" class="btn btn-app-primary text-light d-block ms-auto" (click)="close()" data-key="Escape">OK</button>
+    </mat-dialog-actions>
+</div>
