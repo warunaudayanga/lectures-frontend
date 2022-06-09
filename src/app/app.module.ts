@@ -7,7 +7,7 @@ import { LayoutModule } from "./layout";
 import { DialogModule } from "./core/modules/dialog";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { AuthInterceptor } from "./modules/auth/interceptors";
-import { ResponseInterceptor } from "./core/interceptors";
+import { ErrorResponseInterceptor, ResponseInterceptor } from "./core/interceptors";
 import { HomeComponent } from "./modules/lectures/components";
 import { ToastrModule } from "ngx-toastr";
 import { AppCommonModule } from "./common";
@@ -39,6 +39,7 @@ import { DATE_FORMAT_FOR_MAT } from "./core/data";
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ResponseInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorResponseInterceptor, multi: true },
         { provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT_FOR_MAT },
     ],
     bootstrap: [AppComponent],

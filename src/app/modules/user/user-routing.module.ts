@@ -7,10 +7,10 @@ import { Permission } from "../auth/enum/permission.enum";
 const routes: Routes = [
     { path: "", redirectTo: "roles" },
     { path: "manage", component: ManageUserComponent, canActivate: [RoleGuard], data: {
-        permission: Permission.USER_GET,
+        permission: Permission.USER_VIEW,
     } },
     { path: "roles", component: ManageRolesComponent, canActivate: [RoleGuard], data: {
-        permission: Permission.ROLE_GET,
+        permission: Permission.ROLE_VIEW,
     } },
 ];
 

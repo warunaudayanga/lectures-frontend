@@ -16,6 +16,7 @@ import { EnumValue } from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
 import { toFirstCase } from "../utils";
 import { Sort, SortFields } from "../modules/data-table/interfaces/sort-fields.interface";
 import { FormControlData } from "../modules/form-validation/interfaces";
+import { GetAllDto } from "../dto/get-all.dto";
 
 export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols extends number = any, SubEntity = IObject> {
 
@@ -43,8 +44,6 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
     ) {
         // this.socketService.onEvent<Entity>(options.name)?.subscribe(entity => this.onEvent(entity));
     }
-
-    protected abstract onInit(): void;
 
     protected abstract formData(entity?: any): FormControlData<Entity, SubEntity>[];
 
@@ -77,6 +76,8 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
     //     this.getAll();
     // };
 
+    protected onInit(): void {}
+
     public add(): void {
         this.addDialog(this.formData());
     }
@@ -101,6 +102,10 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
 
     protected afterEdit(successResponse: IStatusResponse): void {};
 
+    protected onGetAll(response: any): IPaginatedResponse<Entity> {
+        return response as unknown as IPaginatedResponse<Entity>;
+    };
+
     protected afterGetAll(response: IPaginatedResponse<Entity>): void {};
 
     protected generateFormDialog(formData: FormControlData<Entity, any>[], update?: boolean): EventEmitter<PromptResponse> {
@@ -118,13 +123,20 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
 
     public getAll(): void {
         this.loading = true;
-        this.entityService.getAll(this.page, this.limit, this.keyword, this.sort)
+        const getAllDto: GetAllDto<Entity> = {
+            page: this.page,
+            limit: this.limit,
+            keyword: this.keyword,
+            sort: this.sort,
+        };
+        this.entityService.getAll(getAllDto)
             .subscribe({
                 next: res => {
-                    this.data.dataSource = res.data;
-                    this.data.totalItems = res.rowCount;
+                    const response = this.onGetAll(res);
+                    this.data.dataSource = response.data;
+                    this.data.totalItems = response.rowCount;
                     this.dataTable.update();
-                    this.afterGetAll(res);
+                    this.afterGetAll(response);
                     this.loading = false;
                 },
                 error: (err: HttpError<EnumValue & CommonError>) => {
