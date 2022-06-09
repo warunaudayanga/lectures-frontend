@@ -7,26 +7,30 @@ import { CourseModuleComponent } from "./components/course-module/course-module.
 import { ScheduleComponent } from "./components/schedule/schedule.component";
 import { Permission } from "../auth/enum/permission.enum";
 import { RoleGuard } from "../auth/guards";
+import { SlotComponent } from "./components/slot/slot.component";
 
 const routes: Routes = [
     { path: "", redirectTo: "timetable" },
     { path: "timetable", component: TimetableComponent, canActivate: [RoleGuard], data: {
-        permission: Permission.TIMETABLE_GET,
+        permission: Permission.TIMETABLE_VIEW,
     } },
     { path: "schedule", component: ScheduleComponent, canActivate: [RoleGuard], data: {
-        permission: Permission.SCHEDULE_GET,
+        permission: Permission.SCHEDULE_VIEW,
     } },
     { path: "timetable/update", component: UpdateTimetableComponent, canActivate: [RoleGuard], data: {
         permission: Permission.TIMETABLE_CREATE,
     } },
     { path: "course", component: CourseComponent, canActivate: [RoleGuard], data: {
-        permission: Permission.COURSE_GET,
+        permission: Permission.COURSE_VIEW,
+    } },
+    { path: "slot", component: SlotComponent, canActivate: [RoleGuard], data: {
+        permission: Permission.SLOT_VIEW,
     } },
     { path: "lecturer", component: LecturerComponent, canActivate: [RoleGuard], data: {
-        permission: Permission.LECTURER_GET,
+        permission: Permission.LECTURER_VIEW,
     } },
     { path: "module", component: CourseModuleComponent, canActivate: [RoleGuard], data: {
-        permission: Permission.MODULE_GET,
+        permission: Permission.MODULE_VIEW,
     } },
 ];
 

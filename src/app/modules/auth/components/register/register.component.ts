@@ -37,6 +37,9 @@ export class RegisterComponent implements OnInit {
             .subscribe({
                 next: res => {
                     this.courses = res.data;
+                    if (!this.courses.length) {
+                        this.app.load("/");
+                    }
                     this.generateRegForm();
                 },
                 error: (err: HttpError<AuthError>) => {
@@ -51,8 +54,8 @@ export class RegisterComponent implements OnInit {
             { type: "text", name: "firstName", required: true, validators: [Validators.minLength(3)] },
             { type: "text", name: "lastName", required: true, validators: [Validators.minLength(3)] },
             { type: "text", name: "username", required: true, validators: [Validators.minLength(3)] },
-            { type: "text", name: "password", required: true, validators: [Validators.minLength(6)] },
-            { type: "text", name: "confirm", required: true },
+            { type: "password", name: "password", required: true, validators: [Validators.minLength(6)] },
+            // { type: "password", name: "confirm", required: true },
             { type: "select", name: "course", value: this.courses[0], required: true,
                 options: { values: this.courses, labelKey: "name" } },
             { type: "number", name: "studentId", required: true, validators: [Validators.min(1)] },
@@ -75,6 +78,7 @@ export class RegisterComponent implements OnInit {
                 next: () => {
                     registerForm.reset();
                     this.app.success("User registered successfully.");
+                    this.app.load("/");
                 },
                 error: (err: HttpError<AuthError>) => {
                     switch (err.error.code) {

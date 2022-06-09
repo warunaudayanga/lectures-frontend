@@ -21,24 +21,26 @@ export class FormDirective {
             const controlList = this.getInvalidControls(this.fgDirective.form);
             controlList.forEach((controlData, i) => {
                 const controlElement: HTMLInputElement = this.element.nativeElement.querySelector("[name='" + controlData.key + "']");
-                controlElement.classList.add("is-invalid");
-                if (!i) {
-                    const label = this.element.nativeElement.querySelector(`[for="${controlElement.id}"]`).innerText
-                        .replace(" *", "");
-                    const value = controlData.control.value;
-                    const errors = controlData.control.errors ? controlData.control.errors : {};
-                    controlElement.focus();
-                    controlElement.select();
-                    // eslint-disable-next-line no-console
-                    console.log(errors);
-                    if (errors["required"]) {
-                        this.app.toast.error(`${toFirstCase(label)} cannot be empty!`);
-                    } else if (errors["minlength"]) {
-                        this.app.toast.error(`${toFirstCase(label)} must be at least ${errors["minlength"].requiredLength} characters long!`);
-                    } else if (errors["maxlength"]) {
-                        this.app.toast.error(`${toFirstCase(label)} cannot exceed ${errors["maxlength"].requiredLength} characters!`);
-                    } else if (errors["email"]) {
-                        this.app.toast.error(`'${value}' is not a valid email address!`);
+                if (controlElement) {
+                    controlElement.classList.add("is-invalid");
+                    if (!i) {
+                        const label = this.element.nativeElement.querySelector(`[for="${controlElement.id}"]`).innerText
+                            .replace(" *", "");
+                        const value = controlData.control.value;
+                        const errors = controlData.control.errors ? controlData.control.errors : {};
+                        controlElement.focus();
+                        controlElement.select();
+                        // eslint-disable-next-line no-console
+                        console.log(errors);
+                        if (errors["required"]) {
+                            this.app.toast.error(`${toFirstCase(label)} cannot be empty!`);
+                        } else if (errors["minlength"]) {
+                            this.app.toast.error(`${toFirstCase(label)} must be at least ${errors["minlength"].requiredLength} characters long!`);
+                        } else if (errors["maxlength"]) {
+                            this.app.toast.error(`${toFirstCase(label)} cannot exceed ${errors["maxlength"].requiredLength} characters!`);
+                        } else if (errors["email"]) {
+                            this.app.toast.error(`'${value}' is not a valid email address!`);
+                        }
                     }
                 }
             });

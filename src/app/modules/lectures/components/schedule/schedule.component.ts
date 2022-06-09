@@ -128,7 +128,7 @@ export class ScheduleComponent implements OnInit {
     getSchedule(): void {
         Promise.all([
             firstValueFrom(this.scheduleService.getScheduleByDate(this.date.format("YYYY-MM-DD"))),
-            firstValueFrom(this.slotService.getAll()),
+            firstValueFrom(this.slotService.getAllSlots()),
             firstValueFrom(this.moduleService.getAll()),
             firstValueFrom(this.lecturerService.getAll()),
         ]).then(responses => {

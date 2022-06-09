@@ -35,3 +35,5 @@ export const hhmmaToHHmmss = (hh: string, mm: string, a: "am" | "pm" | string): 
     }
     return `${HH}:${mm}:00` as Time;
 };
+
+export const time24To12 = (str: Time): string => moment(`2000-01-01 ${str}`).format("hh:mm a");

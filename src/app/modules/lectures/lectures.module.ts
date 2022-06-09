@@ -13,6 +13,7 @@ import { ScheduleComponent } from "./components/schedule/schedule.component";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatInputModule } from "@angular/material/input";
+import { SlotComponent } from "./components/slot/slot.component";
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { MatInputModule } from "@angular/material/input";
         LecturerComponent,
         CourseModuleComponent,
         ScheduleComponent,
+        SlotComponent,
     ],
     imports: [
         CommonModule,

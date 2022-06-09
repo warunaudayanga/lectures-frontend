@@ -1,12 +1,12 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { environment } from "../../../environments/environment";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { IObject, IPaginatedResponse, IStatusResponse } from "../interfaces";
 import { BaseEntity } from "../entity";
 import { Status } from "../enums";
-import { Sort } from "../modules/data-table/interfaces/sort-fields.interface";
+import { GetAllDto } from "../dto/get-all.dto";
 
 export class Service<Entity extends BaseEntity & IObject> {
 
@@ -42,8 +42,12 @@ export class Service<Entity extends BaseEntity & IObject> {
         return this.http.get<Entity>(`${this.apiUrl}/${id}`);
     }
 
-    getAll(page?: number, limit?: number, keyword?: string, sort?: Sort<Entity>): Observable<IPaginatedResponse<Entity>> {
-        return this.http.get<IPaginatedResponse<Entity>>(`${this.apiUrl}?page=${page}&limit=${limit}&sort=${sort}&keyword=${keyword}`);
+    getAll(getAllDto?: GetAllDto<Entity>): Observable<IPaginatedResponse<Entity>> {
+        return this.http.get<IPaginatedResponse<Entity>>(`${this.apiUrl}`, { params: getAllDto as HttpParams });
+    }
+
+    getAllWithoutPagination(status?: string): Observable<Entity[]> {
+        return this.http.get<Entity[]>(`${this.apiUrl}/all`, { params: status ? { status } : undefined });
     }
 
     delete(id: number): Observable<IStatusResponse> {

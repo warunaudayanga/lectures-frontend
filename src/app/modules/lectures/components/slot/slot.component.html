@@ -1,0 +1,14 @@
+<div id="course" class="content">
+    <data-table
+        #dataTable
+        [loading]="loading"
+        [data]="data"
+        (afterInit)="afterDataTableInit($event)"
+        (filter)="onFilter($event)"
+        (sort)="onSort($event)"
+        (pageChange)="changePage($event)"
+        (option)="add()"
+        (optionA)="view($event)"
+        (optionB)="edit($event)"
+        (optionC)="delete($event)"></data-table>
+</div>
