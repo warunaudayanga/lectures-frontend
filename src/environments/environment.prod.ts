@@ -2,7 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const host = "http://api.uovt.tk";
+const host = "https://api.uovt.tk";
 
 export const environment = {
     production: true,
