@@ -90,6 +90,10 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
         this.viewDialog(this.viewDialogData(entity));
     }
 
+    protected beforeGetAll(getAllDto: GetAllDto<Entity>): GetAllDto<Entity> {
+        return getAllDto;
+    };
+
     protected beforeAdd(formValues: any, data?: Partial<Entity>): Entity {
         return { ...formValues, ...data };
     }
@@ -129,7 +133,7 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
             keyword: this.keyword,
             sort: this.sort,
         };
-        this.entityService.getAll(getAllDto)
+        this.entityService.getAll(this.beforeGetAll(getAllDto))
             .subscribe({
                 next: res => {
                     const response = this.onGetAll(res);

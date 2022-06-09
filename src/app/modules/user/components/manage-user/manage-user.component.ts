@@ -65,7 +65,7 @@ export class ManageUserComponent extends EntityComponent<UserEntity> {
             aligns: ["left", "left", "center", "center", "center", "center"],
             classOf: { 6: ["consolas"] },
             formatOf: {
-                4: (str: string): string => tag(["Admin", "l1"], ["Representative", "l2"], ["Student", "l3"])(toFirstCase(str)),
+                4: (str: string): string => tag(["Admin", "l1"], ["Representative", "l2"], ["Student", "l3"])(toTitleCase(str.toLowerCase())),
                 5: statusFormat,
                 6: (str: string): string => str || "Registered",
             },
@@ -146,7 +146,7 @@ export class ManageUserComponent extends EntityComponent<UserEntity> {
                 "E-mail", "Phone", "ID Verified", "Course Verified", "E-mail Verified", "Phone Verified", "Status"],
             keys: ["firstName", "lastName", "username", "studentIdString", "role.name", "course.name",
                 "email", "phone", "studentIdVerified", "courseVerified", "emailVerified", "phoneVerified", "status"],
-            formatOf: { 5: toTitleCase, 9: yesNo, 10: yesNo, 11: yesNo, 12: yesNo, 13: toTitleCase },
+            formatOf: { 5: str => toTitleCase(str.toLowerCase()), 9: yesNo, 10: yesNo, 11: yesNo, 12: yesNo, 13: toTitleCase },
         } as ViewOptions<UserEntity, 13>;
     }
 
