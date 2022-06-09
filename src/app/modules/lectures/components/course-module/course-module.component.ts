@@ -37,8 +37,8 @@ export class CourseModuleComponent extends EntityComponent<CourseModuleEntity>{
             searchKeys: ["name", "code"],
             widths: ["auto", "auto", "70px", statusWidth, userNameWidth],
             aligns: ["left", "center", "center", "center", "center"],
-            classOf: { 8: ["consolas"] },
-            formatOf: { 7: statusFormat }, option: {
+            classOf: { 5: ["consolas"] },
+            formatOf: { 4: statusFormat }, option: {
                 width: "175px",
                 main: { html: "<i class='icofont icofont-ui-add'></i>",
                     colorClass: "btn-app-primary-invert", disabled: !this.app.can(this.app.Do.MODULE_CREATE) },

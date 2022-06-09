@@ -22,7 +22,7 @@ export class ViewDialogComponent {
         let value = item;
         let keys = String(key).split(".");
         keys.forEach(k => {
-            value = value[k];
+            value = value?.[k];
         });
         // eslint-disable-next-line no-nested-ternary
         return this.viewData.formatOf?.[i + 1]
