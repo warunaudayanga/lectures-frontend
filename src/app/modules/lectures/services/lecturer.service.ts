@@ -7,7 +7,7 @@ import { Service } from "../../../core/services";
 @Injectable({
     providedIn: "root",
 })
-export class LecturerService extends Service<LecturerEntity>{
+export class LecturerService extends Service<LecturerEntity> {
 
     constructor(protected readonly http: HttpClient) {
         super(http, "/lecturer");

@@ -43,7 +43,7 @@ export class UpdateTimetableComponent implements OnInit {
     }
 
     getSlots(): void {
-        this.slotService.getAll()
+        this.slotService.getAllSlots()
             .subscribe({
                 next: slots => {
                     this.slots = slots;
@@ -85,6 +85,13 @@ export class UpdateTimetableComponent implements OnInit {
         this.timetableService.getTimetableData()
             .subscribe({
                 next: timeTableData => {
+                    let days = Object.keys(timeTableData) as Day[];
+                    if (!days.includes(Day.SATURDAY)) {
+                        timeTableData.SATURDAY = [];
+                    }
+                    if (!days.includes(Day.SUNDAY)) {
+                        timeTableData.SUNDAY = [];
+                    }
                     this.days = Object.keys(timeTableData) as Day[];
                     this.timeTableData = timeTableData;
                     this.slots?.forEach(slot => {

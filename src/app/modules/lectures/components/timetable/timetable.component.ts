@@ -40,7 +40,7 @@ export class TimetableComponent {
         private readonly timetableService: TimetableService,
     ) {
         Promise.all([
-            firstValueFrom(this.slotService.getAll()),
+            firstValueFrom(this.slotService.getAllSlots()),
             firstValueFrom(this.courseService.getAll()),
         ]).then(responses => {
             const [slots, courses] = responses;
@@ -57,6 +57,13 @@ export class TimetableComponent {
         this.timetableService.getTimetableData()
             .subscribe({
                 next: timeTableData => {
+                    let days = Object.keys(timeTableData) as Day[];
+                    if (!days.includes(Day.SATURDAY)) {
+                        timeTableData.SATURDAY = [];
+                    }
+                    if (!days.includes(Day.SUNDAY)) {
+                        timeTableData.SUNDAY = [];
+                    }
                     this.days = Object.keys(timeTableData) as Day[];
                     this.timeTableEntryData = timeTableData;
                     this.slots?.forEach(slot => {
