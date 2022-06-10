@@ -4,7 +4,7 @@ import { UserEntity } from "../../../auth/interfaces";
 import { AppService } from "../../../../app.service";
 import { DialogService } from "../../../../core/modules/dialog";
 import { UserService } from "../../services";
-import { Columns, DataTable, DataTableData, Option } from "../../../../core/modules/data-table/interfaces";
+import { Columns, DataTable, DataTableData, Func, Option } from "../../../../core/modules/data-table/interfaces";
 import { HttpError, IObject } from "src/app/core/interfaces";
 import { FormControlData } from "src/app/core/modules/form-validation/interfaces";
 import { rowHeight, statusFormat, statusWidth, tableOptions, userNameWidth } from "../../../../core/data";
@@ -42,22 +42,7 @@ export class ManageUserComponent extends EntityComponent<UserEntity> {
     ) {
         super(app, dialogService, userService, { name: "user", key: "username" });
         this.data = {
-            dataSource: [], totalItems: 0, rowHeight, option: { ...tableOptions,
-                main: { html: "<i class='icofont icofont-ui-add'></i>",
-                    colorClass: "btn-app-primary-invert", disabled: !this.app.can(this.app.Do.USER_CREATE) },
-                width: "210px",
-                common: [
-                    { html: "<i class='icofont icofont-ui-note'></i>",
-                        colorClass: "btn-app-primary", disabled: !this.app.can(this.app.Do.USER_GET) },
-                    { html: "<i class='icofont icofont-ui-edit'></i>",
-                        colorClass: "btn-warning", disabled: !this.app.can(this.app.Do.USER_UPDATE) },
-                    { html: "<i class='icofont icofont-ui-fire-wall'></i>",
-                        colorClass: "btn-dark", disabled: !this.app.can(this.app.Do.USER_UPDATE_STATUS) },
-                    { html: "<i class='icofont icofont-cop-badge'></i>",
-                        colorClass: "btn-dark", disabled: !this.app.can(this.app.Do.USER_UPDATE_ROLE) },
-                    { html: "<i class='icofont icofont-ui-delete'></i>",
-                        colorClass: "btn-danger", disabled: !this.app.can(this.app.Do.USER_DELETE) },
-                ] as Columns<Option, 5> },
+            dataSource: [], totalItems: 0, rowHeight,
             headers: ["Name", "Student ID", "Course", "Role", "Status", "Changed By"],
             keys: ["name", "studentIdString", "course.code", "role.name", "status", "updatedBy.name"],
             searchKeys: ["name"],
@@ -69,6 +54,21 @@ export class ManageUserComponent extends EntityComponent<UserEntity> {
                 5: statusFormat,
                 6: (str: string): string => str || "Registered",
             },
+            option: { ...tableOptions, width: "210px",
+                main: { html: "<i class='icofont icofont-ui-add'></i>",
+                    colorClass: "btn-app-primary-invert", disabled: !this.app.can(this.app.Do.USER_CREATE) },
+                common: [
+                    { html: "<i class='icofont icofont-ui-note'></i>",
+                        colorClass: "btn-app-primary", disabled: !this.app.can(this.app.Do.USER_GET) },
+                    { html: "<i class='icofont icofont-ui-edit'></i>",
+                        colorClass: "btn-warning", disabled: this.disableIf(!this.app.can(this.app.Do.USER_UPDATE)) },
+                    { html: "<i class='icofont icofont-ui-fire-wall'></i>",
+                        colorClass: "btn-dark", disabled: this.disableIf(!this.app.can(this.app.Do.USER_UPDATE_STATUS)) },
+                    { html: "<i class='icofont icofont-cop-badge'></i>",
+                        colorClass: "btn-dark", disabled: this.disableIf(!this.app.can(this.app.Do.USER_UPDATE_ROLE)) },
+                    { html: "<i class='icofont icofont-ui-delete'></i>",
+                        colorClass: "btn-danger", disabled: this.disableIf(!this.app.can(this.app.Do.USER_DELETE)) },
+                ] as Columns<Option, 5> },
         } as DataTableData<UserEntity, 6>;
     }
 
@@ -77,7 +77,7 @@ export class ManageUserComponent extends EntityComponent<UserEntity> {
         this.getAllCourses();
     }
 
-    getAllRoles(): void {
+    private getAllRoles(): void {
         this.roleService.getAll()
             .subscribe({
                 next: res => {
@@ -91,7 +91,7 @@ export class ManageUserComponent extends EntityComponent<UserEntity> {
             });
     }
 
-    getAllCourses(): void {
+    private getAllCourses(): void {
         this.courseService.getAll()
             .subscribe({
                 next: res => {
@@ -102,6 +102,20 @@ export class ManageUserComponent extends EntityComponent<UserEntity> {
                     AppService.log(err);
                 },
             });
+    }
+
+    private disableIf(condition?: boolean): Func {
+        return (user: UserEntity): boolean => {
+            if (!user) {
+                return Boolean(condition);
+            }
+            try {
+                // console.log(Boolean(condition) || user.role?.priority! < this.app.user?.role?.priority!, user.role?.priority!, this.app.user?.role?.priority!);
+                return Boolean(condition) || (user.role?.priority! <= this.app.user?.role?.priority!);
+            } catch (e: any) {
+                return false;
+            }
+        };
     }
 
     protected formData(user?: any): FormControlData<UserEntity>[] {
@@ -132,7 +146,11 @@ export class ManageUserComponent extends EntityComponent<UserEntity> {
                     ...user?.role, name: toFirstCase(user.role?.name),
                 } ?? { ...defaultRole, name: toFirstCase(defaultRole.name) },
                 options: {
-                    values: this.roles?.map(r => ({ ...r, name: toFirstCase(r.name) })), labelKey: "name",
+                    values: this.roles
+                        ?.filter(r => {
+                            return r.priority >= this.app.user?.role?.priority!;
+                        })
+                        ?.map(r => ({ ...r, name: toFirstCase(r.name) })), labelKey: "name",
                 } },
         ] as FormControlData<UserEntity>[];
     }

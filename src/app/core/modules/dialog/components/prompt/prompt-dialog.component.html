@@ -5,7 +5,7 @@
     </div>
     <mat-dialog-content>
         <span *ngIf="dialogData.message">{{dialogData.message}}</span>
-        <wx-form #form [formData]="dialogData.formData" (onSubmit)="onSubmit($event)"></wx-form>
+        <wx-form #form [formData]="dialogData.formData" [update]="!!dialogData.updateForm" (onSubmit)="onSubmit($event)"></wx-form>
     </mat-dialog-content>
     <mat-divider></mat-divider>
     <mat-dialog-actions>

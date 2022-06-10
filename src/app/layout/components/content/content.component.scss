@@ -1,4 +1,7 @@
 @import "../../../../variables";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
 
 #content {
     position: fixed;
@@ -23,5 +26,12 @@
         .content-header ~ .content {
             height: calc(100vh - #{$app-header} - #{$app-content-padding} * 2 - #{$app-content-header});
         }
+    }
+}
+
+@include media-breakpoint-down(lg) {
+    #content.logged {
+        left: 0;
+        width: 100vw;
     }
 }

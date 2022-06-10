@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, Subject, tap } from "rxjs";
+import { firstValueFrom, Observable, Subject, tap } from "rxjs";
 import { Router } from "@angular/router";
 import { environment } from "../../../../environments/environment";
 import { AuthData, UserEntity } from "../interfaces";
-import { SessionStorageService } from "../../../core/services";
+import { LocalStorageService } from "../../../core/services";
 import { RegisterDto, LoginDto } from "../dto";
+import { UserService } from "../../user/services";
 
 @Injectable({
     providedIn: "root",
@@ -41,7 +42,8 @@ export class AuthService {
     constructor(
         private readonly router: Router,
         private readonly http: HttpClient,
-        private readonly sessionStorageService: SessionStorageService,
+        private readonly userService: UserService,
+        private readonly storageService: LocalStorageService,
     ) {}
 
     register(registerDto: RegisterDto): Observable<UserEntity> {
@@ -51,9 +53,9 @@ export class AuthService {
     login(loginDto: LoginDto): Observable<AuthData> {
         return this.http.post<AuthData>(`${this.authApiUrl}/login`, loginDto)
             .pipe(tap(authData => {
-                this.sessionStorageService.clear();
-                this.sessionStorageService.setUser(authData.user);
-                this.sessionStorageService.setTokenData(authData);
+                this.storageService.clear();
+                this.storageService.setUserId(authData.user.id);
+                this.storageService.setTokenData(authData);
                 this.logged = true;
                 this.user = authData.user;
                 this.loggedInListener.next(true);
@@ -61,14 +63,15 @@ export class AuthService {
             }));
     }
 
-    autoAuth(): void {
-        const tokens = this.sessionStorageService.getTokenData();
-        const user = this.sessionStorageService.getUser();
-        if (!tokens || !user) {
-            this.sessionStorageService.clear();
+    async autoAuth(): Promise<void> {
+        const tokens = this.storageService.getTokenData();
+        const id = this.storageService.getUserId();
+        if (!tokens || !id) {
+            this.storageService.clear();
             return;
         }
         this.logged = true;
+        const user = await firstValueFrom(this.userService.get(id));
         this.user = user;
         this.loggedInListener.next(true);
         this.userListener.next(user);
@@ -79,7 +82,7 @@ export class AuthService {
         this.logged = false;
         this.loggedInListener.next(false);
         this.userListener.next(undefined);
-        this.sessionStorageService.clear();
+        this.storageService.clear();
     }
 
     // noinspection JSUnusedGlobalSymbols

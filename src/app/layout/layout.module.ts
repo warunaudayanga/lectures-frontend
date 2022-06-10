@@ -4,6 +4,7 @@ import { HeaderComponent, ContentComponent, SidenavComponent } from "./component
 import { RouterModule } from "@angular/router";
 import { NavMenuComponent } from "./components/header/nav-menu/nav-menu.component";
 import { MatMenuModule } from "@angular/material/menu";
+import { FormsModule } from "@angular/forms";
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { MatMenuModule } from "@angular/material/menu";
         CommonModule,
         RouterModule,
         MatMenuModule,
+        FormsModule,
     ],
     exports: [
         HeaderComponent,

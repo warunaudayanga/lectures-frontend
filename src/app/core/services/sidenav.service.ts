@@ -1,26 +1,39 @@
 import { Injectable } from "@angular/core";
-import { MatDrawerToggleResult, MatSidenav } from "@angular/material/sidenav";
+import { Observable, Subject } from "rxjs";
 
 @Injectable({
     providedIn: "root",
 })
 export class SidenavService {
 
-    private _sidenav!: MatSidenav
+    private _opened: boolean = false;
 
-    set sidenav(sidenav: MatSidenav) {
-        this._sidenav = sidenav;
+    private sidenavToggleListener: Subject<boolean> = new Subject<boolean>()
+
+    get opened(): boolean {
+        return this._opened;
     }
 
-    public open(): Promise<MatDrawerToggleResult> {
-        return this._sidenav.open();
+    get closed(): boolean {
+        return !this._opened;
     }
 
-    public close(): Promise<MatDrawerToggleResult> {
-        return this._sidenav.close();
+    public open(): void {
+        this._opened = true;
+        this.sidenavToggleListener.next(true);
     }
 
-    public toggle(): Promise<MatDrawerToggleResult> {
-        return this._sidenav.toggle();
+    public close(): void {
+        this._opened = false;
+        this.sidenavToggleListener.next(false);
+    }
+
+    public toggle(): void {
+        this._opened = !this._opened;
+        this.sidenavToggleListener.next(this._opened);
+    }
+
+    public getSidenavToggleListener(): Observable<boolean> {
+        return this.sidenavToggleListener.asObservable();
     }
 }

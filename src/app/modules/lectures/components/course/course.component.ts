@@ -11,7 +11,7 @@ import { EntityComponent } from "../../../../core/components";
 import { DialogService } from "../../../../core/modules/dialog";
 import { each, toTitleCase } from "../../../../core/utils";
 import { Status } from "../../../../core/enums";
-import { rowHeight, statusFormat, statusWidth, titleFormat, userNameWidth } from "../../../../core/data";
+import { rowHeight, statusFormat, statusWidth, tableOptions, titleFormat, userNameWidth } from "../../../../core/data";
 import { FormControlData } from "../../../../core/modules/form-validation/interfaces";
 
 @Component({
@@ -34,14 +34,13 @@ export class CourseComponent extends EntityComponent<CourseEntity>{
         this.data = {
             dataSource: [], totalItems: 0, rowHeight,
             headers: ["Name", "Code", "Year", "Type", "Status", "Changed By"],
-            keys: ["name", "code", "year", "type", "status", "createdBy.name"],
+            keys: ["name", "code", "year", "type", "status", "updatedBy.name"],
             searchKeys: ["name", "code"],
             widths: ["auto", "70px", "80px", "80px", statusWidth, userNameWidth],
             aligns: ["left", "center", "center", "center", "center", "center"],
             classOf: { 4: ["nowrap"], 6: ["consolas"] },
             formatOf: { 4: titleFormat, 5: statusFormat },
-            option: {
-                width: "175px",
+            option: { ...tableOptions, width: "175px",
                 main: { html: "<i class='icofont icofont-ui-add'></i>",
                     colorClass: "btn-app-primary-invert", disabled: !this.app.can(this.app.Do.COURSE_CREATE) },
                 common: [
@@ -53,8 +52,7 @@ export class CourseComponent extends EntityComponent<CourseEntity>{
                         colorClass: "btn-dark", disabled: !this.app.can(this.app.Do.COURSE_UPDATE_STATUS) },
                     { html: "<i class='icofont icofont-ui-delete'></i>",
                         colorClass: "btn-danger", disabled: !this.app.can(this.app.Do.COURSE_DELETE) },
-                ] as Columns<Option, 4>,
-            },
+                ] as Columns<Option, 4> },
         } as DataTableData<CourseEntity, 6>;
     }
 

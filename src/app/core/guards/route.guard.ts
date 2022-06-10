@@ -15,7 +15,7 @@ export class RouteGuard implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot,
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        this.authService.autoAuth();
+        this.authService.autoAuth().then();
         const isAuthenticated = this.authService.logged;
         if (isAuthenticated) {
             const ignored = this.router.navigateByUrl("/");

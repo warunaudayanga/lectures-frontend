@@ -11,6 +11,7 @@ export const statusFormat = [toFirstCase, badge(["Active", "active"])];
 export const titleFormat = (str: string): string => toTitleCase(str.toLowerCase());
 
 export const tableOptions = {
+    itemsPerPage: 50,
     width: "175px",
     main: { html: "<i class='icofont icofont-ui-add'></i>", colorClass: "btn-app-primary-invert" },
     common: [

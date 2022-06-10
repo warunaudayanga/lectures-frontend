@@ -3,5 +3,6 @@ import { Permission } from "../../auth/enum/permission.enum";
 
 export interface RoleEntity extends BaseEntity {
     name: string;
+    priority: number;
     permissions: Permission[];
 }

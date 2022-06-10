@@ -1,8 +1,5 @@
 @import "src/variables";
 
-:host {
-    margin-left: auto;
-}
 .avatar-container {
     background-size: contain;
     height: 54px;
@@ -29,5 +26,12 @@
     i {
         font-size: 18px;
         padding-right: 5px;
+    }
+}
+
+// Remove after adding more items to menu
+::ng-deep {
+    .mat-menu-panel {
+        min-height: 46px !important;
     }
 }

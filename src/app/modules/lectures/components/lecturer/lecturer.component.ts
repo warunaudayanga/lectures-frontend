@@ -3,7 +3,7 @@ import { Columns, DataTable, DataTableData, Option } from "../../../../core/modu
 import { AppService } from "../../../../app.service";
 import { DialogService } from "../../../../core/modules/dialog";
 import { LecturerService } from "../../services";
-import { rowHeight, statusFormat, statusWidth, userNameWidth } from "../../../../core/data";
+import { rowHeight, statusFormat, statusWidth, tableOptions, userNameWidth } from "../../../../core/data";
 import { LecturerEntity } from "../../interfaces";
 import { ViewOptions } from "../../../../core/modules/dialog/interfaces";
 import { Validators } from "@angular/forms";
@@ -34,14 +34,14 @@ export class LecturerComponent extends EntityComponent<LecturerEntity> {
         this.data = {
             dataSource: [], totalItems: 0, rowHeight,
             headers: ["Name", "Email", "Mobile", "Status", "Changed By"],
-            keys: ["name", "email", "mobile", "status", "createdBy.name"],
+            keys: ["name", "email", "mobile", "status", "updatedBy.name"],
             searchKeys: ["name", "email", "mobile"],
             widths: ["auto", "auto", "85px", statusWidth, userNameWidth],
             aligns: ["left", "center", "center", "center", "center"],
             classOf: { 5: ["consolas"] },
             formatOf: { 4: statusFormat },
             option: {
-                width: "175px",
+                ...tableOptions, width: "175px",
                 main: { html: "<i class='icofont icofont-ui-add'></i>",
                     colorClass: "btn-app-primary-invert", disabled: !this.app.can(this.app.Do.LECTURER_CREATE) },
                 common: [

@@ -23,6 +23,7 @@ export interface FormControlData<Entity, SubEntity = IObject> {
     options?: FormControlDataOptions<SubEntity>
     value?: string | number | IObject;
     required?: boolean;
+    readonly?: boolean;
     unchanged?: boolean;
     validators?: ValidatorFn[]
 }

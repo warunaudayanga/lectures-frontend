@@ -3,7 +3,7 @@ import { Columns, DataTable, DataTableData, Option } from "../../../../core/modu
 import { AppService } from "../../../../app.service";
 import { DialogService } from "../../../../core/modules/dialog";
 import { CourseModuleService } from "../../services";
-import { rowHeight, statusFormat, statusWidth, userNameWidth } from "../../../../core/data";
+import { rowHeight, statusFormat, statusWidth, tableOptions, userNameWidth } from "../../../../core/data";
 import { CourseModuleEntity } from "../../interfaces";
 import { HttpError } from "../../../../core/interfaces";
 import { AuthError } from "../../../auth/enum";
@@ -33,13 +33,14 @@ export class CourseModuleComponent extends EntityComponent<CourseModuleEntity>{
         this.data = {
             dataSource: [], totalItems: 0, rowHeight,
             headers: ["Name", "Code", "Sem.", "Status", "Changed By"],
-            keys: ["name", "code", "semester", "status", "createdBy.name"],
+            keys: ["name", "code", "semester", "status", "updatedBy.name"],
             searchKeys: ["name", "code"],
             widths: ["auto", "auto", "70px", statusWidth, userNameWidth],
             aligns: ["left", "center", "center", "center", "center"],
             classOf: { 5: ["consolas"] },
-            formatOf: { 4: statusFormat }, option: {
-                width: "175px",
+            formatOf: { 4: statusFormat },
+            option: {
+                ...tableOptions, width: "175px",
                 main: { html: "<i class='icofont icofont-ui-add'></i>",
                     colorClass: "btn-app-primary-invert", disabled: !this.app.can(this.app.Do.MODULE_CREATE) },
                 common: [

@@ -17,7 +17,8 @@ export interface DialogOptions {
     colorClass?: string;
     level?: DialogLevel;
     buttons?: DialogButtons;
-    width?: CSSLength
+    width?: CSSLength,
+    updateForm?: boolean,
 }
 
 export interface AlertOptions extends DialogOptions {

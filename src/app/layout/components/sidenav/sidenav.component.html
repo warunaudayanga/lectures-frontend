@@ -1,4 +1,4 @@
-<div *ngIf="logged" id="sidenav" class="sidenav">
+<div *ngIf="logged" id="sidenav" [class.open]="opened" class="sidenav">
 
     <div class="menu">
         <ng-container *ngFor="let item of menu">

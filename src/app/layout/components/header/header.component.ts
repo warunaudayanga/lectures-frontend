@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { AuthService } from "../../../modules/auth/services";
+import { SidenavService } from "../../../core/services";
 
 @Component({
     selector: "app-header",
@@ -13,7 +14,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     loggedInSubscription!: Subscription;
 
-    constructor(private readonly authService: AuthService) {}
+    constructor(
+        private readonly authService: AuthService,
+        private readonly sidenavService: SidenavService,
+    ) {}
 
     ngOnInit(): void {
         this.logged = this.authService.logged;
@@ -29,5 +33,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     logout(): void {
         this.authService.logout();
+    }
+
+    toggle(): void {
+        this.sidenavService.toggle();
     }
 }

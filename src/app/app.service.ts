@@ -11,6 +11,7 @@ import { IObject } from "./core/interfaces";
 import { BaseEntity } from "./core/entity";
 import { AuthService } from "./modules/auth/services";
 import { Permission } from "./modules/auth/enum/permission.enum";
+import { UserEntity } from "./modules/user/interfaces/user.interface";
 
 @Injectable({
     providedIn: "root",
@@ -47,6 +48,10 @@ export class AppService {
     can(Do?: Permission): boolean {
         if (!Do) return true;
         return Boolean(this.authService.user?.role?.permissions.includes(Do));
+    }
+
+    get user(): UserEntity | undefined {
+        return this.authService.user;
     }
 
     get width(): number {

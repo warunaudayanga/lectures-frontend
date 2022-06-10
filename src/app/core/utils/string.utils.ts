@@ -97,3 +97,4 @@ export const templates = (...fns: ((str: string) => string)[]): ((str: string) =
 export const yesNo = (value?: boolean): string => {
     return value ? "Yes" : "No";
 };
+

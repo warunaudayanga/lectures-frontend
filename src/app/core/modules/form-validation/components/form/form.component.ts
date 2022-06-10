@@ -24,6 +24,8 @@ export class FormComponent implements AfterViewInit, AppForm {
 
     @ViewChildren("select") ngSelectList!: QueryList<NgSelectComponent>;
 
+    @Input() update: boolean = false;
+
     @Input() formData?: FormControlData<any, any>[];
 
     @Input() size: "small" | "large" | "" = "";

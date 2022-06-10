@@ -3,7 +3,7 @@ import { Columns, CSSMeasurement, IObject } from "./common.interfaces";
 export interface Option {
     html: string,
     colorClass?: string;
-    disabled?: (() => boolean) | boolean;
+    disabled?: ((value?: any) => boolean) | boolean;
 }
 
 export type Func = (value: any) => any;
@@ -23,6 +23,7 @@ export interface DataTableData<Entity, cols extends number, SubEntity = IObject>
     classOf?: { [i: number]: string[] };
     formatOf?: { [i: number]: Func | Func[] };
     option?: {
+        itemsPerPage?: number
         width: CSSMeasurement;
         main?: Option;
         common: Columns<Option, 1 | 2 | 3 | 4 | 5>;

@@ -1,4 +1,7 @@
 @import "../../../../variables";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
 
 #header {
     position: fixed;
@@ -8,4 +11,24 @@
     width: 100vw;
     background-color: $app-primary-color;
     color: $app-primary-text-color;
+    .username {
+        font-size: 20px;
+    }
+    .nav-toggle {
+        height: $app-header;
+        width: $app-header;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        i {
+            font-size: 40px;
+        }
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    #header .nav-toggle {
+        display: none;
+    }
 }

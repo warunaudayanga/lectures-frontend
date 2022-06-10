@@ -5,6 +5,7 @@ import { Subscription } from "rxjs";
 import { menuItems } from "../../data";
 import { NavigationEnd, Router } from "@angular/router";
 import { AppService } from "../../../app.service";
+import { SidenavService } from "../../../core/services";
 
 @Component({
     selector: "app-sidenav",
@@ -19,12 +20,29 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
     menu: MenuItem[] = menuItems;
 
+    sidenavSubscription!: Subscription;
+
     loggedInSubscription!: Subscription;
 
     routerSubscription!: Subscription;
 
-    constructor(public readonly app: AppService, private readonly authService: AuthService, private router: Router) {
-        this.routerSubscription = router.events.subscribe({
+    opened: boolean = false;
+
+    constructor(
+        public readonly app: AppService,
+        private readonly authService: AuthService,
+        private router: Router,
+        private readonly sidenavService: SidenavService,
+    ) {}
+
+    ngOnInit(): void {
+        this.logged = this.authService.logged;
+        this.opened = this.sidenavService.opened;
+        this.sidenavSubscription = this.sidenavService.getSidenavToggleListener()
+            .subscribe(opened => {
+                this.opened = opened;
+            });
+        this.routerSubscription = this.router.events.subscribe({
             next: event => {
                 if (!this.path && event instanceof NavigationEnd) {
                     this.path = event.url;
@@ -33,13 +51,15 @@ export class SidenavComponent implements OnInit, OnDestroy {
                 }
             },
         });
-    }
-
-    ngOnInit(): void {
-        this.logged = this.authService.logged;
         this.loggedInSubscription = this.authService.getLoggedInListener()
             .subscribe(logged => {
                 this.logged = logged;
+                if (!logged) {
+                    this.path = this.menu[0].path;
+                    this.menu.forEach(item => {
+                        item.opened = false;
+                    });
+                }
             });
     }
 
@@ -53,6 +73,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
 
     select(selectedItem: MenuItem): void {
+        this.sidenavService.close();
         if (selectedItem.path) this.path = selectedItem.path;
         this.menu.forEach(item => this.status(item));
         if (!selectedItem.for) {
@@ -71,6 +92,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.loggedInSubscription.unsubscribe();
+        this.routerSubscription.unsubscribe();
     }
 
     can(item: MenuItem): boolean {

@@ -3,7 +3,7 @@ import { Columns, DataTable, DataTableData, Option } from "../../../../core/modu
 import { AppService } from "../../../../app.service";
 import { DialogService } from "../../../../core/modules/dialog";
 import { SlotService } from "../../services";
-import { rowHeight, userNameWidth } from "../../../../core/data";
+import { rowHeight, tableOptions, userNameWidth } from "../../../../core/data";
 import { SlotEntity } from "../../interfaces";
 import { FormControlData } from "../../../../core/modules/form-validation/interfaces";
 import { Validators } from "@angular/forms";
@@ -31,14 +31,14 @@ export class SlotComponent extends EntityComponent<SlotEntity> {
         this.data = {
             dataSource: [], totalItems: 0, rowHeight,
             headers: ["Slot", "Start At", "End At", "Changed By"],
-            keys: ["number", "startAt", "endAt", "createdBy.name"],
+            keys: ["number", "startAt", "endAt", "updatedBy.name"],
             searchKeys: [],
             widths: ["auto", "auto", "auto", userNameWidth],
             aligns: ["center", "center", "center", "center"],
             classOf: { 4: ["consolas"] },
             formatOf: { 2: time24To12, 3: time24To12 },
             option: {
-                width: "175px",
+                ...tableOptions, width: "175px",
                 main: { html: "<i class='icofont icofont-ui-add'></i>",
                     colorClass: "btn-app-primary-invert", disabled: !this.app.can(this.app.Do.SLOT_CREATE) },
                 common: [

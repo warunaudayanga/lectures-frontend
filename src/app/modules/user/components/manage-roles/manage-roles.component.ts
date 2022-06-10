@@ -10,7 +10,7 @@ import { HttpError } from "../../../../core/interfaces";
 import { AuthError } from "../../../auth/enum";
 import { each, toLowerCase, toTitleCase } from "../../../../core/utils";
 import { Validators } from "@angular/forms";
-import { rowHeight, statusFormat, statusWidth, userNameWidth } from "../../../../core/data";
+import { rowHeight, statusFormat, statusWidth, tableOptions, userNameWidth } from "../../../../core/data";
 import { FormControlData } from "../../../../core/modules/form-validation/interfaces";
 
 @Component({
@@ -32,15 +32,15 @@ export class ManageRolesComponent extends EntityComponent<RoleEntity> {
         super(app, dialogService, roleService, { name: "role", key: "name" });
         this.data = {
             dataSource: [], totalItems: 0, rowHeight,
-            headers: ["Name", "Status", "Changed By"],
-            keys: ["name", "status", "createdBy.name"],
+            headers: ["Name", "Priority", "Status", "Changed By"],
+            keys: ["name", "priority", "status", "updatedBy.name"],
             searchKeys: ["name"],
-            widths: ["auto", statusWidth, userNameWidth],
-            aligns: ["left", "center", "center"],
-            classOf: { 3: ["consolas"] },
-            formatOf: { 2: statusFormat },
+            widths: ["auto", "85px", statusWidth, userNameWidth],
+            aligns: ["left", "center", "center", "center"],
+            classOf: { 4: ["consolas"] },
+            formatOf: { 3: statusFormat },
             option: {
-                width: "175px",
+                ...tableOptions, width: "175px",
                 main: { html: "<i class='icofont icofont-ui-add'></i>",
                     colorClass: "btn-app-primary-invert", disabled: !this.app.can(this.app.Do.ROLE_CREATE) },
                 common: [
@@ -54,7 +54,7 @@ export class ManageRolesComponent extends EntityComponent<RoleEntity> {
                         colorClass: "btn-danger", disabled: !this.app.can(this.app.Do.ROLE_DELETE) },
                 ] as Columns<Option, 4>,
             },
-        } as DataTableData<RoleEntity, 3>;
+        } as DataTableData<RoleEntity, 4>;
     }
 
     protected onInit(): void {
@@ -62,6 +62,7 @@ export class ManageRolesComponent extends EntityComponent<RoleEntity> {
             .subscribe({
                 next: permissions => {
                     this.permissions = permissions;
+                    this.permissions.sort((a, b) => (a > b ? 1 : -1));
                 },
                 error: (err: HttpError<AuthError>) => {
                     this.app.error(err.error.message);
@@ -72,6 +73,7 @@ export class ManageRolesComponent extends EntityComponent<RoleEntity> {
 
     private viewTemplate(permissions: string[]): string {
         let template = "";
+        permissions.sort((a, b) => (a > b ? 1 : -1));
         permissions.forEach(p => {
             template += `<div>${p}</div>`;
         });
@@ -79,10 +81,15 @@ export class ManageRolesComponent extends EntityComponent<RoleEntity> {
     }
 
     protected formData(role?: RoleEntity): FormControlData<RoleEntity>[] {
+        if (role?.permissions) {
+            role.permissions.sort((a, b) => (a > b ? 1 : -1));
+        }
         return [
-            { type: "text", name: "name", label: "Name", value: role?.name ?? "", required: true,
+            { type: "text", name: "name", value: role?.name ?? "", required: true, readonly: true,
                 validators: [Validators.minLength(3)] },
-            { type: "select", name: "permissions", label: "Permissions", value: role?.permissions ?? [],
+            { type: "number", name: "priority", value: role?.priority ?? 2, required: true, readonly: true,
+                validators: [Validators.min(2)] },
+            { type: "select", name: "permissions", value: role?.permissions ?? [],
                 options: {
                     searchable: true,
                     multiple: true,
@@ -92,14 +99,14 @@ export class ManageRolesComponent extends EntityComponent<RoleEntity> {
         ] as FormControlData<RoleEntity>[];
     }
 
-    protected viewDialogData(role: RoleEntity): ViewOptions<RoleEntity, 3> {
+    protected viewDialogData(role: RoleEntity): ViewOptions<RoleEntity, 4> {
         return {
             title: "View Role",
             entity: role,
-            headers: ["Name", "Permissions", "Status"],
-            formatOf: { 2: (p) => this.viewTemplate(p) },
-            keys: ["name", "permissions", "status"],
-        } as ViewOptions<RoleEntity, 3>;
+            headers: ["Name", "Priority", "Permissions", "Status"],
+            keys: ["name", "priority", "permissions", "status"],
+            formatOf: { 3: (p) => this.viewTemplate(p) },
+        } as ViewOptions<RoleEntity, 4>;
     }
 
 }

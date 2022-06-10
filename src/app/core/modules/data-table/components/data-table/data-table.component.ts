@@ -109,8 +109,11 @@ export class DataTableComponent implements AfterViewInit, AfterContentChecked, O
     ngAfterViewInit(): void {
         const tableContainer = this.tableContainer?.nativeElement as HTMLDivElement;
         const innerHeight = getDimensions(tableContainer).height;
-        this.itemsPerPage = Math.floor(innerHeight / environment.tables.row.height - 2);
-        tableContainer.style.maxHeight = (innerHeight - innerHeight % environment.tables.row.height) + "px";
+        this.itemsPerPage = this.data.option?.itemsPerPage ?? Math.floor(innerHeight / environment.tables.row.height - 3);
+        if (this.data.option?.itemsPerPage) {
+            tableContainer.style.maxHeight = (innerHeight - innerHeight % environment.tables.row.height - innerHeight % environment.tables.row.height) + "px";
+        }
+        tableContainer.style.maxHeight = (innerHeight - 55) + "px";
         this.afterInit.emit(this.itemsPerPage);
     }
 
@@ -221,12 +224,12 @@ export class DataTableComponent implements AfterViewInit, AfterContentChecked, O
         return (typeof i === "number" ? this.data.option?.common[i].html : this.data.option?.main?.html) ?? "";
     }
 
-    getDisabled(i?: number, id?: string): boolean {
+    getDisabled(i?: number, id?: string, item?: any): boolean {
         if (id && this.data.disabledIds?.includes(id)) {
             return true;
         }
         const disabled = typeof i === "number" ? this.data.option?.common?.[i]?.disabled : this.data.option?.main?.disabled;
-        return typeof disabled === "function" ? disabled() : Boolean(disabled);
+        return typeof disabled === "function" ? disabled(item) : Boolean(disabled);
     }
 
     scrollToTop(): void {

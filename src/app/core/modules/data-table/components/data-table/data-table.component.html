@@ -35,7 +35,7 @@
                         <ng-container *ngFor="let option of data.option?.common, let i = index">
                             <button class="btn btn-sm btn-option {{getColorClass(i)}}"
                                     (click)="onOption(item, i)" [innerHTML]="getInnerHTML(i)"
-                                    [disabled]="getDisabled(i, item.id)" [class.d-none]="getDisabled(i, item.id)"></button>
+                                    [disabled]="getDisabled(i, item.id, item)" [class.d-none]="getDisabled(i,item.id,item)"></button>
                         </ng-container>
                     </td>
                 </tr>
@@ -43,10 +43,6 @@
             </ng-container>
         </table>
     </virtual-scroller>
-</div>
-
-<div *ngIf="loading" class="loading-backdrop position-absolute">
-    <div class="loading" data-key-loader></div>
 </div>
 
 <app-pagination (pageChange)="changePage($event)"></app-pagination>

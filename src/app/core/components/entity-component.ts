@@ -121,6 +121,7 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
             buttons: { ok: update ? "Update" : "Save" },
             wait: true,
             width: "550px",
+            updateForm: update,
         };
         return this.dialog.prompt(options);
     }

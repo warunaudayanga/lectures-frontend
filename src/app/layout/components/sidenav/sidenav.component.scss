@@ -1,4 +1,8 @@
 @import "src/variables";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
 :host {
     //display: block;
     //height: 100%;
@@ -10,6 +14,7 @@
     height: calc(100vh - #{$app-header});
     width: $app-sidenav;
     background-color: $app-secondary-color;
+    z-index: 1000000000;
 }
 .menu {
     padding-top: 10px;
@@ -49,5 +54,14 @@
         .title {
             font-size: 17px;
         }
+    }
+}
+
+@include media-breakpoint-down(lg) {
+    #sidenav {
+        left: calc(#{$app-sidenav} * -1);
+    }
+    #sidenav.open {
+        left: 0;
     }
 }

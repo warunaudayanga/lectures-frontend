@@ -1,3 +1,9 @@
 <div *ngIf="logged" id="header" class="header d-flex align-items-center">
-    <app-nav-menu></app-nav-menu>
+    <div class="nav-toggle" (click)="toggle()">
+        <i class="icofont icofont-navigation-menu"></i>
+    </div>
+    <div class="username ms-auto">
+        Waruna Udayanga
+    </div>
+    <app-nav-menu class="ms-3"></app-nav-menu>
 </div>
