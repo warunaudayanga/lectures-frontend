@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     loggedInSubscription!: Subscription;
 
     constructor(
-        private readonly authService: AuthService,
+        public readonly authService: AuthService,
         private readonly sidenavService: SidenavService,
     ) {}
 
