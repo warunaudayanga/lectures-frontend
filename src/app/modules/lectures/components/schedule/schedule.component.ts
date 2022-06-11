@@ -21,6 +21,8 @@ import { hhmmaToHHmmss } from "../../../../core/utils";
 })
 export class ScheduleComponent implements OnInit {
 
+    loading: boolean = true;
+
     @ViewChild("form") form?: NgForm;
 
     editing: boolean = false;
@@ -126,6 +128,7 @@ export class ScheduleComponent implements OnInit {
     }
 
     getSchedule(): void {
+        this.loading = true;
         this.app.startLoading();
         Promise.all([
             firstValueFrom(this.scheduleService.getScheduleByDate(this.date.format("YYYY-MM-DD"))),
@@ -133,6 +136,7 @@ export class ScheduleComponent implements OnInit {
             firstValueFrom(this.moduleService.getAll()),
             firstValueFrom(this.lecturerService.getAll()),
         ]).then(responses => {
+            this.loading = false;
             this.app.stopLoading();
             const [scheduleRes, slots, modules, lecturers] = responses;
             this.schedule = scheduleRes.schedule;
@@ -248,7 +252,7 @@ export class ScheduleComponent implements OnInit {
             const g = m?.grouped;
             if (m && !g) {
                 entry.lecturerL2 = undefined;
-                entry.meetingUrl = undefined;
+                entry.meetingUrlL2 = undefined;
                 entry.recordingUrlL2 = undefined;
             }
             if (

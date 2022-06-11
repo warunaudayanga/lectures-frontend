@@ -33,7 +33,7 @@
                     <th class="modules">Modules</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody [class.invisible]="loading" [class.border-white]="loading">
                 <ng-container *ngIf="!editing">
                     <ng-container *ngFor="let slot of schedule; let i = index">
                         <tr [class.now]="isNow(slot)">
@@ -69,8 +69,8 @@
                                             </div>
                                         </div>
                                         <div class="links">
-                                            <div class="mb-1 meeting-url" *ngIf="slot.meetingUrl && isNow(slot)">
-                                                <a [href]="slot.meetingUrl" class="fw-bold" target="_blank">Join on zoom</a>
+                                            <div class="mb-1 meeting-url" *ngIf="slot.meetingUrl">
+                                                <a [href]="slot.meetingUrl" class="fw-bold" target="_blank">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
                                             </div>
                                             <div class="mb-1" *ngIf="slot.recordingUrl">
                                                 <a [href]="slot.recordingUrl" class="fw-bold" target="_blank">View this session recording</a>
