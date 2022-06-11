@@ -98,7 +98,7 @@ export class DataTableComponent implements AfterViewInit, AfterContentChecked, O
                     shortcutService.select(this.tableContainer.nativeElement?.querySelector(".search"));
                 } else if (shortcut.e.key === "Enter" && shortcut.released) {
                     shortcutService.click(selected?.querySelector("button.btn-warning"));
-                } else if (shortcut.e.key === "Shift" && shortcut.released) {
+                } else if (shortcut.e.key === "*" && shortcut.released) {
                     shortcutService.click(selected?.querySelector("button.btn-dark"));
                 } else if (shortcut.e.code === "Delete" && shortcut.released) {
                     shortcutService.click(selected?.querySelector("button.btn-danger"));

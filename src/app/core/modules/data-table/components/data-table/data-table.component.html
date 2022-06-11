@@ -42,7 +42,7 @@
                 </tbody>
             </ng-container>
         </table>
-        <div [hidden]="!loading" class="loading-backdrop position-absolute">
+        <div *ngIf="loading" class="loading-backdrop position-absolute">
             <div class="loading" data-key-loader></div>
         </div>
     </virtual-scroller>
