@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener } from "@angular/core";
-import { NgControl } from "@angular/forms";
+import { ControlValueAccessor, NgControl } from "@angular/forms";
 
 // eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: "[name]" })
@@ -11,13 +11,26 @@ export class FormControlDirective {
 
     hasFocusedAndLost: boolean = false;
 
-    constructor(private readonly element: ElementRef, private control: NgControl) { }
+    constructor(private readonly element: ElementRef, private control: NgControl) {
+        this.trimValueAccessor(control.valueAccessor);
+    }
 
     private validate(): void {
         if (this.control.invalid) {
             this.element.nativeElement.classList.add("is-invalid");
         } else {
             this.element.nativeElement.classList.remove("is-invalid");
+        }
+    }
+
+    trimValueAccessor(valueAccessor: ControlValueAccessor | null): void {
+        if (valueAccessor) {
+            const original = valueAccessor.registerOnChange;
+            valueAccessor.registerOnChange = (fn: (_: unknown) => void): void => {
+                return original.call(valueAccessor, (value: unknown) => {
+                    return fn(typeof value === "string" ? value.trim() : value);
+                });
+            };
         }
     }
 

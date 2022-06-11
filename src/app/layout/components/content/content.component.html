@@ -1,3 +1,4 @@
 <div id="content" [class.logged]="logged">
     <router-outlet></router-outlet>
+    <app-loader [full]="!logged"></app-loader>
 </div>

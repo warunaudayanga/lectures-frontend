@@ -69,3 +69,8 @@
         }
     }
 }
+.loading-backdrop {
+    background-color: transparent !important;
+    top: calc(#{$app-table-row-height} * 2) !important;
+    height: calc(100% - #{$app-table-row-height} * 2);
+}

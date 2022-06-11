@@ -21,13 +21,12 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly shortcutService: ShortcutService,
     ) {}
 
-    async ngOnInit(): Promise<void> {
+    ngOnInit(): void {
         this.logged = this.authService.logged;
         this.loggedInSubscription = this.authService.getLoggedInListener()
             .subscribe(logged => {
                 this.logged = logged;
             });
-        await this.authService.autoAuth();
     }
 
     ngOnDestroy(): void {

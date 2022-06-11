@@ -51,10 +51,14 @@ export class RegisterComponent implements OnInit {
 
     generateRegForm(): void {
         this.formData = [
-            { type: "text", name: "firstName", required: true, validators: [Validators.minLength(3)] },
-            { type: "text", name: "lastName", required: true, validators: [Validators.minLength(3)] },
-            { type: "text", name: "username", required: true, validators: [Validators.minLength(3)] },
-            { type: "password", name: "password", required: true, validators: [Validators.minLength(6)] },
+            { type: "text", name: "firstName", required: true,
+                validators: [Validators.minLength(3), Validators.maxLength(20)] },
+            { type: "text", name: "lastName", required: true,
+                validators: [Validators.minLength(3), Validators.maxLength(20)] },
+            { type: "text", name: "username", required: true,
+                validators: [Validators.minLength(3), Validators.maxLength(50)] },
+            { type: "password", name: "password", required: true,
+                validators: [Validators.minLength(6)] },
             // { type: "password", name: "confirm", required: true },
             { type: "select", name: "course", value: this.courses[0], required: true,
                 options: { values: this.courses, labelKey: "name" } },

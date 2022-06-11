@@ -97,7 +97,7 @@ export class ScheduleComponent implements OnInit {
                 [Validators.required, Validators.min(0), Validators.max(59)],
             ],
             aEndL2: [scheduleEntry?.endAtL2 ? moment(`2000-01-01 ${scheduleEntry.endAtL2 ?? scheduleEntry.entry?.slotL2?.endAt}`).format("a") : "am"],
-            module: [scheduleEntry?.entry?.module],
+            module: [scheduleEntry?.module ?? (this.generated ? scheduleEntry?.entry?.module : undefined)],
             lecturer: [scheduleEntry?.lecturer || (this.generated ? scheduleEntry?.entry?.lecturer : undefined)],
             lecturerL2: [scheduleEntry?.lecturerL2 || (this.generated ? scheduleEntry?.entry?.lecturerL2 : undefined)],
             meetingId: [scheduleEntry?.meetingId ?? ""],
@@ -126,12 +126,14 @@ export class ScheduleComponent implements OnInit {
     }
 
     getSchedule(): void {
+        this.app.startLoading();
         Promise.all([
             firstValueFrom(this.scheduleService.getScheduleByDate(this.date.format("YYYY-MM-DD"))),
             firstValueFrom(this.slotService.getAllSlots()),
             firstValueFrom(this.moduleService.getAll()),
             firstValueFrom(this.lecturerService.getAll()),
         ]).then(responses => {
+            this.app.stopLoading();
             const [scheduleRes, slots, modules, lecturers] = responses;
             this.schedule = scheduleRes.schedule;
             this.slots = slots;
@@ -148,6 +150,10 @@ export class ScheduleComponent implements OnInit {
             })));
             this.schedule.sort((a, b) => ((a.startAt ?? a.startAtL2) > (b.startAt ?? b.startAtL2) ? 1 : -1));
             this.buildForms();
+        }).catch((err: HttpError<EnumValue & CommonError>) => {
+            this.app.stopLoading();
+            this.app.error(err.error?.message ?? CommonError.ERROR);
+            AppService.log(err);
         });
     }
 
@@ -208,10 +214,18 @@ export class ScheduleComponent implements OnInit {
                 date: this.date.format("YYYY-MM-DD") as DateOnly,
                 day: this.day?.toUpperCase() as Day,
                 status: Status.ACTIVE,
-                startAt: hhmmaToHHmmss(form.hhStart, form.mmStart, form.aStart),
-                endAt: hhmmaToHHmmss(form.hhEnd, form.mmEnd, form.aEnd),
-                startAtL2: hhmmaToHHmmss(form.hhStartL2, form.mmStartL2, form.aStartL2),
-                endAtL2: hhmmaToHHmmss(form.hhEndL2, form.mmEndL2, form.aEndL2),
+                startAt: form.lecturer
+                    ? hhmmaToHHmmss(form.hhStart, form.mmStart, form.aStart)
+                    : hhmmaToHHmmss(form.hhStartL2, form.mmStartL2, form.aStartL2),
+                endAt: form.lecturer
+                    ? hhmmaToHHmmss(form.hhEnd, form.mmEnd, form.aEnd)
+                    : hhmmaToHHmmss(form.hhEndL2, form.mmEndL2, form.aEndL2),
+                startAtL2: form.lecturerL2
+                    ? hhmmaToHHmmss(form.hhStartL2, form.mmStartL2, form.aStartL2)
+                    : hhmmaToHHmmss(form.hhStart, form.mmStart, form.aStart),
+                endAtL2: form.lecturerL2
+                    ? hhmmaToHHmmss(form.hhEndL2, form.mmEndL2, form.aEndL2)
+                    : hhmmaToHHmmss(form.hhEnd, form.mmEnd, form.aEnd),
                 slot: 0,
                 meetingId: form.meetingId,
                 passcode: form.passcode,
@@ -228,6 +242,27 @@ export class ScheduleComponent implements OnInit {
                 schedule.push(scheduleEntry as ScheduleEntryEntity);
             }
         });
+        let err: boolean = false;
+        for (const entry of schedule) {
+            const { module: m, lecturer: l1, lecturerL2: l2 } = entry;
+            const g = m?.grouped;
+            if (m && !g) {
+                entry.lecturerL2 = undefined;
+                entry.meetingUrl = undefined;
+                entry.recordingUrlL2 = undefined;
+            }
+            if (
+                m && g && (!l1 && !l2) ||
+                m && !g && !l1 ||
+                !m && l1
+            ) {
+                err = true;
+            }
+        }
+        if (err) {
+            this.app.error("Both module and lecturer has to be selected!");
+            return;
+        }
         this.scheduleService.saveSchedule(this.date.format("YYYY-MM-DD") as DateOnly, schedule)
             .subscribe({
                 next: () => {

@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { firstValueFrom, Observable, Subject, tap } from "rxjs";
+import { Observable, Subject, tap } from "rxjs";
 import { Router } from "@angular/router";
 import { environment } from "../../../../environments/environment";
 import { AuthData, UserEntity } from "../interfaces";
 import { LocalStorageService } from "../../../core/services";
 import { RegisterDto, LoginDto } from "../dto";
 import { UserService } from "../../user/services";
+import { LoaderService } from "../../../core/modules/loader";
 
 @Injectable({
     providedIn: "root",
@@ -43,8 +44,13 @@ export class AuthService {
         private readonly router: Router,
         private readonly http: HttpClient,
         private readonly userService: UserService,
+        private readonly loader: LoaderService,
         private readonly storageService: LocalStorageService,
     ) {}
+
+    refreshToken(token: string): Observable<AuthData> {
+        return this.http.post<AuthData>(`${this.authApiUrl}/refresh`, {}, { headers: { "Authorization": token } });
+    }
 
     register(registerDto: RegisterDto): Observable<UserEntity> {
         return this.http.post<UserEntity>(`${this.authApiUrl}/register`, registerDto);
@@ -52,29 +58,17 @@ export class AuthService {
 
     login(loginDto: LoginDto): Observable<AuthData> {
         return this.http.post<AuthData>(`${this.authApiUrl}/login`, loginDto)
-            .pipe(tap(authData => {
-                this.storageService.clear();
-                this.storageService.setUserId(authData.user.id);
-                this.storageService.setTokenData(authData);
-                this.logged = true;
-                this.user = authData.user;
-                this.loggedInListener.next(true);
-                this.userListener.next(authData.user);
-            }));
+            .pipe(tap(authData => this.setLoggedIn(authData)));
     }
 
-    async autoAuth(): Promise<void> {
-        const tokens = this.storageService.getTokenData();
-        const id = this.storageService.getUserId();
-        if (!tokens || !id) {
-            this.storageService.clear();
-            return;
-        }
+    setLoggedIn(authData: AuthData): void {
+        this.storageService.clear();
+        this.storageService.setUserId(authData.user.id);
+        this.storageService.setTokenData(authData);
         this.logged = true;
-        const user = await firstValueFrom(this.userService.get(id));
-        this.user = user;
+        this.user = authData.user;
         this.loggedInListener.next(true);
-        this.userListener.next(user);
+        this.userListener.next(authData.user);
     }
 
     logout(): void {

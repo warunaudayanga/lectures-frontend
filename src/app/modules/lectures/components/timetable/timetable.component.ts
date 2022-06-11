@@ -39,6 +39,7 @@ export class TimetableComponent {
         private readonly courseService: CourseService,
         private readonly timetableService: TimetableService,
     ) {
+        this.app.startLoading();
         Promise.all([
             firstValueFrom(this.slotService.getAllSlots()),
             firstValueFrom(this.courseService.getAll()),
@@ -54,9 +55,11 @@ export class TimetableComponent {
     }
 
     getTimetableData(): void {
+        this.app.startLoading();
         this.timetableService.getTimetableData()
             .subscribe({
                 next: timeTableData => {
+                    this.app.stopLoading();
                     let days = Object.keys(timeTableData) as Day[];
                     if (!days.includes(Day.SATURDAY)) {
                         timeTableData.SATURDAY = [];
@@ -76,6 +79,7 @@ export class TimetableComponent {
                     });
                 },
                 error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.app.stopLoading();
                     this.app.error(err.error?.message ?? CommonError.ERROR);
                     AppService.log(err);
                 },

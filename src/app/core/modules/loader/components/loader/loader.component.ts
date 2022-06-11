@@ -11,7 +11,7 @@ export class LoaderComponent implements OnDestroy {
 
     @Input() loading: boolean = false;
 
-    @Input() full: boolean = true;
+    @Input() full: boolean = false;
 
     loadingSubscription: Subscription;
 

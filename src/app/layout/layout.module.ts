@@ -5,6 +5,7 @@ import { RouterModule } from "@angular/router";
 import { NavMenuComponent } from "./components/header/nav-menu/nav-menu.component";
 import { MatMenuModule } from "@angular/material/menu";
 import { FormsModule } from "@angular/forms";
+import { LoaderModule } from "../core/modules/loader";
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { FormsModule } from "@angular/forms";
         RouterModule,
         MatMenuModule,
         FormsModule,
+        LoaderModule,
     ],
     exports: [
         HeaderComponent,
