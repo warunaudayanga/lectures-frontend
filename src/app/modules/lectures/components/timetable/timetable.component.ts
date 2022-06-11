@@ -17,6 +17,8 @@ import { firstValueFrom } from "rxjs";
 })
 export class TimetableComponent {
 
+    loading: boolean = false;
+
     timeTableEntryData?: TimeTableEntryData;
 
     days?: Day[];
@@ -39,6 +41,7 @@ export class TimetableComponent {
         private readonly courseService: CourseService,
         private readonly timetableService: TimetableService,
     ) {
+        this.loading = true;
         this.app.startLoading();
         Promise.all([
             firstValueFrom(this.slotService.getAllSlots()),
@@ -55,10 +58,12 @@ export class TimetableComponent {
     }
 
     getTimetableData(): void {
+        this.loading = true;
         this.app.startLoading();
         this.timetableService.getTimetableData()
             .subscribe({
                 next: timeTableData => {
+                    this.loading = false;
                     this.app.stopLoading();
                     let days = Object.keys(timeTableData) as Day[];
                     if (!days.includes(Day.SATURDAY)) {
@@ -79,6 +84,7 @@ export class TimetableComponent {
                     });
                 },
                 error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.loading = true;
                     this.app.stopLoading();
                     this.app.error(err.error?.message ?? CommonError.ERROR);
                     AppService.log(err);

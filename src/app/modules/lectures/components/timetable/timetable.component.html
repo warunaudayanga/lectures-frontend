@@ -19,7 +19,7 @@
                 <th class="module" *ngFor="let day of days">{{day}}</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody [class.invisible]="loading">
             <tr *ngFor="let row of tableRows; let i = index">
                 <td class="slot">{{row.slot.number}}</td>
                 <td class="time">
