@@ -9,6 +9,7 @@ import { DOCUMENT } from "@angular/common";
 import { IObject } from "../../../dialog/interfaces";
 import { AppForm, FormControlData, FormControlDataOptions } from "../../interfaces";
 import { BaseEntity } from "../../../../entity";
+import { AppService } from "../../../../../app.service";
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -39,7 +40,7 @@ export class FormComponent implements AfterViewInit, AppForm {
 
     public normalTypes = ["color", "datetime-local", "email", "image", "month", "number", "password", "tel", "text", "time"]
 
-    constructor(@Inject(DOCUMENT) readonly document: Document) {}
+    constructor(@Inject(DOCUMENT) readonly document: Document, public readonly app: AppService) {}
 
     init(): boolean {
         if (!this.initialized) {

@@ -1,4 +1,7 @@
 @import "src/variables";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
 
 .table-container {
     overflow-y: auto;
@@ -10,8 +13,8 @@
         width: 250px;
     }
     thead {
-        //position: sticky;
-        //top: 0;
+        position: sticky;
+        top: 0;
         height: calc(#{$app-table-row-height} * 2);
         background-color: $app-primary-color;
         color: $app-text-invert-color;
@@ -73,4 +76,46 @@
     background-color: transparent !important;
     top: calc(#{$app-table-row-height} * 2) !important;
     height: calc(100% - #{$app-table-row-height} * 2);
+}
+@include media-breakpoint-down(md) {
+    table {
+        min-width: initial !important;
+    }
+    thead {
+        height: calc(#{$app-table-row-height}) !important;
+        position: relative;
+    }
+    tbody {
+        tr {
+            &.selected {
+                background-color: transparent !important;
+                color: black !important;
+            }
+        }
+        td:not([data-column-no-name]):before {
+            content: attr(data-column-name);
+            text-align: left;
+            font-weight: bold;
+        }
+        td:first-child {
+            background-color: $app-active-color;
+            color: $app-active-text-color;
+        }
+        td[data-column-no-name] > * {
+            grid-column: span 2;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        td {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            text-align: right !important;
+            word-break: break-word;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+            width: 100% !important;
+            align-items: center;
+            justify-items: stretch;
+        }
+    }
 }

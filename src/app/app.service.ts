@@ -12,6 +12,8 @@ import { BaseEntity } from "./core/entity";
 import { AuthService } from "./modules/auth/services";
 import { Permission } from "./modules/auth/enum/permission.enum";
 import { UserEntity } from "./modules/user/interfaces/user.interface";
+import { Breakpoint } from "./core/enums";
+import { IndividualConfig } from "ngx-toastr/toastr/toastr-config";
 
 @Injectable({
     providedIn: "root",
@@ -24,6 +26,14 @@ export class AppService {
 
     private readonly _height: number;
 
+    private _loading: boolean = false;
+
+    public Breakpoint = Breakpoint;
+
+    public initialBreakpoint: Breakpoint;
+
+    private readonly toastConfig: Partial<IndividualConfig>;
+
     constructor(
         private readonly router: Router,
         private readonly dialog: DialogService,
@@ -34,6 +44,22 @@ export class AppService {
     ) {
         this._width = window.innerWidth;
         this._height = window.innerHeight;
+        this.toastConfig = { positionClass: this.mdDown ? "toast-top-center" : "toast-top-right" };
+        this.dialog.maxWidth = this.lgDown ? "90vw" : "85vw";
+        if (this._width > Breakpoint.XXL) {
+            this.initialBreakpoint = Breakpoint.XXL;
+        } else if (this._width > Breakpoint.XL) {
+            this.initialBreakpoint = Breakpoint.XL;
+        } else if (this._width > Breakpoint.LG) {
+            this.initialBreakpoint = Breakpoint.LG;
+        } else if (this._width > Breakpoint.MD) {
+            this.initialBreakpoint = Breakpoint.MD;
+        } else if (this._width > Breakpoint.SM) {
+            this.initialBreakpoint = Breakpoint.SM;
+        } else {
+            this.initialBreakpoint = Breakpoint.XS;
+        }
+        this.dialog.initialBreakpoint = this.initialBreakpoint;
 
         // swUpdate.available.subscribe(event => {
         //     console.log("current version is", event.current);
@@ -45,9 +71,73 @@ export class AppService {
         // });
     }
 
+    get xs(): boolean {
+        return Breakpoint.XS <= this._width && this._width < Breakpoint.SM;
+    }
+
+    get sm(): boolean {
+        return Breakpoint.SM <= this._width && this._width < Breakpoint.MD;
+    }
+
+    get smUp(): boolean {
+        return Breakpoint.SM <= this._width;
+    }
+
+    get md(): boolean {
+        return Breakpoint.MD <= this._width && this._width < Breakpoint.LG;
+    }
+
+    get mdUp(): boolean {
+        return Breakpoint.MD <= this._width;
+    }
+
+    get mdDown(): boolean {
+        return this._width < Breakpoint.MD;
+    }
+
+    get lg(): boolean {
+        return Breakpoint.LG <= this._width && this._width < Breakpoint.XL;
+    }
+
+    get lgUp(): boolean {
+        return Breakpoint.LG <= this._width;
+    }
+
+    get lgDown(): boolean {
+        return this._width < Breakpoint.LG;
+    }
+
+    get xl(): boolean {
+        return Breakpoint.XL <= this._width && this._width < Breakpoint.XXL;
+    }
+
+    get xlUp(): boolean {
+        return Breakpoint.XL <= this._width;
+    }
+
+    get xlDown(): boolean {
+        return this._width < Breakpoint.XL;
+    }
+
+    get xxl(): boolean {
+        return Breakpoint.XXL <= this._width;
+    }
+
+    get xxlDown(): boolean {
+        return this._width < Breakpoint.XXL;
+    }
+
     can(Do?: Permission): boolean {
         if (!Do) return true;
         return Boolean(this.authService.user?.role?.permissions.includes(Do));
+    }
+
+    get loading(): boolean {
+        return this._loading;
+    }
+
+    set loading(loading: boolean) {
+        this._loading = loading;
     }
 
     get user(): UserEntity | undefined {
@@ -71,19 +161,19 @@ export class AppService {
     }
 
     public success(message: string): void {
-        this.toast.success(message);
+        this.toast.success(message, undefined, this.toastConfig);
     }
 
     public info(message: string): void {
-        this.toast.info(message);
+        this.toast.info(message, undefined, this.toastConfig);
     }
 
     public error(message: string): void {
-        this.toast.error(message);
+        this.toast.error(message, undefined, this.toastConfig);
     }
 
     public warning(message: string): void {
-        this.toast.warning(message);
+        this.toast.warning(message, undefined, this.toastConfig);
     }
 
     public infoDialog(message: string, confirm?: boolean): Observable<boolean> {
@@ -111,11 +201,13 @@ export class AppService {
     }
 
     public startLoading(): void {
+        this._loading = true;
         this.loader.startLoading();
     }
 
     public stopLoading(): void {
         this.loader.stopLoading();
+        this._loading = false;
     }
 
     public static log(data: any): void {

@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
     hasCourses?: boolean;
 
     constructor(
-        private readonly app: AppService,
+        public readonly app: AppService,
         private readonly router: Router,
         private readonly authService: AuthService,
         private readonly courseService: CourseService,
@@ -36,13 +36,16 @@ export class LoginComponent implements OnInit {
     }
 
     login(): void {
+        this.app.startLoading();
         this.authService.login(this.loginForm.value)
             .subscribe({
                 next: () => {
+                    this.app.stopLoading();
                     this.app.success("User logged in successfully.");
                     const ignored = this.router.navigateByUrl("/");
                 },
                 error: (err: HttpError<AuthError>) => {
+                    this.app.stopLoading();
                     this.app.error(err.error.message);
                     AppService.log(err);
                 },

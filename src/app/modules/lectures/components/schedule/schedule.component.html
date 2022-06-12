@@ -27,7 +27,7 @@
         <form *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="onSubmit()" id="form">
             <table *ngIf="schedule" class="table" role="table">
                 <thead class="position-sticky top-0">
-                <tr>
+                <tr [class]="editing? 'edit' : 'view'">
                     <th class="slot">#</th>
                     <th *ngIf="!editing" class="time">Time</th>
                     <th class="modules">Modules</th>
@@ -36,7 +36,7 @@
                 <tbody [class.invisible]="loading" [class.border-white]="loading">
                 <ng-container *ngIf="!editing">
                     <ng-container *ngFor="let slot of schedule; let i = index">
-                        <tr [class.now]="isNow(slot)">
+                        <tr [class.now]="isNow(slot)" class="view">
                             <td class="slot">{{i + 1}}</td>
                             <td class="time">
                                 <div class="time-from">
@@ -48,12 +48,12 @@
                                 <ng-container>
                                     <div class="module fw-bold mb-1" [class.mb-3]="slot.module?.grouped === true || (generated && slot.module?.grouped === true)">
                                         <span class="module-code">{{slot.module?.code}}</span>
-                                        -
+                                        <span class="d-none d-md-inline">-</span>
                                         <span class="module-name">{{slot.module?.name}}</span>
                                         <span class="now-message ms-3" *ngIf="isNow(slot)"><i class="icofont icofont-notification"></i> Now on live</span>
                                     </div>
                                     <div class="row" *ngIf="slot.lecturer || (generated && slot.entry?.lecturer)">
-                                        <div class="col">
+                                        <div class="col ">
                                             <div class="lecturer mb-1"><span class="l" *ngIf="slot.module?.grouped === true">L1 - </span>{{generated? slot.entry?.lecturer?.name : slot.lecturer?.name}}</div>
                                             <div *ngIf="slot.meetingId && slot.passcode" class="meeting" [class.ps-x]="slot.module?.grouped === true || (generated && slot.module?.grouped === true)">
                                                 <div class="data row">
@@ -83,7 +83,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-3"
+                                    <div class="row pt-3"
                                          *ngIf="slot.module?.grouped === true && (slot.lecturerL2 || (generated && slot.entry?.lecturerL2))"
                                          [class.d-none]="slot.startAtL2 && (slot.startAt && slot.startAt !== slot.startAtL2)">
                                         <div class="col">
@@ -103,7 +103,7 @@
                                         </div>
                                         <div class="links">
                                             <div class="mb-1 meeting-url" *ngIf="slot.meetingUrlL2">
-                                                <a [href]="slot.meetingUrlL2" class="fw-bold" target="_blank">Join on zoom</a>
+                                                <a [href]="slot.meetingUrlL2" class="fw-bold" target="_blank">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
                                             </div>
                                             <div class="mb-1" *ngIf="slot.recordingUrlL2">
                                                 <a [href]="slot.recordingUrlL2" class="fw-bold" target="_blank">View this session recording</a>
@@ -124,81 +124,83 @@
                 </ng-container>
                 <ng-container #form *ngIf="editing">
                     <ng-container formArrayName="forms">
-                        <tr [formGroupName]="i" *ngFor="let line of getForms().controls; let i = index">
+                        <tr [formGroupName]="i" *ngFor="let line of getForms().controls; let i = index" class="edit">
                             <td class="slot">
                                 <div class="td-body">{{i + 1}}<input type="hidden" formControlName="id"></div>
                             </td>
-                            <td class="modules">
+                            <td class="modules-col position-relative" [class.has-l2]="isGrouped(i)">
                                 <div class="row">
-                                    <div class="col-50px" *ngIf="isGrouped(i)">
+                                    <div class="l-label" *ngIf="isGrouped(i)">
                                         <div class="l">L1</div>
                                         <div class="l">L2</div>
                                     </div>
                                     <div class="col">
-                                        <div class="row">
+                                        <div class="row position-relative" [class.has-l2]="isGrouped(i)">
                                             <div class="time" [class.has-l2]="isGrouped(i)">
                                                 <ng-container *ngFor="let l of (isGrouped(i)? ['', 'L2']: [''])">
-                                                    <div class="time-from" [class.has-l2]="l === 'L2'">
-                                                        <div class="fw-bold mb-1">From</div>
-                                                        <input type="number" min="1" max="12" name="hhStart{{i}}" #hh1
-                                                               (change)="onTimeChange($event)" formControlName="hhStart{{l}}"
-                                                               (focus)="hh1.select()"
-                                                               class="form-control form-control-sm time-input"> :
-                                                        <input type="number" min="0" max="59" name="mmStart{{i}}" #mm1
-                                                               (change)="onTimeChange($event)" formControlName="mmStart{{l}}"
-                                                               (focus)="mm1.select()"
-                                                               class="form-control form-control-sm time-input">
-                                                        <div class="d-flex justify-content-evenly mt-2">
-                                                            <div class="form-check-inline me-0">
-                                                                <input class="form-check-input me-1" type="radio" formControlName="aStart{{l}}" name="aStart{{l}}[{{i}}]" value="am" checked>
-                                                                <label class="form-check-label">am</label>
-                                                            </div>
-                                                            <div class="form-check-inline me-0">
-                                                                <input class="form-check-input me-1" type="radio" formControlName="aStart{{l}}" name="aStart{{l}}[{{i}}]" value="pm">
-                                                                <label class="form-check-label">pm</label>
+                                                    <div class="time-container" [class]="l === 'L2'? 'l2' : 'l1'">
+                                                        <div class="time-from" [class]="l === 'L2'? 'l2' : 'l1'">
+                                                            <div class="fw-bold mb-1">From</div>
+                                                            <input type="number" min="1" max="12" name="hhStart{{i}}" #hh1
+                                                                   (change)="onTimeChange($event)" formControlName="hhStart{{l}}"
+                                                                   (focus)="hh1.select()"
+                                                                   class="form-control form-control-sm time-input"> :
+                                                            <input type="number" min="0" max="59" name="mmStart{{i}}" #mm1
+                                                                   (change)="onTimeChange($event)" formControlName="mmStart{{l}}"
+                                                                   (focus)="mm1.select()"
+                                                                   class="form-control form-control-sm time-input">
+                                                            <div class="d-flex justify-content-evenly mt-2">
+                                                                <div class="form-check-inline me-0">
+                                                                    <input class="form-check-input me-1" type="radio" formControlName="aStart{{l}}" name="aStart{{l}}[{{i}}]" value="am" checked>
+                                                                    <label class="form-check-label">am</label>
+                                                                </div>
+                                                                <div class="form-check-inline me-0">
+                                                                    <input class="form-check-input me-1" type="radio" formControlName="aStart{{l}}" name="aStart{{l}}[{{i}}]" value="pm">
+                                                                    <label class="form-check-label">pm</label>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="time-to mt-1">
-                                                        <div class="fw-bold mb-1">To</div>
-                                                        <input type="number" min="1" max="12" name="hhEnd{{i}}" #hh2
-                                                               (change)="onTimeChange($event)" formControlName="hhEnd{{l}}"
-                                                               (focus)="hh2.select()"
-                                                               class="form-control form-control-sm time-input"> :
-                                                        <input type="number" min="0" max="59" name="mmEnd{{i}}" #mm2
-                                                               (change)="onTimeChange($event)" formControlName="mmEnd{{l}}"
-                                                               (focus)="mm2.select()"
-                                                               class="form-control form-control-sm time-input">
-                                                        <div class="d-flex justify-content-evenly mt-2">
-                                                            <div class="form-check-inline me-0">
-                                                                <input class="form-check-input me-1" type="radio" formControlName="aEnd{{l}}" name="aEnd{{l}}[{{i}}]" value="am" checked>
-                                                                <label class="form-check-label">am</label>
-                                                            </div>
-                                                            <div class="form-check-inline me-0">
-                                                                <input class="form-check-input me-1" type="radio" formControlName="aEnd{{l}}" name="aEnd{{l}}[{{i}}]" value="pm">
-                                                                <label class="form-check-label">pm</label>
+                                                        <div class="time-to mt-0 mt-md-1" [class]="l === 'L2'? 'l2' : 'l1'">
+                                                            <div class="fw-bold mb-1">To</div>
+                                                            <input type="number" min="1" max="12" name="hhEnd{{i}}" #hh2
+                                                                   (change)="onTimeChange($event)" formControlName="hhEnd{{l}}"
+                                                                   (focus)="hh2.select()"
+                                                                   class="form-control form-control-sm time-input"> :
+                                                            <input type="number" min="0" max="59" name="mmEnd{{i}}" #mm2
+                                                                   (change)="onTimeChange($event)" formControlName="mmEnd{{l}}"
+                                                                   (focus)="mm2.select()"
+                                                                   class="form-control form-control-sm time-input">
+                                                            <div class="d-flex justify-content-evenly mt-2">
+                                                                <div class="form-check-inline me-0">
+                                                                    <input class="form-check-input me-1" type="radio" formControlName="aEnd{{l}}" name="aEnd{{l}}[{{i}}]" value="am" checked>
+                                                                    <label class="form-check-label">am</label>
+                                                                </div>
+                                                                <div class="form-check-inline me-0">
+                                                                    <input class="form-check-input me-1" type="radio" formControlName="aEnd{{l}}" name="aEnd{{l}}[{{i}}]" value="pm">
+                                                                    <label class="form-check-label">pm</label>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </ng-container>
                                             </div>
-                                            <div class="col">
+                                            <div class="col modules" [class.has-l2]="isGrouped(i)">
                                                 <div class="td-body">
-                                                    <div class="fw-bold mb-1">Module</div>
                                                     <ng-container>
-                                                        <div class="module">
+                                                        <div class="module" [class.has-l2]="isGrouped(i)">
+                                                            <div class="fw-bold mb-1">Module</div>
                                                             <ng-container *ngIf="modules">
                                                                 <ng-select formControlName="module"  class="w-100" [items]="modules" bindLabel="name"></ng-select>
                                                             </ng-container>
                                                         </div>
                                                         <ng-container *ngFor="let l of (isGrouped(i)? ['', 'L2']: [''])">
-                                                            <div class="fw-bold mt-1 mb-1" [class.mt-3]="isGrouped(i)">Lecturer</div>
-                                                            <div class="lecturer">
+                                                            <div class="lecturer" [class]="l === 'L2'? 'l2' : 'l1'">
+                                                                <div class="fw-bold mt-1 mb-1" [class.mt-3]="isGrouped(i)">Lecturer</div>
                                                                 <ng-container *ngIf="lecturers">
                                                                     <ng-select formControlName="lecturer{{l}}" class="w-100" [items]="lecturers" bindLabel="name"></ng-select>
                                                                 </ng-container>
                                                             </div>
-                                                            <div class="meeting mt-1">
+                                                            <div class="meeting mt-1" [class]="l === 'L2'? 'l2' : 'l1'">
                                                                 <div class="data row">
                                                                     <div class="col-6 meeting-id">
                                                                         <div class="meeting-heading">Meeting Link</div>

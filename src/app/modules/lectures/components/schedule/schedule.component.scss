@@ -1,10 +1,15 @@
 @import "src/variables";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
 .heading {
     height: 100px;
 }
 .schedule-day {
     height: calc(100% - 100px);
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .date {
     width: 120px;
@@ -74,7 +79,7 @@ table {
         .time-from, .time-to {
             white-space: nowrap;
         }
-        .time-from.has-l2 {
+        .time-from.l2 {
             padding-top: 24px;
         }
     }
@@ -118,18 +123,135 @@ table {
         width: 50px;
         text-align: right;
     }
+    .view {
+        .meeting {
+            width: 300px;
+        }
+    }
 }
 .l {
     color: darkorange;
     font-weight: bold;
 }
-.col-50px {
+.l-label {
     width: 40px;
-    padding-top: 76px;
+    padding-top: 105px;
     .l {
         margin-bottom: 176px;
     }
 }
 .row {
     margin: 0 !important;
+}
+
+@include media-breakpoint-down(md) {
+    table {
+        width: calc(100vw - #{$app-content-padding} * 2) !important;
+        min-width: revert;
+        .slot {
+            width: 20px;
+            padding: 5px;
+        }
+        .modules-col.has-l2 {
+            height: 675px;
+        }
+        .modules {
+            width: calc(100vw - 20px - 75px - #{$app-content-padding} * 2);
+            text-align: center;
+            .module-code, .module-name {
+                display: block;
+            }
+            .meeting {
+                &.ps-x {
+                    margin-left: 0 !important;
+                }
+            }
+        }
+        .view {
+            .time {
+                width: 75px;
+                padding: 5px;
+            }
+            .links {
+                flex: 0 0 auto;
+                width: 100% !important;
+            }
+        }
+        .edit {
+            .l-label {
+                position: absolute;
+                top: 50px;
+                left: -15px;
+            }
+            .time {
+                width: 100%;
+                &.has-l2 {
+                    padding-top: 0;
+                }
+            }
+            .time-container {
+                display: flex;
+                justify-content: space-evenly;
+                width: 100%;
+            }
+            .has-l2 {
+                .time-container {
+                    &.l1, &.l2 {
+                        position: absolute;
+                        left: 5px;
+                        .time-from {
+                            padding-top: 0;
+                        }
+                    }
+                    &.l1 {
+                        top: 150px;
+                    }
+                    &.l2 {
+                        top: 440px;
+                    }
+                }
+                .lecturer {
+                    width: calc(100% - 25px);
+                    &.l1 {
+                        position: absolute;
+                        top: 65px;
+                    }
+                    &.l2 {
+                        position: absolute;
+                        top: 355px;
+                    }
+                }
+                .meeting {
+                    width: calc(100% - 25px);
+                    position: absolute;
+                    &.l1 {
+                        position: absolute;
+                        top: 240px;
+                    }
+                    &.l2 {
+                        position: absolute;
+                        top: 530px;
+                    }
+                }
+            }
+            .modules {
+                padding-top: 20px;
+            }
+            .modules.has-l2 {
+                padding-top: 200px;
+                margin-bottom: 100px;
+                .module {
+                    position: absolute;
+                    top: 0;
+                    width: calc(100% - 25px);
+                }
+            }
+            .l-label {
+                padding-top: 76px;
+                .l {
+                    margin-bottom: 270px;
+                }
+            }
+        }
+    }
 }

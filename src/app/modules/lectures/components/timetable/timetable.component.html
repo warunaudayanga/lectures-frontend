@@ -16,7 +16,7 @@
             <tr>
                 <th class="slot">#</th>
                 <th class="time">Time</th>
-                <th class="module" *ngFor="let day of days">{{day}}</th>
+                <th class="modules" *ngFor="let day of days">{{day}}</th>
             </tr>
             </thead>
             <tbody [class.invisible]="loading">
@@ -26,7 +26,7 @@
                     <div class="time-from">{{getTime(row.slot.startAt)}}</div>
                     <div class="time-to">{{getTime(row.slot.endAt)}}</div>
                 </td>
-                <td *ngFor="let item of row.data | keyvalue:onCompare">
+                <td class="modules" *ngFor="let item of row.data | keyvalue:onCompare">
                     <ng-container *ngIf="item.value">
                         <div class="module">
                             <div class="module-code">{{item.value.module.code}}</div>

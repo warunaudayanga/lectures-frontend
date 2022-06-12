@@ -73,13 +73,13 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
 
     select(selectedItem: MenuItem): void {
-        this.sidenavService.close();
         if (selectedItem.path) this.path = selectedItem.path;
         this.menu.forEach(item => this.status(item));
         if (!selectedItem.for) {
             this.menu.filter(i => i.id !== selectedItem.id).forEach(item => this.close(item));
         }
         if (selectedItem.children) this.toggle(selectedItem);
+        else this.sidenavService.close();
     }
 
     toggle(item: MenuItem): void {

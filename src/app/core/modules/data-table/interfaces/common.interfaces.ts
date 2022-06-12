@@ -9,7 +9,7 @@ export type SubKeys<S> = `${keyof S}` | `${keyof S}.${keyof S}` | `${keyof S}.${
 // @ts-ignore
 export type ObjectKeys<E, S> = `${keyof E}` | `${keyof E}.${SubKeys<S>}` | Keys;
 
-export type CSSLength =`${number}${"px"|"rem"|"em"|"%"}` | "auto";
+export type CSSLength =`${number}${"px"|"vw"|"vh"|"rem"|"em"|"%"}` | "auto";
 
 export type CSSCalculation = `calc(${CSSLength} ${"+" | "-" | "*" | "/"} ${CSSLength})`;
 

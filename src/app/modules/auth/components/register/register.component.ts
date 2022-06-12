@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
     formData!: FormControlData<UserEntity>[]
 
     constructor(
-        private readonly app: AppService,
+        public readonly app: AppService,
         private readonly authService: AuthService,
         private readonly courseService: CourseService,
     ) {}
@@ -33,6 +33,7 @@ export class RegisterComponent implements OnInit {
     }
 
     getCourses(): void {
+        this.app.startLoading();
         this.courseService.getAll()
             .subscribe({
                 next: res => {
@@ -41,8 +42,10 @@ export class RegisterComponent implements OnInit {
                         this.app.load("/");
                     }
                     this.generateRegForm();
+                    this.app.stopLoading();
                 },
                 error: (err: HttpError<AuthError>) => {
+                    this.app.stopLoading();
                     this.app.error(err.error.message);
                     AppService.log(err);
                 },

@@ -1,4 +1,8 @@
 @import "/src/variables";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
 #updateTimeTable {
     height: calc(100vh - #{$app-header} - #{$app-content-padding} * 2);
     width: calc(100vw - #{$app-sidenav} - #{$app-content-padding} * 2);
@@ -59,4 +63,45 @@ table {
         margin-top: 16px;
         margin-bottom: 171px;
     }
+}
+
+@include media-breakpoint-down(lg) {
+    #updateTimeTable {
+        width: calc(100vw - #{$app-content-padding} * 2) !important;
+        table {
+            width: calc(200vw - (20px + 75px + #{$app-content-padding}) * 2) !important;
+        }
+        td, th {
+            background-color: $app-body-color;
+            &.slot, &.time {
+                top: 0;
+            }
+        }
+        .slot {
+            width: 20px;
+            padding: 5px;
+            position: sticky;
+            left: 0;
+            z-index: 100000;
+        }
+        .time {
+            width: 75px;
+            padding: 5px;
+            position: sticky;
+            left: 20px;
+            z-index: 100000;
+        }
+        .day {
+            width: calc(100vw - 20px - 75px - #{$app-content-padding} * 2);
+            padding-right: 25px;
+            &:last-child {
+                padding-left: 35px;
+                padding-right: 0;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+
 }
