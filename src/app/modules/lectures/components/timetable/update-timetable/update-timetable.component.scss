@@ -74,7 +74,7 @@ table {
         td, th {
             background-color: $app-body-color;
             &.slot, &.time {
-                top: 0;
+                top: 60px;
             }
         }
         .slot {

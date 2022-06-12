@@ -1,12 +1,12 @@
 <div id="timetable" class="content">
     <div class="text-center heading mb-0">
         <h1 class="fw-bold">Timetable</h1>
-        <div class="d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <span class="fw-bold me-3">Course</span>
-                <ng-select *ngIf="courses" [searchable]="false" [clearable]="false" disabled
-                           [items]="courses" class="courses" bindLabel="name" [(ngModel)]="selectedCourse"></ng-select>
-            </div>
+        <div class="d-flex align-items-center justify-content-end"><!--justify-content-between-->
+<!--            <div class="d-flex align-items-center">-->
+<!--                <span class="fw-bold me-3">Course</span>-->
+<!--                <ng-select *ngIf="courses" [searchable]="false" [clearable]="false" disabled-->
+<!--                           [items]="courses" class="courses" bindLabel="name" [(ngModel)]="selectedCourse"></ng-select>-->
+<!--            </div>-->
             <button class="btn btn-sm btn-primary update-btn" routerLink="update" [disabled]="!app.can(app.Do.TIMETABLE_UPDATE)">Update</button>
         </div>
     </div>
