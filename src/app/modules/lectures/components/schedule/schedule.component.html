@@ -50,18 +50,18 @@
                                         <span class="module-code">{{slot.module?.code}}</span>
                                         <span class="d-none d-md-inline">-</span>
                                         <span class="module-name">{{slot.module?.name}}</span>
-                                        <span class="now-message ms-3" *ngIf="isNow(slot)"><i class="icofont icofont-notification"></i> Now on live</span>
+                                        <span class="now-message ms-0 ms-md-3" *ngIf="isNow(slot)"><i class="icofont icofont-notification"></i> Now on live</span>
                                     </div>
                                     <div class="row" *ngIf="slot.lecturer || (generated && slot.entry?.lecturer)">
                                         <div class="col ">
                                             <div class="lecturer mb-1"><span class="l" *ngIf="slot.module?.grouped === true">L1 - </span>{{generated? slot.entry?.lecturer?.name : slot.lecturer?.name}}</div>
                                             <div *ngIf="slot.meetingId && slot.passcode" class="meeting" [class.ps-x]="slot.module?.grouped === true || (generated && slot.module?.grouped === true)">
                                                 <div class="data row">
-                                                    <div class="col-6 meeting-id">
+                                                    <div class="col-12 col-md-6 meeting-id">
                                                         <div class="meeting-heading">Meeting ID</div>
                                                         <div>{{slot.meetingId}}</div>
                                                     </div>
-                                                    <div class="col-6 passcode">
+                                                    <div class="col-12 col-md-6 passcode">
                                                         <div class="meeting-heading">Passcode</div>
                                                         <div>{{slot.passcode}}</div>
                                                     </div>
@@ -90,11 +90,11 @@
                                             <div class="lecturer mb-1"><span class="l">L2 - </span>{{generated ? slot.entry?.lecturerL2?.name || '' : slot.lecturerL2?.name}}</div>
                                             <div *ngIf="slot.meetingIdL2 && slot.passcodeL2" class="meeting ps-x">
                                                 <div class="data row">
-                                                    <div class="col-6 meeting-id">
+                                                    <div class="col-12 col-md-6 meeting-id">
                                                         <div class="meeting-heading">Meeting ID</div>
                                                         <div>{{slot.meetingIdL2}}</div>
                                                     </div>
-                                                    <div class="col-6 passcode">
+                                                    <div class="col-12 col-md-6 passcode">
                                                         <div class="meeting-heading">Passcode</div>
                                                         <div>{{slot.passcodeL2}}</div>
                                                     </div>

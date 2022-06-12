@@ -158,7 +158,7 @@ table {
         .modules {
             width: calc(100vw - 20px - 75px - #{$app-content-padding} * 2);
             text-align: center;
-            .module-code, .module-name {
+            .module-code, .module-name, .now-message {
                 display: block;
             }
             .meeting {
@@ -175,6 +175,9 @@ table {
             .links {
                 flex: 0 0 auto;
                 width: 100% !important;
+            }
+            .meeting {
+                width: auto;
             }
         }
         .edit {
