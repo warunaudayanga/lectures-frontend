@@ -10,12 +10,12 @@ import { RoleGuard } from "../auth/guards";
 import { SlotComponent } from "./components/slot/slot.component";
 
 const routes: Routes = [
-    { path: "", redirectTo: "timetable" },
-    { path: "timetable", component: TimetableComponent, canActivate: [RoleGuard], data: {
-        permission: Permission.TIMETABLE_VIEW,
-    } },
+    { path: "", redirectTo: "schedule" },
     { path: "schedule", component: ScheduleComponent, canActivate: [RoleGuard], data: {
         permission: Permission.SCHEDULE_VIEW,
+    } },
+    { path: "timetable", component: TimetableComponent, canActivate: [RoleGuard], data: {
+        permission: Permission.TIMETABLE_VIEW,
     } },
     { path: "timetable/update", component: UpdateTimetableComponent, canActivate: [RoleGuard], data: {
         permission: Permission.TIMETABLE_CREATE,
