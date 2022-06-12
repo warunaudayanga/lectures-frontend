@@ -107,4 +107,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
         }
         return this.app.can(item.permission);
     }
+
+    hide(event: MouseEvent): void {
+        if ((event.target as HTMLDivElement).classList.contains("sidenav-backdrop")) {
+            this.sidenavService.close();
+        }
+    }
 }

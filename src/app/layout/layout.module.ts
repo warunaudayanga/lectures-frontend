@@ -6,6 +6,8 @@ import { NavMenuComponent } from "./components/header/nav-menu/nav-menu.componen
 import { MatMenuModule } from "@angular/material/menu";
 import { FormsModule } from "@angular/forms";
 import { LoaderModule } from "../core/modules/loader";
+import { NotificationsComponent } from "./components/header/notifications/notifications.component";
+import { MatBadgeModule } from "@angular/material/badge";
 
 
 @NgModule({
@@ -14,6 +16,7 @@ import { LoaderModule } from "../core/modules/loader";
         ContentComponent,
         SidenavComponent,
         NavMenuComponent,
+        NotificationsComponent,
     ],
     imports: [
         CommonModule,
@@ -21,6 +24,7 @@ import { LoaderModule } from "../core/modules/loader";
         MatMenuModule,
         FormsModule,
         LoaderModule,
+        MatBadgeModule,
     ],
     exports: [
         HeaderComponent,

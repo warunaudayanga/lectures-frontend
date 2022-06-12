@@ -72,11 +72,11 @@ export class AuthService {
     }
 
     logout(): void {
-        const ignored = this.router.navigateByUrl("/auth");
         this.logged = false;
         this.loggedInListener.next(false);
         this.userListener.next(undefined);
         this.storageService.clear();
+        const ignored = this.router.navigateByUrl("/auth");
     }
 
     // noinspection JSUnusedGlobalSymbols

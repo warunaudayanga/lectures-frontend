@@ -2,18 +2,22 @@
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
-
-#content {
+:host {
     position: fixed;
-    width: 100vw;
-    height: 100vh;
-    padding: $app-content-padding;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
     &.logged {
         top: $app-header;
         left: $app-sidenav;
-        width: calc(100vw - #{$app-sidenav});
-        height: calc(100vh - #{$app-header});
+        width: calc(100% - #{$app-sidenav});
+        height: calc(100% - #{$app-header});
     }
+}
+#content {
+    height: 100%;
+    padding: $app-content-padding;
 }
 ::ng-deep {
     #content {
@@ -21,17 +25,17 @@
             height: $app-content-header;
         }
         .content {
-            height: calc(100vh - #{$app-header} - #{$app-content-padding} * 2);
+            height: 100%;
         }
         .content-header ~ .content {
-            height: calc(100vh - #{$app-header} - #{$app-content-padding} * 2 - #{$app-content-header});
+            height: calc(100% - #{$app-content-header});
         }
     }
 }
 
 @include media-breakpoint-down(lg) {
-    #content.logged {
+    :host.logged {
         left: 0;
-        width: 100vw;
+        width: 100%;
     }
 }

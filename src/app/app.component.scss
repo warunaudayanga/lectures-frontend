@@ -2,8 +2,12 @@
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
 
+:host {
+    display: block;
+    height: 100%;
+}
 #app {
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
 }
 #unsupported {

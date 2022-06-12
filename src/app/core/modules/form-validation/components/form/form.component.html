@@ -3,7 +3,10 @@
         <ng-container class="input-group" *ngFor="let formControl of formData, let f = index">
             <div class="row g-3 align-items-center mb-3">
                 <div class="col-12 col-md-5 col-lg-4">
-                    <label *ngIf="formControl.type !== 'hidden'" [for]="getName(formControl.name)" class="col-form-label" [innerHTML]="getLabel(formControl.name, formControl.label) + (formControl.required? requiredHTML :'')"></label>
+                    <label *ngIf="formControl.type !== 'hidden'" [for]="getName(formControl.name)" class="col-form-label">
+                        <span [innerHTML]="getLabel(formControl.name, formControl.label) + (formControl.required? requiredHTML :'')"></span>
+                        <div class="small text-secondary" [innerHTML]="formControl.info"></div>
+                    </label>
                 </div>
                 <div class="col-12 col-md-7 col-lg-8">
                     <ng-container *ngIf="normalTypes.includes(formControl.type)">

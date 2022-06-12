@@ -17,6 +17,7 @@ export interface FormControlData<Entity, SubEntity = IObject> {
         "password" | "radio" | "range" | "reset" | "search" |
         "submit" | "tel" | "text" | "time" | "url" | "week" | "select";
     label?: string;
+    info?: string;
     styleClass?: string[],
     // @ts-ignore
     name: keyof Entity | keyof SubEntity | `${keyof Entity}.${keyof SubEntity}` | string | number | symbol;

@@ -2,13 +2,18 @@
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
-
+:host {
+    display: block;
+    height: 100%;
+}
 .heading {
     position: relative;
-    height: 100px;
+    h1 {
+        margin-bottom: 10px;
+    }
 }
 .timetable {
-    height: calc(100% - 100px);
+    height: calc(100% - 70px);
     overflow: auto;
 }
 .courses {
@@ -45,7 +50,10 @@ table {
 
         }
     }
-    .lecturer {
+    .modules {
+        .links > div {
+            width: 120px;
+        }
     }
     .l {
         color: darkorange;

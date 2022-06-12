@@ -2,13 +2,16 @@
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
-
+:host {
+    display: block;
+    height: 100%;
+}
 #updateTimeTable {
-    height: calc(100vh - #{$app-header} - #{$app-content-padding} * 2);
+    height: 100%;
     width: calc(100vw - #{$app-sidenav} - #{$app-content-padding} * 2);
 }
 #updateTimetableForm {
-    height: calc(100% - #{$app-content-header});
+    height: 100%;
     position: relative;
     overflow-y: scroll;
 }
@@ -16,7 +19,8 @@ table {
     table-layout: fixed;
     border-collapse: separate;
     width: 100%;
-    height: 1px;
+    height: 100%;
+    margin-bottom: 0;
     tr, td {
         height: 100%;
     }

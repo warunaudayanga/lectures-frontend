@@ -65,9 +65,10 @@ export class RegisterComponent implements OnInit {
             // { type: "password", name: "confirm", required: true },
             { type: "select", name: "course", value: this.courses[0], required: true,
                 options: { values: this.courses, labelKey: "name" } },
-            { type: "number", name: "studentId", label: "Student ID (Last 2 digits)", required: true, validators: [Validators.min(1)] },
-            { type: "text", name: "email", label: "E-mail", validators: [Validators.email] },
-            { type: "text", name: "phone" },
+            { type: "number", name: "studentId", label: "Student ID", required: true,
+                info: "Last 2 digits of your ID", validators: [Validators.min(1)] },
+            { type: "text", name: "email", label: "E-mail", info: "You can leave it blank", validators: [Validators.email] },
+            { type: "text", name: "phone", info: "You can leave it blank" },
         ];
     }
 

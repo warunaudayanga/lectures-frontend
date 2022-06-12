@@ -4,10 +4,12 @@
 @import '~bootstrap/scss/mixins';
 
 .heading {
-    height: 100px;
+    h1 {
+        margin-bottom: 10px;
+    }
 }
 .schedule-day {
-    height: calc(100% - 100px);
+    height: calc(100% - 70px);
     overflow-y: auto;
     overflow-x: hidden;
 }

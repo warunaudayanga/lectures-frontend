@@ -1,0 +1,8 @@
+<div id="notifications">
+    <div class="icon"  [matMenuTriggerFor]="notifications">
+        <i class="icofont icofont-alarm" [matBadge]=""></i>
+    </div>
+    <mat-menu #notifications="matMenu" class="notification-menu" xPosition="before" [hasBackdrop]="true" backdropClass="notification-backdrop">
+        <h3 class="text-center text-secondary mt-3">You don't have any notifications yet.</h3>
+    </mat-menu>
+</div>

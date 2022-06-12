@@ -1,4 +1,4 @@
-<div class="container h-100">
+<div class="container h-100" *ngIf="!app.loading">
     <div class="row h-100">
         <div class="offset-md-3 offset-lg-3 offset-xl-4 col-md-6 col-lg-6 col-xl-4">
             <form [formGroup]="loginForm" class="d-flex flex-column justify-content-center h-100">

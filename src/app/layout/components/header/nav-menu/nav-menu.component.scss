@@ -1,5 +1,8 @@
 @import "src/variables";
 
+#navMenu {
+    position: relative;
+}
 .avatar-container {
     background-size: contain;
     height: 54px;
@@ -29,9 +32,30 @@
     }
 }
 
-// Remove after adding more items to menu
 ::ng-deep {
+    // Remove after adding more items to menu
     .mat-menu-panel {
         min-height: 46px !important;
+    }
+    .profile-menu {
+        position: absolute;
+        overflow: revert !important;
+        top: 7px;
+        right: 5px;
+        min-width: revert !important;
+        &:after {
+            position: absolute;
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid white;
+            right: 10px;
+            bottom: 100%;
+        }
+    }
+    .menu-backdrop {
+        background-color: #0005;
     }
 }

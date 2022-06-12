@@ -1,5 +1,5 @@
 <div id="schedule" class="content">
-    <div class="heading">
+    <div class="content-header">
         <h1 class="fw-bold text-center"><span *ngIf="editing">Update </span>Schedule - {{day}}</h1>
         <div class="mb-3 d-flex align-items-center justify-content-between">
             <div >
@@ -76,10 +76,10 @@
                                                 <a [href]="slot.recordingUrl" class="fw-bold" target="_blank">View this session recording</a>
                                             </div>
                                             <div class="mb-1" *ngIf="slot.entry?.recordingsUrl">
-                                                <a href="#" class="fw-bold" target="_blank">View module recordings</a>
+                                                <a href="#" class="fw-bold" target="_blank">View all recordings</a>
                                             </div>
                                             <div *ngIf="slot.entry?.documentsUrl">
-                                                <a href="#" class="fw-bold" target="_blank">View documents</a>
+                                                <a href="#" class="fw-bold" target="_blank">View all documents</a>
                                             </div>
                                         </div>
                                     </div>
@@ -109,10 +109,10 @@
                                                 <a [href]="slot.recordingUrlL2" class="fw-bold" target="_blank">View this session recording</a>
                                             </div>
                                             <div class="mb-1" *ngIf="slot.entry?.recordingsUrlL2">
-                                                <a href="#" class="fw-bold" target="_blank">View module recordings</a>
+                                                <a href="#" class="fw-bold" target="_blank">View all recordings</a>
                                             </div>
                                             <div *ngIf="slot.entry?.documentsUrlL2">
-                                                <a href="#" class="fw-bold" target="_blank">View documents</a>
+                                                <a href="#" class="fw-bold" target="_blank">View all documents</a>
                                             </div>
                                         </div>
                                     </div>

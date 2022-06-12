@@ -6,9 +6,13 @@
                 <thead>
                 <tr>
                     <th scope="row" colspan="100">
-                        <div class="">
+                        <div class="d-flex justify-content-around justify-content-md-start">
                             <input #search type="search" class="search form-control form-control-sm mt-md-3" id="search" placeholder="Search"
                                    (keyup)="onSearch(search.value)" (search)="onSearch(search.value, $event)">
+                            <button class="btn btn-sm ms-3 d-md-none btn-option {{getColorClass()}}"
+                                    (click)="onOption()"
+                                    [innerHTML]="getInnerHTML()"
+                                    [disabled]="getDisabled()" data-key="NumpadAdd"></button>
                         </div>
                     </th>
                 </tr>
@@ -18,7 +22,7 @@
                         <i class="icofont" [matBadge]="getSortPriority(data.keys[i])"  [ngClass]="getSortIcon(data.keys[i])"></i>
                     </th>
                     <th *ngIf="data.option" scope="col" class="data-table-options" [style]="'width: ' + (data.option?.width ?? 'auto')">
-                        <button class="btn btn-sm btn-option {{getColorClass()}}"
+                        <button class="btn btn-sm d-none d-md-inline-block btn-option {{getColorClass()}}"
                                 (click)="onOption()"
                                 [innerHTML]="getInnerHTML()"
                                 [disabled]="getDisabled()" data-key="NumpadAdd"></button>

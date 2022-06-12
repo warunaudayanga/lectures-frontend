@@ -99,23 +99,6 @@ body {
 }
 
 /* Nav bar */
-.profile-menu {
-    position: relative;
-    overflow: revert !important;
-    top: 10px;
-    min-width: revert !important;
-    &:after {
-        position: absolute;
-        content: '';
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 10px solid white;
-        right: 19px;
-        bottom: 100%;
-    }
-}
 
 /* Dialog */
 .dialog-container {

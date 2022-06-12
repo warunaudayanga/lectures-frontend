@@ -267,14 +267,17 @@ export class ScheduleComponent implements OnInit {
             this.app.error("Both module and lecturer has to be selected!");
             return;
         }
+        this.app.startLoading();
         this.scheduleService.saveSchedule(this.date.format("YYYY-MM-DD") as DateOnly, schedule)
             .subscribe({
                 next: () => {
+                    this.app.stopLoading();
                     this.editing = false;
                     this.getSchedule();
                     this.app.success("Schedule successfully updated.");
                 },
                 error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.app.stopLoading();
                     this.app.error(err.error?.message ?? CommonError.ERROR);
                     AppService.log(err);
                 },

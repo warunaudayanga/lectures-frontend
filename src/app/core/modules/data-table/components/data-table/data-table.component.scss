@@ -25,16 +25,6 @@
     }
     tbody {
         border-top-color: $app-primary-color;
-
-        tr.selected {
-            background-color: $app-active-color;
-            color: $app-active-text-color;
-        }
-        tr:hover {
-            background-color: $app-hover-color;
-            color: $app-hover-text-color;
-            cursor: pointer;
-        }
     }
     th {
         cursor: pointer;
@@ -76,6 +66,21 @@
     background-color: transparent !important;
     top: calc(#{$app-table-row-height} * 2) !important;
     height: calc(100% - #{$app-table-row-height} * 2);
+}
+@include media-breakpoint-up(md) {
+    .data-table {
+        tbody {
+            tr.selected {
+                background-color: $app-active-color;
+                color: $app-active-text-color;
+            }
+            tr:hover {
+                background-color: $app-hover-color;
+                color: $app-hover-text-color;
+                cursor: pointer;
+            }
+        }
+    }
 }
 @include media-breakpoint-down(md) {
     table {
