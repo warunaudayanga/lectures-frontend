@@ -2,10 +2,10 @@
     <form autocomplete="off" #form *ngIf="formData && init() && formGroup" (ngSubmit)="submitForm()" [formGroup]="formGroup" class="pt-3">
         <ng-container class="input-group" *ngFor="let formControl of formData, let f = index">
             <div class="row g-3 align-items-center mb-3">
-                <div [class]="app.lg? 'col-4': 'col-12'">
+                <div class="col-12 col-md-5 col-lg-4">
                     <label *ngIf="formControl.type !== 'hidden'" [for]="getName(formControl.name)" class="col-form-label" [innerHTML]="getLabel(formControl.name, formControl.label) + (formControl.required? requiredHTML :'')"></label>
                 </div>
-                <div [class]="app.lg? 'col-4': 'col-12 mt-0'">
+                <div class="col-12 col-md-7 col-lg-8">
                     <ng-container *ngIf="normalTypes.includes(formControl.type)">
                         <input autocomplete="new-password" class="form-control" [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"
                                [name]="formControl.name" [type]="formControl.type" [id]="getName(formControl.name)"
