@@ -11,11 +11,12 @@ import { ErrorResponseInterceptor, ResponseInterceptor } from "./core/intercepto
 import { HomeComponent } from "./modules/lectures/components";
 import { ToastrModule } from "ngx-toastr";
 import { AppCommonModule } from "./common";
-import { MAT_DATE_FORMATS, MatNativeDateModule } from "@angular/material/core";
+import { DateAdapter, MAT_DATE_FORMATS, MatNativeDateModule } from "@angular/material/core";
 import { MatInputModule } from "@angular/material/input";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { DATE_FORMAT_FOR_MAT } from "./core/data";
+import { AppDateAdapter } from "./core/adapters/date.adapter";
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import { DATE_FORMAT_FOR_MAT } from "./core/data";
         LayoutModule,
     ],
     providers: [
+        { provide: DateAdapter, useClass: AppDateAdapter },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ResponseInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorResponseInterceptor, multi: true },

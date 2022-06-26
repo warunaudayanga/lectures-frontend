@@ -22,6 +22,7 @@
         top: 7px;
         right: -5px;
         min-width: revert !important;
+        max-width: 350px !important;
         &:after {
             position: absolute;
             content: '';

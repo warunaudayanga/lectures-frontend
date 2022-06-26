@@ -21,10 +21,16 @@
 }
 ::ng-deep {
     #content {
+        & > * > *:not(.content) {
+            height: 100%;
+        }
         .content-header {
             height: $app-content-header;
         }
         .content {
+            height: 100%;
+        }
+        .body {
             height: 100%;
         }
         .content-header ~ .content {

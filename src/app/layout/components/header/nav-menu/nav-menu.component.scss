@@ -33,9 +33,8 @@
 }
 
 ::ng-deep {
-    // Remove after adding more items to menu
     .mat-menu-panel {
-        min-height: 46px !important;
+        min-height: 46px !important; // Remove after adding more items to menu
     }
     .profile-menu {
         position: absolute;

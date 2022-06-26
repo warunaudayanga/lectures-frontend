@@ -112,9 +112,9 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
 
     protected afterGetAll(response: IPaginatedResponse<Entity>): void {};
 
-    protected generateFormDialog(formData: FormControlData<Entity, any>[], update?: boolean): EventEmitter<PromptResponse> {
+    protected generateFormDialog(formData: FormControlData<Entity, any>[], update?: boolean, title?: string): EventEmitter<PromptResponse> {
         const options: PromptOptions<Entity, SubEntity> = {
-            title: `${update ? "Update" : "New"} ${toFirstCase(this.options.name)}`,
+            title: title ?? `${update ? "Update" : "New"} ${toFirstCase(this.options.name)}`,
             formData,
             icon: `icofont ${update ? "icofont-ui-edit" : "icofont-ui-add"}`,
             colorClass: "app-primary",

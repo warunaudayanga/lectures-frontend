@@ -11,7 +11,7 @@
                             <i class="icofont icofont-ui-calendar"></i>
                         </button>
                     </div>
-                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-datepicker #picker [dateClass]="markDays"></mat-datepicker>
                 </div>
                 <button class="btn btn-sm btn-primary ms-2" (click)="prev()" [disabled]="editing"><i class="icofont icofont-arrow-left"></i></button>
                 <button class="btn btn-sm btn-primary ms-2" (click)="next()" [disabled]="editing"><i class="icofont icofont-arrow-right"></i></button>
@@ -46,7 +46,8 @@
                             </td>
                             <td class="modules">
                                 <ng-container>
-                                    <div class="module fw-bold mb-1" [class.mb-3]="slot.module?.grouped === true || (generated && slot.module?.grouped === true)">
+                                    <div class="module fw-bold mb-1"
+                                         [class.mb-3]="(slot.module?.grouped === true || (generated && slot.module?.grouped === true)) && (slot.lecturer || (generated && slot.entry?.lecturer))">
                                         <span class="module-code">{{slot.module?.code}}</span>
                                         <span class="d-none d-md-inline">-</span>
                                         <span class="module-name">{{slot.module?.name}}</span>
@@ -69,21 +70,21 @@
                                             </div>
                                         </div>
                                         <div class="links">
-                                            <div class="mb-1 meeting-url" *ngIf="slot.meetingUrl">
+                                            <div class="meeting-url unique-link mb-1" *ngIf="slot.meetingUrl && isToday(slot)">
                                                 <a [href]="slot.meetingUrl" class="fw-bold" target="_blank">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
                                             </div>
-                                            <div class="mb-1" *ngIf="slot.recordingUrl">
+                                            <div class="unique-link mb-1" *ngIf="slot.recordingUrl">
                                                 <a [href]="slot.recordingUrl" class="fw-bold" target="_blank">View this session recording</a>
                                             </div>
-                                            <div class="mb-1" *ngIf="slot.entry?.recordingsUrl">
+                                            <div class="common-link mb-1" *ngIf="slot.entry?.recordingsUrl">
                                                 <a href="#" class="fw-bold" target="_blank">View all recordings</a>
                                             </div>
-                                            <div *ngIf="slot.entry?.documentsUrl">
+                                            <div class="common-link" *ngIf="slot.entry?.documentsUrl">
                                                 <a href="#" class="fw-bold" target="_blank">View all documents</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row pt-3"
+                                    <div class="row pt-3" [class.pt-3]="slot.lecturer || (generated && slot.entry?.lecturer)"
                                          *ngIf="slot.module?.grouped === true && (slot.lecturerL2 || (generated && slot.entry?.lecturerL2))"
                                          [class.d-none]="slot.startAtL2 && (slot.startAt && slot.startAt !== slot.startAtL2)">
                                         <div class="col">
@@ -102,16 +103,16 @@
                                             </div>
                                         </div>
                                         <div class="links">
-                                            <div class="mb-1 meeting-url" *ngIf="slot.meetingUrlL2">
+                                            <div class="meeting-url unique-link mb-1" *ngIf="slot.meetingUrlL2 && isToday(slot)">
                                                 <a [href]="slot.meetingUrlL2" class="fw-bold" target="_blank">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
                                             </div>
-                                            <div class="mb-1" *ngIf="slot.recordingUrlL2">
+                                            <div class="unique-link mb-1" *ngIf="slot.recordingUrlL2">
                                                 <a [href]="slot.recordingUrlL2" class="fw-bold" target="_blank">View this session recording</a>
                                             </div>
-                                            <div class="mb-1" *ngIf="slot.entry?.recordingsUrlL2">
+                                            <div class="common-link mb-1" *ngIf="slot.entry?.recordingsUrlL2">
                                                 <a href="#" class="fw-bold" target="_blank">View all recordings</a>
                                             </div>
-                                            <div *ngIf="slot.entry?.documentsUrlL2">
+                                            <div class="common-link" *ngIf="slot.entry?.documentsUrlL2">
                                                 <a href="#" class="fw-bold" target="_blank">View all documents</a>
                                             </div>
                                         </div>

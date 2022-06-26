@@ -2,9 +2,9 @@
     <div class="row align-items-center h-100">
         <div *ngIf="!app.loading" class="offset-md-2 offset-lg-2 offset-xl-3 col-md-8 col-lg-8 col-xl-6">
             <h1 class="text-center">Register</h1>
-            <wx-form #form [formData]="formData" (onSubmit)="register($event)" size=""></wx-form>
-            <button type="button" class="btn btn-lg btn-primary d-block mt-3 mx-auto" (click)="submit()">Register</button>
-            <button type="button" class="btn btn-lg btn-link d-block mt-3 mx-auto" routerLink="/auth/login">Login</button>
+            <wx-form #form [formData]="formData" (onSubmit)="register($event)" [size]="app.mdDown ? 'small' : ''"></wx-form>
+            <button type="button" class="btn btn-lg btn-primary d-block mt-3 mx-auto" (click)="form.submit()">Register</button>
+            <button type="button" class="btn btn-md-lg btn-link d-block mt-3 mx-auto" [class.btn-sm]="app.mdDown" routerLink="/auth/login">Login</button>
         </div>
     </div>
 </div>

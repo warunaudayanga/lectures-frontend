@@ -7,7 +7,7 @@ import { NgSelectComponent } from "@ng-select/ng-select";
 import { FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { DOCUMENT } from "@angular/common";
 import { IObject } from "../../../dialog/interfaces";
-import { AppForm, FormControlData, FormControlDataOptions } from "../../interfaces";
+import { AppForm, FormControlData, FormControlDataOptions, FormGroupData } from "../../interfaces";
 import { BaseEntity } from "../../../../entity";
 import { AppService } from "../../../../../app.service";
 
@@ -27,12 +27,14 @@ export class FormComponent implements AfterViewInit, AppForm {
 
     @Input() update: boolean = false;
 
-    @Input() formData?: FormControlData<any, any>[];
+    @Input() formData?: FormGroupData<any, any> | FormControlData<any, any>[];
 
     @Input() size: "small" | "large" | "" = "";
 
     // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onSubmit: EventEmitter<FormGroup> = new EventEmitter();
+
+    public formControlData?: FormControlData<any, any>[];
 
     public formGroup?: FormGroup;
 
@@ -46,13 +48,14 @@ export class FormComponent implements AfterViewInit, AppForm {
         if (!this.initialized) {
             if (this.formData) {
                 const groupData: { [key: string]: FormControl } = {};
-                this.formData.forEach(input => {
+                this.formControlData = Array.isArray(this.formData) ? this.formData : this.formData.formControlData;
+                this.formControlData.forEach(input => {
                     let validators: ValidatorFn[] = [];
                     if (input.validators?.length) validators = input.validators;
                     if (input.required) validators.push(Validators.required);
                     groupData[this.getName(input.name)] = new FormControl(input.value ?? "", validators);
                 });
-                this.formGroup = new FormGroup(groupData);
+                this.formGroup = new FormGroup(groupData, (this.formData as FormGroupData<any, any>).validatorOrOpts ?? undefined);
                 this.initialized = true;
             }
         }

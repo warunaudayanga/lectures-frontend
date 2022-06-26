@@ -44,9 +44,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
             });
         this.routerSubscription = this.router.events.subscribe({
             next: event => {
-                if (!this.path && event instanceof NavigationEnd) {
+                if (event instanceof NavigationEnd) {
                     this.path = event.url;
                     const item = this.menu.find(i => Boolean(i.children?.find(i => i.path === this.path)));
+                    this.menu.forEach(item => (item.opened = false));
                     if (item) item.opened = true;
                 }
             },

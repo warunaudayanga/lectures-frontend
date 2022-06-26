@@ -1,4 +1,4 @@
-import { ValidatorFn } from "@angular/forms";
+import { AbstractControlOptions, ValidatorFn } from "@angular/forms";
 import { IObject } from "./common.interfaces";
 
 export interface FormControlDataOptions<SubEntity> {
@@ -26,5 +26,12 @@ export interface FormControlData<Entity, SubEntity = IObject> {
     required?: boolean;
     readonly?: boolean;
     unchanged?: boolean;
+    // @ts-ignore
+    matchesWith?: keyof Entity | keyof SubEntity | `${keyof Entity}.${keyof SubEntity}`
     validators?: ValidatorFn[]
+}
+
+export interface FormGroupData<Entity, SubEntity = IObject> {
+    formControlData: FormControlData<Entity, SubEntity>[],
+    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
 }
