@@ -87,7 +87,9 @@ export class AuthService {
                 serviceWorkerParam: { scope: "/push/onesignal/" },
                 serviceWorkerPath: "push/onesignal/OneSignalSDKWorker.js",
                 serviceWorkerUpdaterPath: "push/onesignal/OneSignalSDKUpdaterWorker.js",
-            }).then();
+            }).then(() => {
+                this.oneSignal.showNativePrompt().then();
+            });
         }
     }
 

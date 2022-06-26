@@ -2,8 +2,8 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const host = "http://localhost:3000";
-// const host = "https://api.uovt.tk";
+// const host = "http://localhost:3000";
+const host = "https://uovt.tk";
 
 export const environment = {
     production: true, // false
@@ -11,6 +11,7 @@ export const environment = {
     apiUrl: `${host}/api`,
     socketUrl: `${host}/socket`,
     onesignalAppId: "d9811f53-6402-4128-91f1-f5631207d2f9",
+    // onesignalAppId: "4ccf795a-1448-45db-9c30-27b3ddd057be", // Mobile
     inputs: {
         max: 50,
         min: 3,
