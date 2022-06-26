@@ -9,6 +9,7 @@ export const environment = {
     host,
     apiUrl: `${host}/api`,
     socketUrl: `${host}/socket`,
+    onesignalAppId: "a6b799db-1421-4b8b-a5d6-13a0a2db87f8",
     inputs: {
         max: 50,
         min: 3,
