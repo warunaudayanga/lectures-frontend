@@ -81,7 +81,7 @@ export class AuthService {
         if (!this.notificationInit) {
             this.notificationInit = true;
             this.oneSignal.init({
-                appId: "d9811f53-6402-4128-91f1-f5631207d2f9",
+                appId: environment.onesignalAppId,
                 allowLocalhostAsSecureOrigin: true,
                 autoRegister: true,
                 serviceWorkerParam: { scope: "/push/onesignal/" },
