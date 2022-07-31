@@ -44,9 +44,9 @@ export class ScheduleComponent implements OnInit {
 
     formGroup?: FormGroup;
 
-    lectureDates: string[] = [];
+    lectureDates?: string[];
 
-    markDays: MatCalendarCellClassFunction<Moment>;
+    markDays!: MatCalendarCellClassFunction<Moment>;
 
     constructor(
         public readonly app: AppService,
@@ -150,14 +150,16 @@ export class ScheduleComponent implements OnInit {
         this.app.startLoading();
         Promise.all([
             firstValueFrom(this.scheduleService.getScheduleByDate(this.date.format("YYYY-MM-DD"))),
+            firstValueFrom(this.scheduleService.getLectureDates()),
             firstValueFrom(this.slotService.getAllSlots()),
             firstValueFrom(this.moduleService.getAll()),
             firstValueFrom(this.lecturerService.getAll()),
         ]).then(responses => {
             this.loading = false;
             this.app.stopLoading();
-            const [scheduleRes, slots, modules, lecturers] = responses;
+            const [scheduleRes, lectureDates, slots, modules, lecturers] = responses;
             this.schedule = scheduleRes.schedule;
+            this.lectureDates = lectureDates;
             this.slots = slots;
             this.modules = modules.data;
             this.lecturers = lecturers.data;

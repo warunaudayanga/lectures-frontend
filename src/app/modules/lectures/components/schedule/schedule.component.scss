@@ -5,14 +5,18 @@
 
 ::ng-deep {
     .lecture-dates {
-        .mat-calendar-body-cell-content {
-            background-color: red;
+        .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
+            background-color: green;
             color: white;
             border-radius: 50%;
             width: 30px;
             height: 30px;
             top: 5px;
             left: 5px;
+        }
+        .mat-calendar-body-today {
+            border-color: red !important;
+            box-shadow: inset 0 0 0 1px #fff;
         }
     }
 }
