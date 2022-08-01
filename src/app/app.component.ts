@@ -2,6 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { AuthService } from "./modules/auth/services";
 import { Subscription } from "rxjs";
 import { ShortcutService } from "./core/services";
+import { AppService } from "./app.service";
 
 @Component({
     selector: "app-root",
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
     loggedInSubscription!: Subscription;
 
     constructor(
+        private readonly app: AppService,
         private readonly authService: AuthService,
         private readonly shortcutService: ShortcutService,
     ) {}

@@ -7,18 +7,23 @@ import {
     PromptResponse,
     AlertOptions,
     ViewOptions,
-    IObject,
+    IObject, CSSMeasurement,
 } from "./interfaces";
 import { DialogLevel } from "./enums";
 import { Validators } from "@angular/forms";
 import { AlertDialogComponent, ViewDialogComponent, PromptDialogComponent } from "./components";
 import { BaseEntity } from "../../entity";
 import { FormControlData } from "../form-validation/interfaces";
+import { Breakpoint } from "../../enums";
 
 @Injectable({
     providedIn: "root",
 })
 export class DialogService {
+
+    public maxWidth?: CSSMeasurement
+
+    public initialBreakpoint?: Breakpoint
 
     private alertWidth = "450px";
 
@@ -41,6 +46,7 @@ export class DialogService {
             width: options.width ?? this.alertWidth,
             data: options,
             panelClass: [this.alertClass, options.level ?? "primary"],
+            maxWidth: this.maxWidth,
         });
         return dialogRef.componentInstance.emitter;
     }
@@ -51,6 +57,7 @@ export class DialogService {
             disableClose: true,
             data: options,
             panelClass: [this.alertClass, "primary"],
+            maxWidth: this.maxWidth,
         });
         return dialogRef.componentInstance.emitter as EventEmitter<PromptResponse>;
     }

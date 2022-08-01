@@ -2,11 +2,11 @@ import { Func } from "../modules/data-table/interfaces";
 import { is, Is } from "../utils";
 
 export const defaultBadge = (str: string, colorClass?: string): string => {
-    return `<div class="chip ${colorClass}">${str}</div>`;
+    return `<div><div class="chip ${colorClass}">${str}</div></div>`;
 };
 
 export const defaultTag = (str: string, colorClass?: string): string => {
-    return `<div class="tag ${colorClass}">${str}</div>`;
+    return `<div><div class="tag ${colorClass}">${str}</div></div>`;
 };
 
 export const badge = (...args: Is[]): Func => {

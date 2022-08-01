@@ -40,6 +40,9 @@ export class FormDirective {
                             this.app.toast.error(`${toFirstCase(label)} cannot exceed ${errors["maxlength"].requiredLength} characters!`);
                         } else if (errors["email"]) {
                             this.app.toast.error(`'${value}' is not a valid email address!`);
+                        } else if (errors["pattern"]) {
+                            const matchWith = controlElement.getAttribute("data-match") || "";
+                            this.app.toast.error(`${toFirstCase(label)} does not match ${matchWith ? "with " : ""}${matchWith}!`);
                         }
                     }
                 }

@@ -18,12 +18,12 @@ export class Service<Entity extends BaseEntity & IObject> {
         this.apiUrl = environment.apiUrl + apiUrl;
     }
 
-    create<T extends Partial<Entity>>(obj: T): Observable<Entity> {
-        return this.http.post<Entity>(`${this.apiUrl}`, obj );
+    create<T extends Partial<Entity>>(dto: T): Observable<Entity> {
+        return this.http.post<Entity>(`${this.apiUrl}`, dto );
     }
 
-    update<T extends Partial<Entity>>(id: number, obj: T): Observable<IStatusResponse> {
-        return this.http.patch<IStatusResponse>(`${this.apiUrl}/${id}`, obj );
+    update<T extends Partial<Entity>>(id: number, dto: T): Observable<IStatusResponse> {
+        return this.http.patch<IStatusResponse>(`${this.apiUrl}/${id}`, dto );
     }
 
     activate(id: number): Observable<IStatusResponse> {

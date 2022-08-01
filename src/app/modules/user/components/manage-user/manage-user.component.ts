@@ -169,7 +169,7 @@ export class ManageUserComponent extends EntityComponent<UserEntity> {
     }
 
     changeRole(user: UserEntity): void {
-        this.generateFormDialog(this.roleFormData(user), true)
+        this.generateFormDialog(this.roleFormData(user), true, "Change User Role")
             .subscribe((response: PromptResponse) => {
                 if (response.form.valid) {
                     this.app.startLoading();

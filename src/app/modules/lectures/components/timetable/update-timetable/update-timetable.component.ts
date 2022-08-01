@@ -7,6 +7,7 @@ import { Day } from "../../../enums";
 import { HttpError } from "../../../../../core/interfaces";
 import { EnumValue } from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
 import { CommonError } from "../../../../../core/enums";
+import { firstValueFrom } from "rxjs";
 
 @Component({
     selector: "app-update-timetable",
@@ -35,83 +36,47 @@ export class UpdateTimetableComponent implements OnInit {
         private readonly timetableService: TimetableService,
     ) { }
 
-    async ngOnInit(): Promise<void> {
-        await this.getSlots();
-        await this.getTimetableData();
-        this.getModules();
-        this.getLecturers();
-    }
+    ngOnInit(): void {
+        this.app.startLoading();
+        Promise.all([
+            firstValueFrom(this.slotService.getAllSlots()),
+            firstValueFrom(this.timetableService.getTimetableData()),
+            firstValueFrom(this.moduleService.getAll()),
+            firstValueFrom(this.lecturerService.getAll()),
+        ]).then(responses => {
+            this.app.stopLoading();
+            const [slots, timeTableData, moduleRes, lecturesRes] = responses;
 
-    getSlots(): void {
-        this.slotService.getAllSlots()
-            .subscribe({
-                next: slots => {
-                    this.slots = slots;
-                },
-                error: (err: HttpError<EnumValue & CommonError>) => {
-                    this.app.error(err.error?.message ?? CommonError.ERROR);
-                    AppService.log(err);
-                },
-            });
-    }
+            this.slots = slots;
+            this.modules = moduleRes.data;
+            this.lecturers = lecturesRes.data;
 
-    getModules(): void {
-        this.moduleService.getAll()
-            .subscribe({
-                next: res => {
-                    this.modules = res.data;
-                },
-                error: (err: HttpError<EnumValue & CommonError>) => {
-                    this.app.error(err.error?.message ?? CommonError.ERROR);
-                    AppService.log(err);
-                },
-            });
-    }
-
-    getLecturers(): void {
-        this.lecturerService.getAll()
-            .subscribe({
-                next: res => {
-                    this.lecturers = res.data;
-                },
-                error: (err: HttpError<EnumValue & CommonError>) => {
-                    this.app.error(err.error?.message ?? CommonError.ERROR);
-                    AppService.log(err);
-                },
-            });
-    }
-
-    getTimetableData(): void {
-        this.timetableService.getTimetableData()
-            .subscribe({
-                next: timeTableData => {
-                    let days = Object.keys(timeTableData) as Day[];
-                    if (!days.includes(Day.SATURDAY)) {
-                        timeTableData.SATURDAY = [];
+            let days = Object.keys(timeTableData) as Day[];
+            if (!days.includes(Day.SATURDAY)) {
+                timeTableData.SATURDAY = [];
+            }
+            if (!days.includes(Day.SUNDAY)) {
+                timeTableData.SUNDAY = [];
+            }
+            this.days = Object.keys(timeTableData) as Day[];
+            this.timeTableData = timeTableData;
+            this.slots?.forEach(slot => {
+                const row: TimeTableRow = { slot, data: {} };
+                this.days?.forEach(day => {
+                    const entry = this.timeTableData?.[day]?.find(e => e.slot.number === slot.number);
+                    if (entry) {
+                        row.data[day] = entry as TimetableEntryEntity;
+                    } else {
+                        row.data[day] = { slot, day } as TimetableEntryEntity;
                     }
-                    if (!days.includes(Day.SUNDAY)) {
-                        timeTableData.SUNDAY = [];
-                    }
-                    this.days = Object.keys(timeTableData) as Day[];
-                    this.timeTableData = timeTableData;
-                    this.slots?.forEach(slot => {
-                        const row: TimeTableRow = { slot, data: {} };
-                        this.days?.forEach(day => {
-                            const entry = this.timeTableData?.[day]?.find(e => e.slot.number === slot.number);
-                            if (entry) {
-                                row.data[day] = entry as TimetableEntryEntity;
-                            } else {
-                                row.data[day] = { slot, day } as TimetableEntryEntity;
-                            }
-                        });
-                        this.tableRows.push(row);
-                    });
-                },
-                error: (err: HttpError<EnumValue & CommonError>) => {
-                    this.app.error(err.error?.message ?? CommonError.ERROR);
-                    AppService.log(err);
-                },
+                });
+                this.tableRows.push(row);
             });
+        }).catch((err: HttpError<EnumValue & CommonError>) => {
+            this.app.stopLoading();
+            this.app.error(err.error?.message ?? CommonError.ERROR);
+            AppService.log(err);
+        });
     }
 
     getTime(time: string): string {
@@ -158,13 +123,16 @@ export class UpdateTimetableComponent implements OnInit {
             this.app.error("Both module and lecturer has to be selected!");
             return;
         }
+        this.app.startLoading();
         this.timetableService.saveTimetable(payload)
             .subscribe({
                 next: () => {
+                    this.app.stopLoading();
                     this.app.success("Timetable successfully saved.");
                     this.app.load("/timetable");
                 },
                 error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.app.stopLoading();
                     this.app.error(err.error?.message ?? CommonError.ERROR);
                     AppService.log(err);
                 },

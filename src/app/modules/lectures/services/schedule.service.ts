@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, take } from "rxjs";
+import { map, Observable, take } from "rxjs";
 import { environment } from "../../../../environments/environment";
 import { ScheduleEntryEntity } from "../interfaces/schedule.interface";
 import { ScheduleEntryData } from "../interfaces/schedule-entry-data.interface";
 import { DateOnly } from "../../../core/interfaces";
+import moment from "moment";
 
 export const SCHEDULE_URL = `${environment.apiUrl}/schedule`;
 
@@ -14,6 +15,13 @@ export const SCHEDULE_URL = `${environment.apiUrl}/schedule`;
 export class ScheduleService {
 
     constructor(private readonly http: HttpClient) {}
+
+    getLectureDates(): Observable<string[]> {
+        return this.http.get<string[]>(`${SCHEDULE_URL}/lecture-dates`)
+            .pipe(take(1), map((res) => {
+                return res.map(date => moment(date).format("YYYY-MM-DD"));
+            }));
+    }
 
     getScheduleByDate(date: string): Observable<{ schedule: ScheduleEntryEntity[]; generated: boolean }> {
         return this.http.get<{ schedule: ScheduleEntryEntity[]; generated: boolean }>(`${SCHEDULE_URL}/by-date/${date}`)

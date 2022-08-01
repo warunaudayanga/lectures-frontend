@@ -1,0 +1,56 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+#notifications {
+    position: relative;
+}
+.icon {
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+::ng-deep {
+    .notification-menu {
+        position: absolute;
+        overflow: revert !important;
+        top: 7px;
+        right: -5px;
+        min-width: revert !important;
+        max-width: 350px !important;
+        &:after {
+            position: absolute;
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid white;
+            right: 10px;
+            bottom: 100%;
+        }
+    }
+    .notification-backdrop {
+        background-color: #0005;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    ::ng-deep {
+        .notification-menu {
+            width: calc(100vw - 30px);
+            position: fixed;
+            max-width: revert !important;
+            right: 15px;
+            top: 55px;
+            &:after {
+                right: 70px;
+            }
+        }
+    }
+}

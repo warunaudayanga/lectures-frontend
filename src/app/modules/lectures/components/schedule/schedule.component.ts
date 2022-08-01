@@ -13,6 +13,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, NgForm, Validators 
 import { firstValueFrom } from "rxjs";
 import { ScheduleDto } from "../../interfaces/schedule-dto";
 import { hhmmaToHHmmss } from "../../../../core/utils";
+import { MatCalendarCellClassFunction, MatCalendarCellCssClasses } from "@angular/material/datepicker/calendar-body";
 
 @Component({
     selector: "app-schedule",
@@ -43,6 +44,10 @@ export class ScheduleComponent implements OnInit {
 
     formGroup?: FormGroup;
 
+    lectureDates?: string[];
+
+    markDays!: MatCalendarCellClassFunction<Moment>;
+
     constructor(
         public readonly app: AppService,
         private readonly fb: FormBuilder,
@@ -53,6 +58,19 @@ export class ScheduleComponent implements OnInit {
         private readonly lecturerService: LecturerService,
     ) {
         this.getSchedule();
+        this.lectureDates = [
+            "2022-06-14",
+            "2022-06-15",
+            "2022-06-18",
+            "2022-06-20",
+            "2022-06-21",
+        ];
+        this.markDays = (date: Moment, view: "month" | "year" | "multi-year"): MatCalendarCellCssClasses => {
+            if (view === "month") {
+                return this.lectureDates?.includes(date.format("YYYY-MM-DD")) ? "lecture-dates" : "";
+            }
+            return "";
+        };
     }
 
     ngOnInit(): void {
@@ -132,14 +150,16 @@ export class ScheduleComponent implements OnInit {
         this.app.startLoading();
         Promise.all([
             firstValueFrom(this.scheduleService.getScheduleByDate(this.date.format("YYYY-MM-DD"))),
+            firstValueFrom(this.scheduleService.getLectureDates()),
             firstValueFrom(this.slotService.getAllSlots()),
             firstValueFrom(this.moduleService.getAll()),
             firstValueFrom(this.lecturerService.getAll()),
         ]).then(responses => {
             this.loading = false;
             this.app.stopLoading();
-            const [scheduleRes, slots, modules, lecturers] = responses;
+            const [scheduleRes, lectureDates, slots, modules, lecturers] = responses;
             this.schedule = scheduleRes.schedule;
+            this.lectureDates = lectureDates;
             this.slots = slots;
             this.modules = modules.data;
             this.lecturers = lecturers.data;
@@ -267,14 +287,17 @@ export class ScheduleComponent implements OnInit {
             this.app.error("Both module and lecturer has to be selected!");
             return;
         }
+        this.app.startLoading();
         this.scheduleService.saveSchedule(this.date.format("YYYY-MM-DD") as DateOnly, schedule)
             .subscribe({
                 next: () => {
+                    this.app.stopLoading();
                     this.editing = false;
                     this.getSchedule();
                     this.app.success("Schedule successfully updated.");
                 },
                 error: (err: HttpError<EnumValue & CommonError>) => {
+                    this.app.stopLoading();
                     this.app.error(err.error?.message ?? CommonError.ERROR);
                     AppService.log(err);
                 },
@@ -286,5 +309,9 @@ export class ScheduleComponent implements OnInit {
         const end = new Date(`${moment(slot.date).format("YYYY-MM-DD")} ${slot.endAt ?? slot.endAtL2}`);
         const now = new Date(moment().format("YYYY-MM-DD HH:mm"));
         return start < now && now < end;
+    }
+
+    isToday(slot: ScheduleEntryEntity): boolean {
+        return moment(slot.date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");
     }
 }

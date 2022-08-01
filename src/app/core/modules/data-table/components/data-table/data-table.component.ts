@@ -21,6 +21,7 @@ import { environment } from "../../../../../../environments/environment";
 import { ShortcutService } from "../../../../services";
 import { SortDir, SortIcon } from "../../enums";
 import { SortFields } from "../../interfaces/sort-fields.interface";
+import { AppService } from "../../../../../app.service";
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -82,7 +83,11 @@ export class DataTableComponent implements AfterViewInit, AfterContentChecked, O
 
     sortFields: SortFields[] = [];
 
-    constructor(@Inject(DOCUMENT) private readonly document: Document, private readonly shortcutService: ShortcutService) {
+    constructor(
+        @Inject(DOCUMENT) private readonly document: Document,
+        private readonly shortcutService: ShortcutService,
+        public readonly app: AppService,
+    ) {
         this.onKey = shortcutService.onKey()
             .subscribe(shortcut => {
                 const selected = this.tableContainer.nativeElement.querySelector("tr.selected");

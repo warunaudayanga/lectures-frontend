@@ -15,6 +15,14 @@ export class UserService extends Service<UserEntity> {
         super(http, "/user");
     }
 
+    getMe(): Observable<UserEntity> {
+        return this.http.get<UserEntity>(`${this.apiUrl}/me`);
+    }
+
+    updateMe(id: number, updateUserDto: Partial<UserEntity>): Observable<IStatusResponse> {
+        return this.http.patch<IStatusResponse>(`${this.apiUrl}/${id}`, updateUserDto );
+    }
+
     changeRole<T extends Partial<UserEntity>>(id: number, role: RoleEntity): Observable<IStatusResponse> {
         return this.http.patch<IStatusResponse>(`${this.apiUrl}/${id}/role`, { role });
     }

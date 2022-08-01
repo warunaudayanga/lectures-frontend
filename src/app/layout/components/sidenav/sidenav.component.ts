@@ -44,9 +44,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
             });
         this.routerSubscription = this.router.events.subscribe({
             next: event => {
-                if (!this.path && event instanceof NavigationEnd) {
+                if (event instanceof NavigationEnd) {
                     this.path = event.url;
                     const item = this.menu.find(i => Boolean(i.children?.find(i => i.path === this.path)));
+                    this.menu.forEach(item => (item.opened = false));
                     if (item) item.opened = true;
                 }
             },
@@ -73,13 +74,13 @@ export class SidenavComponent implements OnInit, OnDestroy {
     }
 
     select(selectedItem: MenuItem): void {
-        this.sidenavService.close();
         if (selectedItem.path) this.path = selectedItem.path;
         this.menu.forEach(item => this.status(item));
         if (!selectedItem.for) {
             this.menu.filter(i => i.id !== selectedItem.id).forEach(item => this.close(item));
         }
         if (selectedItem.children) this.toggle(selectedItem);
+        else this.sidenavService.close();
     }
 
     toggle(item: MenuItem): void {
@@ -106,5 +107,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
             return can;
         }
         return this.app.can(item.permission);
+    }
+
+    hide(event: MouseEvent): void {
+        if ((event.target as HTMLDivElement).classList.contains("sidenav-backdrop")) {
+            this.sidenavService.close();
+        }
     }
 }

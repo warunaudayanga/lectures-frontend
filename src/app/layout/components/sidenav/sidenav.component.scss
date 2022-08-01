@@ -3,18 +3,32 @@
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
 
+@keyframes move {
+    0%   { left: -250px; opacity: 1; }
+    100% { left:0; opacity: 0; }
+}
+@keyframes fade {
+    0%   { width: -250px; opacity: 1; }
+    100% { left:0; opacity: 0; }
+}
+
 :host {
-    //display: block;
-    //height: 100%;
+    display: block;
+    height: calc(100% - #{$app-header});
 }
 #sidenav {
     position: fixed;
     top: $app-header;
     left: 0;
-    height: calc(100vh - #{$app-header});
+    height: calc(100% - #{$app-header});
     width: $app-sidenav;
-    background-color: $app-secondary-color;
     z-index: 1000000000;
+}
+.sidenav {
+    position: relative;
+    width: $app-sidenav;
+    height: 100%;
+    background-color: $app-secondary-color;
 }
 .menu {
     padding-top: 10px;
@@ -59,9 +73,22 @@
 
 @include media-breakpoint-down(lg) {
     #sidenav {
-        left: calc(#{$app-sidenav} * -1);
+        background-color: #0007;
+        width: 0;
+        opacity: 0;
+        transition: opacity 500ms;
+        .sidenav {
+            opacity: 0;
+            left: -250px;
+            transition: left 500ms, opacity 500ms;
+        }
     }
-    #sidenav.open {
-        left: 0;
+    #sidenav.opened {
+        width: 100%;
+        opacity: 1;
+        .sidenav {
+            opacity: 1;
+            left: 0;
+        }
     }
 }

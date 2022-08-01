@@ -3,22 +3,26 @@
         <table class="table data-table" data-data-table>
             <ng-container *ngIf="data">
                 <!--suppress JSUnusedGlobalSymbols -->
-                <thead #header>
+                <thead>
                 <tr>
                     <th scope="row" colspan="100">
-                        <div class="">
-                            <input #search type="search" class="search form-control form-control-sm mt-3" id="search" placeholder="Search"
+                        <div class="d-flex justify-content-around justify-content-md-start">
+                            <input #search type="search" class="search form-control form-control-sm mt-md-3" id="search" placeholder="Search"
                                    (keyup)="onSearch(search.value)" (search)="onSearch(search.value, $event)">
+                            <button class="btn btn-sm ms-3 d-md-none btn-option {{getColorClass()}}"
+                                    (click)="onOption()"
+                                    [innerHTML]="getInnerHTML()"
+                                    [disabled]="getDisabled()" data-key="NumpadAdd"></button>
                         </div>
                     </th>
                 </tr>
-                <tr>
+                <tr class="d-none d-md-table-row">
                     <th *ngFor="let heading of data.headers, let i = index" [style]="getStyle(i)" (click)="sortData(data.keys[i])">
                         {{heading}}
                         <i class="icofont" [matBadge]="getSortPriority(data.keys[i])"  [ngClass]="getSortIcon(data.keys[i])"></i>
                     </th>
                     <th *ngIf="data.option" scope="col" class="data-table-options" [style]="'width: ' + (data.option?.width ?? 'auto')">
-                        <button class="btn btn-sm btn-option {{getColorClass()}}"
+                        <button class="btn btn-sm d-none d-md-inline-block btn-option {{getColorClass()}}"
                                 (click)="onOption()"
                                 [innerHTML]="getInnerHTML()"
                                 [disabled]="getDisabled()" data-key="NumpadAdd"></button>
@@ -29,14 +33,17 @@
                 <tr *ngFor="let item of scroll.viewPortItems, let i = index; trackBy: trackItem" [class.selected]="item.id === selectedId"
                     [id]="item.id"
                     (click)="select(i, item.id)">
-                    <td *ngFor="let key of data.keys, let i = index" [classList]="getClass(i)" [style]="getStyle(i)" [innerHTML]="getValue(item, key, i)"></td>
-                    <td class="data-table-options" *ngIf="data.option" [style]="'width: ' + (data.option?.width ?? 'auto')">
+                    <td *ngFor="let key of data.keys, let i = index" [classList]="getClass(i)" [style]="getStyle(i)"
+                        [innerHTML]="getValue(item, key, i)" [attr.data-column-name]="data.headers[i]"></td>
+                    <td class="data-table-options" data-column-no-name *ngIf="data.option" [style]="'width: ' + (data.option?.width ?? 'auto')">
                         <!--suppress JSUnusedGlobalSymbols -->
-                        <ng-container *ngFor="let option of data.option?.common, let i = index">
-                            <button class="btn btn-sm btn-option {{getColorClass(i)}}"
-                                    (click)="onOption(item, i)" [innerHTML]="getInnerHTML(i)"
-                                    [disabled]="getDisabled(i, item.id, item)" [class.d-none]="getDisabled(i,item.id,item)"></button>
-                        </ng-container>
+                        <div>
+                            <ng-container *ngFor="let option of data.option?.common, let i = index">
+                                <button class="btn btn-sm btn-option {{getColorClass(i)}}"
+                                        (click)="onOption(item, i)" [innerHTML]="getInnerHTML(i)"
+                                        [disabled]="getDisabled(i, item.id, item)" [class.d-none]="getDisabled(i,item.id,item)"></button>
+                            </ng-container>
+                        </div>
                     </td>
                 </tr>
                 </tbody>

@@ -1,10 +1,17 @@
 @import "/src/variables";
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+:host {
+    display: block;
+    height: 100%;
+}
 #updateTimeTable {
-    height: calc(100vh - #{$app-header} - #{$app-content-padding} * 2);
+    height: 100%;
     width: calc(100vw - #{$app-sidenav} - #{$app-content-padding} * 2);
 }
 #updateTimetableForm {
-    height: calc(100% - #{$app-content-header});
+    height: 100%;
     position: relative;
     overflow-y: scroll;
 }
@@ -12,7 +19,8 @@ table {
     table-layout: fixed;
     border-collapse: separate;
     width: 100%;
-    height: 1px;
+    height: 100%;
+    margin-bottom: 0;
     tr, td {
         height: 100%;
     }
@@ -59,4 +67,45 @@ table {
         margin-top: 16px;
         margin-bottom: 171px;
     }
+}
+
+@include media-breakpoint-down(lg) {
+    #updateTimeTable {
+        width: calc(100vw - #{$app-content-padding} * 2) !important;
+        table {
+            width: calc(200vw - (20px + 75px + #{$app-content-padding}) * 2) !important;
+        }
+        td, th {
+            background-color: $app-body-color;
+            &.slot, &.time {
+                top: 60px;
+            }
+        }
+        .slot {
+            width: 20px;
+            padding: 5px;
+            position: sticky;
+            left: 0;
+            z-index: 100000;
+        }
+        .time {
+            width: 75px;
+            padding: 5px;
+            position: sticky;
+            left: 20px;
+            z-index: 100000;
+        }
+        .day {
+            width: calc(100vw - 20px - 75px - #{$app-content-padding} * 2);
+            padding-right: 25px;
+            &:last-child {
+                padding-left: 35px;
+                padding-right: 0;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+
 }

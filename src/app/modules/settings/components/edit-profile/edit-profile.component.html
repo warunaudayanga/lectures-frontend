@@ -1,0 +1,7 @@
+<div id="editProfile">
+    <h1 class="text-center content-header">Edit Profile</h1>
+    <div  class="content">
+        <wx-form class="form" #form [formData]="formData" (onSubmit)="save($event)" [size]="app.mdDown ? 'small' : ''"></wx-form>
+        <button type="button" class="btn btn-primary d-block mt-3 mx-auto" [class.btn-sm]="app.mdDown" (click)="form.submit()">Update</button>
+    </div>
+</div>

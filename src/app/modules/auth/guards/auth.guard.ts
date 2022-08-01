@@ -41,7 +41,6 @@ export class AuthGuard implements CanActivate {
             this.app.stopLoading();
             return false;
         }
-        // await this.router.navigateByUrl("/timetable");
     }
 
 }

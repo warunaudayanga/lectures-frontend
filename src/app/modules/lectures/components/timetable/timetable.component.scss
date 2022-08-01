@@ -1,11 +1,19 @@
 @import "src/variables";
-
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+:host {
+    display: block;
+    height: 100%;
+}
 .heading {
     position: relative;
-    height: 100px;
+    h1 {
+        margin-bottom: 10px;
+    }
 }
 .timetable {
-    height: calc(100% - 100px);
+    height: calc(100% - 70px);
     overflow: auto;
 }
 .courses {
@@ -42,10 +50,38 @@ table {
 
         }
     }
-    .lecturer {
+    .modules {
+        .links > div {
+            width: 120px;
+        }
     }
     .l {
         color: darkorange;
         font-weight: bold;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    table {
+        th, td {
+            padding: 5px;
+            background-color: $app-body-color;
+        }
+        .slot {
+            width: 20px;
+            position: sticky;
+            left: 0;
+        }
+        .time {
+            width: 75px;
+            position: sticky;
+            left: 20px;
+        }
+        .modules {
+            width: calc(100vw - 20px - 75px - #{$app-content-padding} * 2);
+            &:last-child {
+                padding-left: 35px;
+            }
+        }
     }
 }

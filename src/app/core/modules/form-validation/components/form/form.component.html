@@ -1,13 +1,19 @@
-<div id="appForm">
-    <form autocomplete="off" #form *ngIf="formData && init() && formGroup" (ngSubmit)="submitForm()" [formGroup]="formGroup" class="pt-3">
-        <ng-container class="input-group" *ngFor="let formControl of formData, let f = index">
+<div id="wxForm">
+    <!--suppress JSUnusedGlobalSymbols -->
+    <form autocomplete="off" #form *ngIf="formData && init() && formControlData && formGroup" (ngSubmit)="submitForm()" [formGroup]="formGroup" class="pt-3">
+        <ng-container class="input-group" *ngFor="let formControl of formControlData, let f = index">
             <div class="row g-3 align-items-center mb-3">
-                <div class="col-4">
-                    <label *ngIf="formControl.type !== 'hidden'" [for]="getName(formControl.name)" class="col-form-label" [innerHTML]="getLabel(formControl.name, formControl.label) + (formControl.required? requiredHTML :'')"></label>
+                <div class="col-12 col-md-5 col-lg-4 mt-3">
+                    <label *ngIf="formControl.type !== 'hidden'" [for]="getName(formControl.name)" class="col-form-label">
+                        <span [innerHTML]="getLabel(formControl.name, formControl.label) + (formControl.required? requiredHTML :'')"></span>
+                        <div class="small text-secondary" [innerHTML]="formControl.info"></div>
+                    </label>
                 </div>
-                <div class="col-8">
+                <div class="col-12 col-md-7 col-lg-8 mt-0 mt-md-3">
                     <ng-container *ngIf="normalTypes.includes(formControl.type)">
-                        <input autocomplete="new-password" class="form-control" [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"
+                        <input [pattern]="formControl.matchesWith ? formGroup.controls[toString(formControl.matchesWith)].value : '[\\s\\S]*'"
+                               [attr.data-match]="formControl.matchesWith ?? undefined"
+                               autocomplete="new-password" class="form-control" [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"
                                [name]="formControl.name" [type]="formControl.type" [id]="getName(formControl.name)"
                                [placeholder]="formControl.unchanged ? '\<unchanged\>' : ''" [ngClass]="formControl.styleClass ?? []"
                                formControlName="{{getName(formControl.name)}}" [required]="!!formControl.required" [readonly]="update && formControl.readonly!">
@@ -22,16 +28,17 @@
                         <ng-container *ngIf="formControl.options.labelKey">
                             <ng-select #select [attr.data-name]="getName(formControl.name)" [class]="size" [ngClass]="formControl.styleClass ?? []"
                                        formControlName="{{getName(formControl.name)}}" [id]="getName(formControl.name)"  [readonly]="update && formControl.readonly!"
-                                       [clearable]="!formControl.required" (close)="focusNext(getName(formData[f + 1]?.name))"
+                                       [clearable]="!formControl.required" (close)="focusNext(getName(formControlData[f + 1]?.name))"
                                        [searchable]="formControl.options.searchable ?? false" [multiple]="formControl.options.multiple ?? false"
                                        [closeOnSelect]="!(formControl.options.multiple ?? false)" appendTo="body"
                                        [items]="formControl.options.values" [bindLabel]="toString(formControl.options.labelKey)">
                             </ng-select>
                         </ng-container>
                         <ng-container *ngIf="!formControl.options.labelKey">
+                            <!--suppress JSUnusedGlobalSymbols -->
                             <ng-select #select [attr.data-name]="getName(formControl.name)" [class]="size" [ngClass]="formControl.styleClass ?? []"
                                        formControlName="{{getName(formControl.name)}}" [id]="getName(formControl.name)"  [readonly]="update && formControl.readonly!"
-                                       [clearable]="!formControl.required" (close)="focusNext(getName(formData[f + 1]?.name))"
+                                       [clearable]="!formControl.required" (close)="focusNext(getName(formControlData[f + 1]?.name))"
                                        [searchable]="formControl.options.searchable ?? false" [multiple]="formControl.options.multiple ?? false"
                                        [closeOnSelect]="!(formControl.options.multiple ?? false)" appendTo="body">
                                 <ng-option *ngFor="let value of getValues(formControl.options), let i = index" [value]="value">

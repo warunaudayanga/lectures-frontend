@@ -34,13 +34,12 @@ export class RouteGuard implements CanActivate {
             const authData = await firstValueFrom(this.auth.refreshToken(token?.token!));
             this.auth.setLoggedIn(authData);
             this.app.stopLoading();
-            await this.router.navigateByUrl("/timetable");
+            await this.router.navigateByUrl("/schedule");
             return false;
         } catch (e: any) {
             this.app.stopLoading();
             return true;
         }
-        // await this.router.navigateByUrl("/timetable");
     }
 }
 
