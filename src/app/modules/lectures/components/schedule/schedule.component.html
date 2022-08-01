@@ -77,10 +77,10 @@
                                                 <a [href]="slot.recordingUrl" class="fw-bold" target="_blank">View this session recording</a>
                                             </div>
                                             <div class="common-link mb-1" *ngIf="slot.entry?.recordingsUrl">
-                                                <a href="#" class="fw-bold" target="_blank">View all recordings</a>
+                                                <a [href]="slot.entry?.recordingsUrl" class="fw-bold" target="_blank">View all recordings</a>
                                             </div>
                                             <div class="common-link" *ngIf="slot.entry?.documentsUrl">
-                                                <a href="#" class="fw-bold" target="_blank">View all documents</a>
+                                                <a [href]="slot.entry?.documentsUrl" class="fw-bold" target="_blank">View all documents</a>
                                             </div>
                                         </div>
                                     </div>
@@ -110,10 +110,10 @@
                                                 <a [href]="slot.recordingUrlL2" class="fw-bold" target="_blank">View this session recording</a>
                                             </div>
                                             <div class="common-link mb-1" *ngIf="slot.entry?.recordingsUrlL2">
-                                                <a href="#" class="fw-bold" target="_blank">View all recordings</a>
+                                                <a [href]="slot.entry?.recordingsUrlL2" class="fw-bold" target="_blank">View all recordings</a>
                                             </div>
                                             <div class="common-link" *ngIf="slot.entry?.documentsUrlL2">
-                                                <a href="#" class="fw-bold" target="_blank">View all documents</a>
+                                                <a [href]="slot.entry?.documentsUrlL2" class="fw-bold" target="_blank">View all documents</a>
                                             </div>
                                         </div>
                                     </div>
