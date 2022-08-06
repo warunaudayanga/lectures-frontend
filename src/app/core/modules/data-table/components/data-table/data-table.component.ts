@@ -37,6 +37,8 @@ export class DataTableComponent implements AfterViewInit, AfterContentChecked, O
 
     @ViewChild("container") tableBody!: ElementRef<HTMLElement>;
 
+    @ViewChild("thead") thead!: ElementRef<HTMLElement>;
+
     @Input() loading: boolean = false;
 
     @Input() data: DataTableData<any, number, any> = {} as any;
@@ -338,5 +340,13 @@ export class DataTableComponent implements AfterViewInit, AfterContentChecked, O
             return SortIcon[d];
         }
         return "";
+    }
+
+    fixScroll(): void {
+        const transform = this.thead.nativeElement.parentElement?.parentElement?.style.transform;
+        if (transform) {
+            const translate = transform.split(/\(|px/)?.[1];
+            this.thead.nativeElement.style.top = (Number(translate) * -1) + "px";
+        }
     }
 }
