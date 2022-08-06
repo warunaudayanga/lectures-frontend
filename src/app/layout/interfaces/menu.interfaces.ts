@@ -5,6 +5,7 @@ export interface MenuItem {
     for?: string
     name: string;
     path?: string;
+    href?: string;
     icon: string;
     active?: boolean
     permission?: Permission;
