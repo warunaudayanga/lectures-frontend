@@ -70,8 +70,8 @@
                                             </div>
                                         </div>
                                         <div class="links">
-                                            <div class="meeting-url unique-link mb-1" *ngIf="slot.meetingUrl && isToday(slot)">
-                                                <a [href]="slot.meetingUrl" class="fw-bold" target="_blank">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
+                                            <div class="meeting-url unique-link mb-1" *ngIf="(slot.meetingUrl || slot.entry?.meetingsUrl) && isToday(slot)">
+                                                <a [href]="slot.meetingUrl || slot.entry?.meetingsUrl" class="fw-bold" target="_blank">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
                                             </div>
                                             <div class="unique-link mb-1" *ngIf="slot.recordingUrl">
                                                 <a [href]="slot.recordingUrl" class="fw-bold" target="_blank">View this session recording</a>
@@ -103,8 +103,8 @@
                                             </div>
                                         </div>
                                         <div class="links">
-                                            <div class="meeting-url unique-link mb-1" *ngIf="slot.meetingUrlL2 && isToday(slot)">
-                                                <a [href]="slot.meetingUrlL2" class="fw-bold" target="_blank">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
+                                            <div class="meeting-url unique-link mb-1" *ngIf="(slot.meetingUrlL2 || slot.entry?.meetingsUrlL2) && isToday(slot)">
+                                                <a [href]="slot.meetingUrlL2 || slot.entry?.meetingsUrlL2" class="fw-bold" target="_blank">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
                                             </div>
                                             <div class="unique-link mb-1" *ngIf="slot.recordingUrlL2">
                                                 <a [href]="slot.recordingUrlL2" class="fw-bold" target="_blank">View this session recording</a>

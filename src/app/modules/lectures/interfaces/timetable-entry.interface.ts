@@ -19,8 +19,10 @@ export interface TimetableEntryEntity extends BaseEntity {
     lecturerL2?: LecturerEntity | null;
     slot: SlotEntity;
     slotL2?: SlotEntity;
+    meetingsUrl?: string;
     recordingsUrl?: string;
     documentsUrl?: string;
+    meetingsUrlL2?: string;
     recordingsUrlL2?: string;
     documentsUrlL2?: string;
 }
