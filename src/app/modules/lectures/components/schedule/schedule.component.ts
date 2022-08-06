@@ -3,7 +3,7 @@ import moment, { Moment } from "moment";
 import { ScheduleService } from "../../services/schedule.service";
 import { DateOnly, HttpError, Time } from "../../../../core/interfaces";
 import { EnumValue } from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
-import { CommonError, Status } from "../../../../core/enums";
+import { CommonError, Status, ClickType, ButtonType } from "../../../../core/enums";
 import { AppService } from "../../../../app.service";
 import { ScheduleEntryEntity } from "../../interfaces/schedule.interface";
 import { Day } from "../../enums";
@@ -14,6 +14,7 @@ import { firstValueFrom } from "rxjs";
 import { ScheduleDto } from "../../interfaces/schedule-dto";
 import { hhmmaToHHmmss } from "../../../../core/utils";
 import { MatCalendarCellClassFunction, MatCalendarCellCssClasses } from "@angular/material/datepicker/calendar-body";
+import { ClickService } from "../../../../core/services/click.service";
 
 @Component({
     selector: "app-schedule",
@@ -48,6 +49,8 @@ export class ScheduleComponent implements OnInit {
 
     markDays!: MatCalendarCellClassFunction<Moment>;
 
+    ClickType = ClickType;
+
     constructor(
         public readonly app: AppService,
         private readonly fb: FormBuilder,
@@ -56,6 +59,7 @@ export class ScheduleComponent implements OnInit {
         private readonly courseService: CourseService,
         private readonly moduleService: CourseModuleService,
         private readonly lecturerService: LecturerService,
+        private readonly clickService: ClickService,
     ) {
         this.getSchedule();
         this.lectureDates = [
@@ -313,5 +317,11 @@ export class ScheduleComponent implements OnInit {
 
     isToday(slot: ScheduleEntryEntity): boolean {
         return moment(slot.date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");
+    }
+
+    captureClick(e: MouseEvent, schedule: ScheduleEntryEntity, type: ClickType): void {
+        const button: ButtonType = e.button === 0 ? ButtonType.LEFT : e.button === 1 ? ButtonType.MIDDLE : ButtonType.RIGHT;
+        this.clickService.create({ type, button, schedule })
+            .subscribe();
     }
 }

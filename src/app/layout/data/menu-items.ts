@@ -1,11 +1,12 @@
 import { MenuItem } from "../interfaces";
 import { Permission } from "../../modules/auth/enum/permission.enum";
+import { ClickType } from "../../core/enums";
 
 export const menuItems: MenuItem[] = [
     { id: "schedule", name: "Schedule", path: "/schedule", icon: "icofont icofont-ui-calendar", permission: Permission.SCHEDULE_LIST },
     { id: "timetable", name: "Timetable", path: "/timetable", icon: "icofont icofont-table", permission: Permission.TIMETABLE_LIST },
     { id: "kuppi", name: "Kuppi", href: "https://www.youtube.com/channel/UCW41AzA18XKzwgGOplTYFTA/playlists",
-        icon: "icofont icofont-salt-and-pepper" }, // TODO;
+        clickType: ClickType.KUPPI, icon: "icofont icofont-salt-and-pepper" },
     { id: "slot", name: "Slots", path: "/slot", icon: "icofont icofont-ui-clock", permission: Permission.SLOT_LIST },
     { id: "user", name: "Users", icon: "icofont icofont-user", children: [
         { id: "manageUser", for: "user", name: "Manage Users", path: "/user/manage", icon: "icofont icofont-user", permission: Permission.USER_LIST },

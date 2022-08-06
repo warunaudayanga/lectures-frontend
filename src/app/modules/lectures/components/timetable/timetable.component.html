@@ -36,10 +36,12 @@
                             <div class="lecturer small" [class.mt-2]="item.value.module.grouped === true"><span class="l" *ngIf="item.value.module.grouped === true">L1 - </span>{{item.value.lecturer.name}}</div>
                             <div class="row links" [class.mt-2]="item.value.module.grouped === true" [class.ps-4]="item.value.module.grouped === true">
                                 <div *ngIf="item.value.recordingsUrl">
-                                    <a class="fw-bold small" [href]="item.value.recordingsUrl" target="_blank">View recordings</a>
+                                    <a class="fw-bold small" [href]="item.value.recordingsUrl"
+                                       (mousedown)="captureClick($event, item.value, ClickType.RECORDING)" target="_blank">View recordings</a>
                                 </div>
                                 <div *ngIf="item.value.documentsUrl">
-                                    <a class="fw-bold small" [href]="item.value.documentsUrl" target="_blank">View Documents</a>
+                                    <a class="fw-bold small" [href]="item.value.documentsUrl"
+                                       (mousedown)="captureClick($event, item.value, ClickType.DOCUMENTS)" target="_blank">View Documents</a>
                                 </div>
                             </div>
                         </ng-container>
@@ -47,10 +49,12 @@
                             <div class="lecturer small mt-2"><span class="l">L2 - </span>{{item.value.lecturerL2?.name}}</div>
                             <div class="row links ps-4" *ngIf="item.value.lecturerL2">
                                 <div *ngIf="item.value.recordingsUrlL2">
-                                    <a class="fw-bold small" [href]="item.value.recordingsUrlL2" target="_blank">View recordings</a>
+                                    <a class="fw-bold small" [href]="item.value.recordingsUrlL2"
+                                       (mousedown)="captureClick($event, item.value, ClickType.RECORDING)" target="_blank">View recordings</a>
                                 </div>
                                 <div *ngIf="item.value.documentsUrlL2">
-                                    <a class="fw-bold small" [href]="item.value.documentsUrlL2" target="_blank">View Documents</a>
+                                    <a class="fw-bold small" [href]="item.value.documentsUrlL2"
+                                       (mousedown)="captureClick($event, item.value, ClickType.DOCUMENTS)" target="_blank">View Documents</a>
                                 </div>
                             </div>
                         </ng-container>

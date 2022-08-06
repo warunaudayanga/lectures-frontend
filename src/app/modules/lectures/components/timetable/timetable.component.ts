@@ -6,9 +6,10 @@ import { AppService } from "../../../../app.service";
 import { CourseService, SlotService, TimetableService } from "../../services";
 import { HttpError } from "../../../../core/interfaces";
 import { EnumValue } from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
-import { CommonError } from "../../../../core/enums";
+import { ButtonType, ClickType, CommonError } from "../../../../core/enums";
 import moment from "moment";
 import { firstValueFrom } from "rxjs";
+import { ClickService } from "../../../../core/services/click.service";
 
 @Component({
     selector: "app-timetable",
@@ -27,9 +28,11 @@ export class TimetableComponent {
 
     courses?: CourseEntity[];
 
-    selectedCourse?: CourseEntity;
+    // selectedCourse?: CourseEntity;
 
     tableRows: TimeTableRow[] = [];
+
+    ClickType = ClickType;
 
     onCompare(_left: KeyValue<any, TimetableEntryEntity>, _right: KeyValue<any, TimetableEntryEntity>): number {
         return 1;
@@ -40,6 +43,7 @@ export class TimetableComponent {
         private readonly slotService: SlotService,
         private readonly courseService: CourseService,
         private readonly timetableService: TimetableService,
+        private readonly clickService: ClickService,
     ) {
         this.loading = true;
         this.app.startLoading();
@@ -96,8 +100,13 @@ export class TimetableComponent {
         return moment(`2000-01-01 ${time}`).format("hh:mm a");
     }
 
-    getRawTime(time: string): moment.Moment {
-        return moment(`2000-01-01 ${time}`);
-    }
+    // getRawTime(time: string): moment.Moment {
+    //     return moment(`2000-01-01 ${time}`);
+    // }
 
+    captureClick(e: MouseEvent, timetable: TimetableEntryEntity, type: ClickType): void {
+        const button: ButtonType = e.button === 0 ? ButtonType.LEFT : e.button === 1 ? ButtonType.MIDDLE : ButtonType.RIGHT;
+        this.clickService.create({ type, button, timetable })
+            .subscribe();
+    }
 }

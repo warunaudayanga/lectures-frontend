@@ -6,6 +6,8 @@ import { menuItems } from "../../data";
 import { NavigationEnd, Router } from "@angular/router";
 import { AppService } from "../../../app.service";
 import { SidenavService } from "../../../core/services";
+import { ClickService } from "../../../core/services/click.service";
+import { ButtonType, ClickType } from "../../../core/enums";
 
 @Component({
     selector: "app-sidenav",
@@ -33,6 +35,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
         private readonly authService: AuthService,
         private router: Router,
         private readonly sidenavService: SidenavService,
+        private readonly clickService: ClickService,
     ) {}
 
     ngOnInit(): void {
@@ -113,5 +116,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
         if ((event.target as HTMLDivElement).classList.contains("sidenav-backdrop")) {
             this.sidenavService.close();
         }
+    }
+
+    captureClick(e: MouseEvent, type: ClickType): void {
+        const button: ButtonType = e.button === 0 ? ButtonType.LEFT : e.button === 1 ? ButtonType.MIDDLE : ButtonType.RIGHT;
+        this.clickService.create({ type, button })
+            .subscribe();
     }
 }

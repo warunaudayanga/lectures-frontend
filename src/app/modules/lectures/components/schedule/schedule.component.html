@@ -71,16 +71,18 @@
                                         </div>
                                         <div class="links">
                                             <div class="meeting-url unique-link mb-1" *ngIf="(slot.meetingUrl || slot.entry?.meetingsUrl) && isToday(slot)">
-                                                <a [href]="slot.meetingUrl || slot.entry?.meetingsUrl" class="fw-bold" target="_blank">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
+                                                <a [href]="slot.meetingUrl || slot.entry?.meetingsUrl" class="fw-bold" target="_blank"
+                                                   (mousedown)="captureClick($event, slot, ClickType.MEETING)">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
                                             </div>
                                             <div class="unique-link mb-1" *ngIf="slot.recordingUrl">
-                                                <a [href]="slot.recordingUrl" class="fw-bold" target="_blank">View this session recording</a>
+                                                <a [href]="slot.recordingUrl" class="fw-bold" target="_blank"
+                                                   (mousedown)="captureClick($event, slot, ClickType.RECORDING)">View this session recording</a>
                                             </div>
 <!--                                            <div class="common-link mb-1" *ngIf="slot.entry?.recordingsUrl">-->
-<!--                                                <a [href]="slot.entry?.recordingsUrl" class="fw-bold" target="_blank">View all recordings</a>-->
+<!--                                                <a [href]="slot.entry?.recordingsUrl" class="fw-bold" target="_blank" (click)="recordClick(slot, ClickType.MEETING)">View all recordings</a>-->
 <!--                                            </div>-->
 <!--                                            <div class="common-link" *ngIf="slot.entry?.documentsUrl">-->
-<!--                                                <a [href]="slot.entry?.documentsUrl" class="fw-bold" target="_blank">View all documents</a>-->
+<!--                                                <a [href]="slot.entry?.documentsUrl" class="fw-bold" target="_blank" (click)="recordClick(slot, ClickType.MEETING)">View all documents</a>-->
 <!--                                            </div>-->
                                         </div>
                                     </div>
@@ -104,16 +106,18 @@
                                         </div>
                                         <div class="links">
                                             <div class="meeting-url unique-link mb-1" *ngIf="(slot.meetingUrlL2 || slot.entry?.meetingsUrlL2) && isToday(slot)">
-                                                <a [href]="slot.meetingUrlL2 || slot.entry?.meetingsUrlL2" class="fw-bold" target="_blank">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
+                                                <a [href]="slot.meetingUrlL2 || slot.entry?.meetingsUrlL2" class="fw-bold" target="_blank"
+                                                   (mousedown)="captureClick($event, slot, ClickType.MEETING)">{{isNow(slot) ? 'Join now' : 'Meeting Link'}}</a>
                                             </div>
                                             <div class="unique-link mb-1" *ngIf="slot.recordingUrlL2">
-                                                <a [href]="slot.recordingUrlL2" class="fw-bold" target="_blank">View this session recording</a>
+                                                <a [href]="slot.recordingUrlL2" class="fw-bold" target="_blank"
+                                                   (mousedown)="captureClick($event, slot, ClickType.RECORDING)">View this session recording</a>
                                             </div>
 <!--                                            <div class="common-link mb-1" *ngIf="slot.entry?.recordingsUrlL2">-->
-<!--                                                <a [href]="slot.entry?.recordingsUrlL2" class="fw-bold" target="_blank">View all recordings</a>-->
+<!--                                                <a [href]="slot.entry?.recordingsUrlL2" class="fw-bold" target="_blank" (click)="recordClick(slot, ClickType.MEETING)">View all recordings</a>-->
 <!--                                            </div>-->
 <!--                                            <div class="common-link" *ngIf="slot.entry?.documentsUrlL2">-->
-<!--                                                <a [href]="slot.entry?.documentsUrlL2" class="fw-bold" target="_blank">View all documents</a>-->
+<!--                                                <a [href]="slot.entry?.documentsUrlL2" class="fw-bold" target="_blank" (click)="recordClick(slot, ClickType.MEETING)">View all documents</a>-->
 <!--                                            </div>-->
                                         </div>
                                     </div>
