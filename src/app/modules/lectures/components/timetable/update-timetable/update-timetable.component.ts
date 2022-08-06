@@ -100,6 +100,7 @@ export class UpdateTimetableComponent implements OnInit {
                 const g = m?.grouped;
                 if (m && !g) {
                     entry.lecturerL2 = undefined;
+                    entry.meetingsUrlL2 = undefined;
                     entry.documentsUrlL2 = undefined;
                     entry.recordingsUrlL2 = undefined;
                 }
