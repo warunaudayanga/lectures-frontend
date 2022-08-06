@@ -3,7 +3,8 @@
         <div class="menu">
             <ng-container *ngFor="let item of menu">
                 <div class="menu-item" *ngIf="can(item)" [routerLink]="item.path">
-                    <a *ngIf="item.href" class="menu-item-text" [href]="item.href" target="_blank">
+                    <a *ngIf="item.href" class="menu-item-text" [href]="item.href" target="_blank"
+                       (mousedown)="captureClick($event, item.clickType!)">
                         <i class="icon {{item.icon}}"></i>
                         <span class="title">{{item.name}}</span>
                     </a>

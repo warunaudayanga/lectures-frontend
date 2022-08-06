@@ -1,4 +1,5 @@
 import { Permission } from "../../modules/auth/enum/permission.enum";
+import { ClickType } from "../../core/enums";
 
 export interface MenuItem {
     id?: string
@@ -6,6 +7,7 @@ export interface MenuItem {
     name: string;
     path?: string;
     href?: string;
+    clickType?: ClickType;
     icon: string;
     active?: boolean
     permission?: Permission;
