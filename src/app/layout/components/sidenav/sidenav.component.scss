@@ -38,6 +38,8 @@
         color: $app-text-invert-color;
     }
     .menu-item-text {
+        display: block;
+        text-decoration: none;
         &:hover {
             background-color: $app-hover-color;
             cursor: pointer;
