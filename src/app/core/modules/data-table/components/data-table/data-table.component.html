@@ -1,9 +1,11 @@
 <div #tableContainer class="h-100 table-container">
-    <virtual-scroller class="h-100" #scroll [items]="dataSource | paginate: { itemsPerPage: itemsPerPage , currentPage: currentPage, totalItems: totalItems }" [enableUnequalChildrenSizes]="true">
+    <virtual-scroller class="h-100" #scroll (vsChange)="fixScroll()"
+                      [items]="dataSource | paginate: { itemsPerPage: itemsPerPage , currentPage: currentPage, totalItems: totalItems }"
+                      [enableUnequalChildrenSizes]="true">
         <table class="table data-table" data-data-table>
             <ng-container *ngIf="data">
                 <!--suppress JSUnusedGlobalSymbols -->
-                <thead>
+                <thead #thead>
                 <tr>
                     <th scope="row" colspan="100">
                         <div class="d-flex justify-content-around justify-content-md-start">
