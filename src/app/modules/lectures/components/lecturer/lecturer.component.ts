@@ -83,7 +83,7 @@ export class LecturerComponent extends EntityComponent<LecturerEntity> {
             { type: "email", name: "email", label: "E-mail", value: lecturer?.email ?? "",
                 validators: [Validators.email] },
             { type: "text", name: "mobile", label: "Phone", value: lecturer?.mobile ?? "",
-                validators: [Validators.max(12)] },
+                validators: [Validators.maxLength(12)] },
         ] as FormControlData<LecturerEntity>[];
     }
 
