@@ -8,14 +8,10 @@ export class SidenavService {
 
     private _opened: boolean = false;
 
-    private sidenavToggleListener: Subject<boolean> = new Subject<boolean>()
+    private sidenavToggleListener: Subject<boolean> = new Subject<boolean>();
 
     get opened(): boolean {
         return this._opened;
-    }
-
-    get closed(): boolean {
-        return !this._opened;
     }
 
     public open(): void {

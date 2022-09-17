@@ -38,9 +38,9 @@ export class FormComponent implements AfterViewInit, AppForm {
 
     public formGroup?: UntypedFormGroup;
 
-    public requiredHTML = " <span class='text-danger'>*</span>"
+    public requiredHTML = " <span class='text-danger'>*</span>";
 
-    public normalTypes = ["color", "datetime-local", "email", "image", "month", "number", "password", "tel", "text", "time"]
+    public normalTypes = ["color", "datetime-local", "email", "image", "month", "number", "password", "tel", "text", "time"];
 
     constructor(@Inject(DOCUMENT) readonly document: Document, public readonly app: AppService) {}
 

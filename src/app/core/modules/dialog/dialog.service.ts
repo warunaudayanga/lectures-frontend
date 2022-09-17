@@ -21,9 +21,9 @@ import { Breakpoint } from "../../enums";
 })
 export class DialogService {
 
-    public maxWidth?: CSSMeasurement
+    public maxWidth?: CSSMeasurement;
 
-    public initialBreakpoint?: Breakpoint
+    public initialBreakpoint?: Breakpoint;
 
     private alertWidth = "450px";
 

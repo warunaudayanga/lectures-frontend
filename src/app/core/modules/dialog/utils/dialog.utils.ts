@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { DialogLevel } from "../enums";
 
 export const toFirstCase = (str: string): string => {

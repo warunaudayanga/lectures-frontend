@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 export type Is = [is: string, styleClass: string]
 
 export const omit = <T extends { [key: string]: any }>(obj: T, keys?: (keyof T)[]): void => {

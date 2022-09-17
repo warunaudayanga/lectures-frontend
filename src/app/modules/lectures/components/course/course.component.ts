@@ -21,7 +21,7 @@ import { FormControlData } from "../../../../core/modules/form-validation/interf
 })
 export class CourseComponent extends EntityComponent<CourseEntity>{
 
-    @ViewChild("dataTable") public dataTable!: DataTable
+    @ViewChild("dataTable") public dataTable!: DataTable;
 
     courseTypes?: string[];
 

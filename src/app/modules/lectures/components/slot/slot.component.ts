@@ -18,9 +18,7 @@ import { time24To12 } from "../../../../core/utils";
 })
 export class SlotComponent extends EntityComponent<SlotEntity> {
 
-    @ViewChild("dataTable") public dataTable!: DataTable
-
-    titles?: string[];
+    @ViewChild("dataTable") public dataTable!: DataTable;
 
     constructor(
         protected readonly app: AppService,

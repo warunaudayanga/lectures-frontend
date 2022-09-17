@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
     loginForm: UntypedFormGroup = new UntypedFormGroup({
         username: new UntypedFormControl(""),
         password: new UntypedFormControl(""),
-    })
+    });
 
     hasCourses?: boolean;
 

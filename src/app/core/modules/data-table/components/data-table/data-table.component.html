@@ -23,7 +23,7 @@
                         {{heading}}
                         <i class="icofont" [matBadge]="getSortPriority(data.keys[i])"  [ngClass]="getSortIcon(data.keys[i])"></i>
                     </th>
-                    <th *ngIf="data.option" scope="col" class="data-table-options" [style]="'width: ' + (data.option?.width ?? 'auto')">
+                    <th *ngIf="data.option" scope="col" class="data-table-options" [style]="'width: ' + data.option.width">
                         <button class="btn btn-sm d-none d-md-inline-block btn-option {{getColorClass()}}"
                                 (click)="onOption()"
                                 [innerHTML]="getInnerHTML()"
@@ -37,7 +37,7 @@
                     (click)="select(i, item.id)">
                     <td *ngFor="let key of data.keys, let i = index" [classList]="getClass(i)" [style]="getStyle(i)"
                         [innerHTML]="getValue(item, key, i)" [attr.data-column-name]="data.headers[i]"></td>
-                    <td class="data-table-options" data-column-no-name *ngIf="data.option" [style]="'width: ' + (data.option?.width ?? 'auto')">
+                    <td class="data-table-options" data-column-no-name *ngIf="data.option" [style]="'width: ' + data.option.width">
                         <!--suppress JSUnusedGlobalSymbols -->
                         <div>
                             <ng-container *ngFor="let option of data.option?.common, let i = index">

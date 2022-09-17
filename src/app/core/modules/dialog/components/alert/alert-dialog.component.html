@@ -10,8 +10,8 @@
     <mat-dialog-actions>
         <button type="button" class="btn btn-{{alertData.confirm? 'secondary' : style.colorClass}} text-light d-block ms-auto"
                 (click)="close()" data-key="Escape">{{alertData.confirm
-            ? alertData?.buttons?.cancel ? alertData?.buttons?.cancel?.toUpperCase() : "NO"
-            : alertData?.buttons?.ok ? alertData?.buttons?.ok?.toUpperCase() : "OK" }}</button>
+            ? alertData.buttons?.cancel ? alertData.buttons?.cancel?.toUpperCase() : "NO"
+            : alertData.buttons?.ok ? alertData.buttons?.ok?.toUpperCase() : "OK" }}</button>
         <button *ngIf="alertData.confirm" type="button" class="btn btn-{{style.colorClass}} text-light d-block ms-3"
                 (click)="confirm()" data-key="Escape">{{alertData.buttons?.ok ? alertData.buttons?.ok?.toUpperCase() : 'OK'}}</button>
     </mat-dialog-actions>

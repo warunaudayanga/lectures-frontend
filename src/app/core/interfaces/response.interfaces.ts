@@ -1,3 +1,4 @@
+// noinspection JSUnusedGlobalSymbols
 export interface EntityErrorResponse {
     status: number;
     code: string;

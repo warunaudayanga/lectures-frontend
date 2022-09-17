@@ -12,6 +12,7 @@ export class RoleGuard implements CanActivate {
 
     constructor(private readonly auth: AuthService, private readonly app: AppService) {}
 
+    // noinspection JSUnusedLocalSymbols
     canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot,

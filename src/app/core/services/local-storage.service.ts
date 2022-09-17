@@ -36,6 +36,7 @@ export class LocalStorageService {
         window.localStorage.setItem(this.USER_KEY, String(id));
     }
 
+    // noinspection JSUnusedGlobalSymbols
     public getUserId(): number | undefined {
         const userJsonString = window.localStorage.getItem(this.USER_KEY);
         if (userJsonString) {

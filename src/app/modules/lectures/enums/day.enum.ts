@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 export enum Day {
     MONDAY = "MONDAY",
     TUESDAY = "TUESDAY",

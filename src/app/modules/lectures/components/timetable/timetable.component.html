@@ -37,7 +37,7 @@
                             <div class="row links" [class.mt-2]="item.value.module.grouped === true" [class.ps-4]="item.value.module.grouped === true">
                                 <div *ngIf="item.value.recordingsUrl">
                                     <a class="fw-bold small" [href]="item.value.recordingsUrl"
-                                       (mousedown)="captureClick($event, item.value, ClickType.RECORDING)" target="_blank">View recordings</a>
+                                       (mousedown)="captureClick($event, item.value, ClickType.PLAYLIST)" target="_blank">View recordings</a>
                                 </div>
                                 <div *ngIf="item.value.documentsUrl">
                                     <a class="fw-bold small" [href]="item.value.documentsUrl"
@@ -46,11 +46,11 @@
                             </div>
                         </ng-container>
                         <ng-container *ngIf="item.value.module.grouped === true && item.value.lecturerL2">
-                            <div class="lecturer small mt-2"><span class="l">L2 - </span>{{item.value.lecturerL2?.name}}</div>
+                            <div class="lecturer small mt-2"><span class="l">L2 - </span>{{item.value.lecturerL2.name}}</div>
                             <div class="row links ps-4" *ngIf="item.value.lecturerL2">
                                 <div *ngIf="item.value.recordingsUrlL2">
                                     <a class="fw-bold small" [href]="item.value.recordingsUrlL2"
-                                       (mousedown)="captureClick($event, item.value, ClickType.RECORDING)" target="_blank">View recordings</a>
+                                       (mousedown)="captureClick($event, item.value, ClickType.PLAYLIST)" target="_blank">View recordings</a>
                                 </div>
                                 <div *ngIf="item.value.documentsUrlL2">
                                     <a class="fw-bold small" [href]="item.value.documentsUrlL2"

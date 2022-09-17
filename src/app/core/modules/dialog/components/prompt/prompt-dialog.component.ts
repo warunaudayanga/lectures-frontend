@@ -14,7 +14,7 @@ import { AppForm } from "../../../form-validation/interfaces";
 })
 export class PromptDialogComponent {
 
-    @ViewChild("form") form!: AppForm
+    @ViewChild("form") form!: AppForm;
 
     @Output() emitter: EventEmitter<PromptResponse> = new EventEmitter();
 

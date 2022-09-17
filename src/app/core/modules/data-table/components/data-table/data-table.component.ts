@@ -69,7 +69,7 @@ export class DataTableComponent implements AfterViewInit, AfterContentChecked, O
 
     itemsPerPage: number = 0;
 
-    currentPage: number = 1
+    currentPage: number = 1;
 
     totalItems?: number;
 
@@ -81,7 +81,7 @@ export class DataTableComponent implements AfterViewInit, AfterContentChecked, O
 
     onDataChange!: Subscription;
 
-    SortIcon = SortIcon
+    SortIcon = SortIcon;
 
     sortFields: SortFields[] = [];
 

@@ -17,6 +17,7 @@ export class RouteGuard implements CanActivate {
         private readonly storageService: LocalStorageService,
     ) {}
 
+    // noinspection JSUnusedLocalSymbols
     canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot,
