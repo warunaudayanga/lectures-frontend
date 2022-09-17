@@ -13,7 +13,7 @@ import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup
 import { firstValueFrom } from "rxjs";
 import { ScheduleDto } from "../../interfaces/schedule-dto";
 import { hhmmaToHHmmss } from "../../../../core/utils";
-import { MatCalendarCellClassFunction, MatCalendarCellCssClasses } from "@angular/material/datepicker/calendar-body";
+import { MatCalendarCellClassFunction, MatCalendarCellCssClasses } from "@angular/material/datepicker";
 import { ClickService } from "../../../../core/services/click.service";
 
 @Component({
