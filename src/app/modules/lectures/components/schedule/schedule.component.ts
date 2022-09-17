@@ -9,7 +9,7 @@ import { ScheduleEntryEntity } from "../../interfaces/schedule.interface";
 import { Day } from "../../enums";
 import { CourseModuleService, CourseService, LecturerService, SlotService } from "../../services";
 import { CourseModuleEntity, LecturerEntity, SlotEntity, TimetableEntryEntity } from "../../interfaces";
-import { AbstractControl, FormArray, FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
+import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
 import { ScheduleDto } from "../../interfaces/schedule-dto";
 import { hhmmaToHHmmss } from "../../../../core/utils";
@@ -43,7 +43,7 @@ export class ScheduleComponent implements OnInit {
 
     lecturers?: LecturerEntity[];
 
-    formGroup?: FormGroup;
+    formGroup?: UntypedFormGroup;
 
     lectureDates?: string[];
 
@@ -53,7 +53,7 @@ export class ScheduleComponent implements OnInit {
 
     constructor(
         public readonly app: AppService,
-        private readonly fb: FormBuilder,
+        private readonly fb: UntypedFormBuilder,
         private readonly slotService: SlotService,
         private readonly scheduleService: ScheduleService,
         private readonly courseService: CourseService,
@@ -136,12 +136,12 @@ export class ScheduleComponent implements OnInit {
     }
 
     buildForms(): void {
-        const groups: FormGroup[] = [];
+        const groups: UntypedFormGroup[] = [];
         for (const slot of this.slots!) {
             groups.push(this.fb.group(this.getConfig(this.schedule?.find(s => s.slot === slot.number))));
         }
-        this.formGroup = new FormGroup({
-            forms: new FormArray(groups),
+        this.formGroup = new UntypedFormGroup({
+            forms: new UntypedFormArray(groups),
         });
     }
 
@@ -219,16 +219,16 @@ export class ScheduleComponent implements OnInit {
     }
 
     isGrouped(i: number): boolean {
-        return ((this.formGroup?.controls.forms as FormArray).controls[i] as FormGroup).controls?.module?.value?.grouped === true;
+        return ((this.formGroup?.controls.forms as UntypedFormArray).controls[i] as UntypedFormGroup).controls?.module?.value?.grouped === true;
     }
 
     // noinspection JSUnusedGlobalSymbols
     getGroupControls(i: number): { [p: string]: AbstractControl } {
-        return ((this.formGroup?.controls.forms as FormArray).controls[i] as FormGroup).controls;
+        return ((this.formGroup?.controls.forms as UntypedFormArray).controls[i] as UntypedFormGroup).controls;
     }
 
-    getForms(): FormArray {
-        return this.formGroup?.controls.forms as FormArray;
+    getForms(): UntypedFormArray {
+        return this.formGroup?.controls.forms as UntypedFormArray;
     }
 
     onSubmit(): void {

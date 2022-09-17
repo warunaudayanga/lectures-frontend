@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, Validators } from "@angular/forms";
+import { UntypedFormGroup, Validators } from "@angular/forms";
 import { FormControlData } from "../../../../core/modules/form-validation/interfaces";
 import { UserEntity } from "../../../user/interfaces/user.interface";
 import { HttpError } from "../../../../core/interfaces";
@@ -34,7 +34,7 @@ export class ChangePasswordComponent implements OnInit {
         ];
     }
 
-    save(changePasswordForm: FormGroup): void {
+    save(changePasswordForm: UntypedFormGroup): void {
         if (changePasswordForm.invalid) {
             changePasswordForm.markAllAsTouched();
             return;

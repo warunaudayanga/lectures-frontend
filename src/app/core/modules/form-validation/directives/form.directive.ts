@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener } from "@angular/core";
-import { AbstractControl, FormGroup, FormGroupDirective } from "@angular/forms";
+import { AbstractControl, UntypedFormGroup, FormGroupDirective } from "@angular/forms";
 import { AppService } from "../../../../app.service";
 import { toFirstCase } from "../../../utils";
 
@@ -50,12 +50,12 @@ export class FormDirective {
         }
     }
 
-    getInvalidControls(group: FormGroup, prevControls?: {key: string, control: AbstractControl}[]): {key: string, control: AbstractControl}[] {
+    getInvalidControls(group: UntypedFormGroup, prevControls?: {key: string, control: AbstractControl}[]): {key: string, control: AbstractControl}[] {
         let controlList: {key: string, control: AbstractControl}[] = [];
         if (prevControls?.length) controlList = prevControls;
         for (const key of Object.keys(group.controls)) {
             const control = group.controls[key];
-            if (control instanceof FormGroup) {
+            if (control instanceof UntypedFormGroup) {
                 this.getInvalidControls(control, controlList);
             } else if (control.invalid) {
                 controlList.push({ key, control });

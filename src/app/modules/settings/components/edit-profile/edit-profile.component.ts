@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormControlData } from "../../../../core/modules/form-validation/interfaces";
 import { UserEntity } from "../../../user/interfaces/user.interface";
 import { AppService } from "../../../../app.service";
-import { FormGroup, Validators } from "@angular/forms";
+import { UntypedFormGroup, Validators } from "@angular/forms";
 import { UserService } from "../../../user/services";
 import { HttpError } from "../../../../core/interfaces";
 import { EnumValue } from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
@@ -66,7 +66,7 @@ export class EditProfileComponent implements OnInit {
         ];
     }
 
-    save(userForm: FormGroup): void {
+    save(userForm: UntypedFormGroup): void {
         if (userForm.invalid) {
             userForm.markAllAsTouched();
             return;

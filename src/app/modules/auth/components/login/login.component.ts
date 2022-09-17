@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../../services";
-import { FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AppService } from "../../../../app.service";
 import { HttpError } from "../../../../core/interfaces";
@@ -14,9 +14,9 @@ import { CourseService } from "../../../lectures/services";
 })
 export class LoginComponent implements OnInit {
 
-    loginForm: FormGroup = new FormGroup({
-        username: new FormControl(""),
-        password: new FormControl(""),
+    loginForm: UntypedFormGroup = new UntypedFormGroup({
+        username: new UntypedFormControl(""),
+        password: new UntypedFormControl(""),
     })
 
     hasCourses?: boolean;

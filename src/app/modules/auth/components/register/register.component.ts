@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, Validators } from "@angular/forms";
+import { UntypedFormGroup, Validators } from "@angular/forms";
 import { AuthService } from "../../services";
 import { HttpError } from "../../../../core/interfaces";
 import { AuthError } from "../../enum";
@@ -71,7 +71,7 @@ export class RegisterComponent implements OnInit {
         ];
     }
 
-    register(registerForm: FormGroup): void {
+    register(registerForm: UntypedFormGroup): void {
         if (registerForm.invalid) {
             registerForm.markAllAsTouched();
             return;

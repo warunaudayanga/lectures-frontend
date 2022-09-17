@@ -4,7 +4,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, Input, Outp
 import moment from "moment";
 import { toTitleCase } from "../../../../utils";
 import { NgSelectComponent } from "@ng-select/ng-select";
-import { FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { DOCUMENT } from "@angular/common";
 import { IObject } from "../../../dialog/interfaces";
 import { AppForm, FormControlData, FormControlDataOptions, FormGroupData } from "../../interfaces";
@@ -32,11 +32,11 @@ export class FormComponent implements AfterViewInit, AppForm {
     @Input() size: "small" | "large" | "" = "";
 
     // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-    @Output() onSubmit: EventEmitter<FormGroup> = new EventEmitter();
+    @Output() onSubmit: EventEmitter<UntypedFormGroup> = new EventEmitter();
 
     public formControlData?: FormControlData<any, any>[];
 
-    public formGroup?: FormGroup;
+    public formGroup?: UntypedFormGroup;
 
     public requiredHTML = " <span class='text-danger'>*</span>"
 
@@ -47,15 +47,15 @@ export class FormComponent implements AfterViewInit, AppForm {
     init(): boolean {
         if (!this.initialized) {
             if (this.formData) {
-                const groupData: { [key: string]: FormControl } = {};
+                const groupData: { [key: string]: UntypedFormControl } = {};
                 this.formControlData = Array.isArray(this.formData) ? this.formData : this.formData.formControlData;
                 this.formControlData.forEach(input => {
                     let validators: ValidatorFn[] = [];
                     if (input.validators?.length) validators = input.validators;
                     if (input.required) validators.push(Validators.required);
-                    groupData[this.getName(input.name)] = new FormControl(input.value ?? "", validators);
+                    groupData[this.getName(input.name)] = new UntypedFormControl(input.value ?? "", validators);
                 });
-                this.formGroup = new FormGroup(groupData, (this.formData as FormGroupData<any, any>).validatorOrOpts ?? undefined);
+                this.formGroup = new UntypedFormGroup(groupData, (this.formData as FormGroupData<any, any>).validatorOrOpts ?? undefined);
                 this.initialized = true;
             }
         }

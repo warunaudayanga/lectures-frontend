@@ -3,7 +3,7 @@
 import { Component, EventEmitter, Inject, Output, ViewChild } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { DialogButtons, IObject, PromptData, PromptResponse } from "../../interfaces";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 import { getIconAndColor } from "../../utils";
 import { AppForm } from "../../../form-validation/interfaces";
 
@@ -30,7 +30,7 @@ export class PromptDialogComponent {
         this.buttons = dialogData.buttons;
     }
 
-    onSubmit(formGroup: FormGroup): void {
+    onSubmit(formGroup: UntypedFormGroup): void {
         this.emitter.emit({ prompt: this, form: formGroup });
         if (!this.dialogData.wait) {
             this.close();
