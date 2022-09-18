@@ -1,6 +1,7 @@
 import { Component, Input } from "@angular/core";
 import { PollData } from "../../../interfaces/poll/poll-data,interface";
 
+// noinspection JSUnusedGlobalSymbols
 export enum PollTheme {
     PRIMARY = "primary",
     ORANGE = "orange",

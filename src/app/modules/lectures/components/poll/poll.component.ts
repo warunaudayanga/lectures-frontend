@@ -54,6 +54,7 @@ export class PollComponent extends EntityComponent<PollEntity> implements OnInit
         ] as FormControlData<PollEntity>[];
     }
 
+    // noinspection JSUnusedLocalSymbols
     protected viewDialogData(entity: PollEntity): ViewOptions<PollEntity, number, IObject> {
         throw new Error("Method not implemented.");
     }
