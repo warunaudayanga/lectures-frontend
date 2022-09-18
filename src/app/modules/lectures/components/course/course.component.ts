@@ -19,7 +19,7 @@ import { FormControlData } from "../../../../core/modules/form-validation/interf
     templateUrl: "./course.component.html",
     styleUrls: ["./course.component.scss"],
 })
-export class CourseComponent extends EntityComponent<CourseEntity>{
+export class CourseComponent extends EntityComponent<CourseEntity> {
 
     @ViewChild("dataTable") public dataTable!: DataTable;
 

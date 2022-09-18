@@ -14,6 +14,10 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatInputModule } from "@angular/material/input";
 import { SlotComponent } from "./components/slot/slot.component";
+import { PollComponent } from "./components/poll/poll.component";
+import { AppCommonModule } from "../../common";
+import { PollCardComponent } from "./components/poll/poll-card/poll-card.component";
+import { FormValidationModule } from "../../core/modules/form-validation";
 
 
 @NgModule({
@@ -25,6 +29,8 @@ import { SlotComponent } from "./components/slot/slot.component";
         CourseModuleComponent,
         ScheduleComponent,
         SlotComponent,
+        PollComponent,
+        PollCardComponent,
     ],
     imports: [
         CommonModule,
@@ -37,6 +43,8 @@ import { SlotComponent } from "./components/slot/slot.component";
         MatDatepickerModule,
         MatInputModule,
         ReactiveFormsModule,
+        AppCommonModule,
+        FormValidationModule,
     ],
 })
 export class LecturesModule { }

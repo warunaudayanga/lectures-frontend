@@ -1,0 +1,192 @@
+@import "src/variables";
+
+:host {
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 10px;
+}
+//@media (min-width: 768px) {
+//    :host {
+//        width: calc(100%);
+//    }
+//}
+//@media (min-width: 992px) {
+//    :host {
+//        width: calc(50% - 7.5px);
+//    }
+//}
+//@media (min-width: 1200px) {
+//    :host {
+//        width: calc(50% - 7.5px);
+//    }
+//}
+.dashboard-card {
+    border-radius: 25px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.30) !important;
+    padding: 25px 40px 5px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    min-width: 600px;
+    width: 600px;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    -webkit-transition: all 0.3s ease-in;
+    -o-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+    height: 190px;
+    &:hover{
+        transform: translateY(-7px);
+    }
+    .left {
+        position: relative;
+        width: 100%;
+        z-index: 9;
+        .icon {
+            position: absolute;
+            right: 0;
+            top: 30%;
+            color: #fff;
+            z-index: 9;
+            i {
+                font-size: 80px;
+            }
+        }
+        .title, .sub-title {
+            color: #fff;
+            line-height: 32px;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .sub-title {
+            font-size: 18px;
+            max-width: 320px;
+            margin-bottom: 5px;
+        }
+        .number {
+            font-size: 42px;
+            line-height: 52px;
+            font-weight: 600;
+            color: #fff;
+            &.alone {
+                height: calc(100% - 64px);
+                display: flex;
+                align-items: center;
+            }
+        }
+        .together {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            .slot {
+                width: 80px;
+                max-width: 80px;
+                text-align: center;
+            }
+        }
+        .text {
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        .link {
+            text-decoration: none;
+            width: 80px;
+            height: 30px;
+            background: #fff;
+            border-radius: 50px;
+            line-height: 30px;
+            font-size: 14px;
+            display: block;
+            text-align: center;
+            -webkit-transition: all 0.3s ease-in;
+            -o-transition: all 0.3s ease-in;
+            transition: all 0.3s ease-in;
+            &:hover {
+                background: #000;
+                color: #fff;
+            }
+        }
+    }
+    &::after {
+        position: absolute;
+        content: " ";
+        width: 268px;
+        height: 500px;
+        top: -100px;
+        right: -50px;
+        //-webkit-transform: rotate(28deg);
+        -ms-transform: rotate(28deg);
+        transform: rotate(28deg);
+    }
+    &.primary {
+        background-image: -webkit-gradient(linear, left top, right top, from(#{$app-secondary-color}), to(#{$app-secondary-color}));
+        background-image: -webkit-linear-gradient(left, #{$app-secondary-color},  #{$app-secondary-color});
+        background-image: -o-linear-gradient(left,  #{$app-secondary-color}, #{$app-secondary-color});
+        background-image: linear-gradient(to right,  #{$app-secondary-color}, #{$app-secondary-color});
+        &::after {
+            background: #{$app-primary-color};
+        }
+    }
+    &.orange {
+        background-image: -webkit-gradient(linear, left top, right top, from(#ffa733), to(#ffa733));
+        background-image: -webkit-linear-gradient(left, #ffa733, #ffa733);
+        background-image: -o-linear-gradient(left, #ffa733, #ffa733);
+        background-image: linear-gradient(to right, #ffa733, #ffa733);
+        &::after {
+            background: #b26a00;
+        }
+    }
+    &.blue {
+        background-image: -webkit-gradient(linear, left top, right top, from(#35baf6), to(#35baf6));
+        background-image: -webkit-linear-gradient(left, #35baf6, #35baf6);
+        background-image: -o-linear-gradient(left, #35baf6, #35baf6);
+        background-image: linear-gradient(to right, #35baf6, #35baf6);
+        &::after {
+            background: #0276aa;
+        }
+    }
+    &.cyan {
+        background-image: -webkit-gradient(linear, left top, right top, from(#0fa49b), to(#03dbce));
+        background-image: -webkit-linear-gradient(left, #0fa49b, #03dbce);
+        background-image: -o-linear-gradient(left, #0fa49b, #03dbce);
+        background-image: linear-gradient(to right, #0fa49b, #03dbce);
+        &::after {
+            background: #0fa49b;
+        }
+    }
+    &.purple {
+        background-image: -webkit-gradient(linear, left top, right top, from(#af52bf), to(#af52bf));
+        background-image: -webkit-linear-gradient(left, #af52bf, #af52bf);
+        background-image: -o-linear-gradient(left, #af52bf, #af52bf);
+        background-image: linear-gradient(to right, #af52bf, #af52bf);
+        &::after {
+            background: #6d1b7b;
+        }
+    }
+    &.red {
+        background-image: -webkit-gradient(linear, left top, right top, from(#cf0633), to(#f96079));
+        background-image: -webkit-linear-gradient(left, #cf0633, #f96079);
+        background-image: -o-linear-gradient(left, #cf0633, #f96079);
+        background-image: linear-gradient(to right, #cf0633, #f96079);
+        &::after {
+            background: #cf0633;
+        }
+    }
+    &.green {
+        background-image: -webkit-gradient(linear, left top, right top, from(#4caf50), to(#4caf50));
+        background-image: -webkit-linear-gradient(left, #4caf50, #4caf50);
+        background-image: -o-linear-gradient(left, #4caf50, #4caf50);
+        background-image: linear-gradient(to right, #4caf50, #4caf50);
+        &::after {
+            background: #357a38;
+        }
+    }
+}

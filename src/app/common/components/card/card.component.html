@@ -1,0 +1,17 @@
+<div class="dashboard-card {{theme}}" style="{{'height: ' + height}}">
+  <div class="left">
+    <h5 class="title">{{title !== undefined? title: '&nbsp;'}}</h5>
+    <div *ngIf="count2" class="together">
+      <span class="number">{{count | number: '1.0'}}</span>
+      <div *ngIf="count2" class="text">Active</div>
+      <span *ngIf="count2" class="number">{{count2 | number: '1.0'}}</span>
+      <div *ngIf="count2" class="text">Inactive</div>
+    </div>
+    <span *ngIf="!count2" class="number alone">{{count | number: '1.0'}}</span>
+  </div>
+  <div class="right">
+    <div class="icon">
+        <i class='{{icon}}'></i>
+    </div>
+  </div>
+</div>

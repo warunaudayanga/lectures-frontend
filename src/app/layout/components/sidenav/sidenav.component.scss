@@ -1,7 +1,7 @@
 @import "src/variables";
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
 
 @keyframes move {
     0%   { left: -250px; opacity: 1; }

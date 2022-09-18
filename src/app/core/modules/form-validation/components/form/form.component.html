@@ -15,15 +15,43 @@
                                [attr.data-match]="formControl.matchesWith ?? undefined"
                                autocomplete="new-password" class="form-control" [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"
                                [name]="formControl.name" [type]="formControl.type" [id]="getName(formControl.name)"
-                               [placeholder]="formControl.unchanged ? '\<unchanged\>' : ''" [ngClass]="formControl.styleClass ?? []"
+                               [placeholder]="formControl.unchanged ? '\<unchanged\>' : ''"
                                formControlName="{{getName(formControl.name)}}" [required]="!!formControl.required" [readonly]="update && formControl.readonly!">
                     </ng-container>
                     <ng-container *ngIf="formControl.type === 'date'">
-                        <input autocomplete="new-password" #elem class="form-control" [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"
-                               type="text" placeholder="YYYY-MM-DD" [name]="formControl.name" [id]="getName(formControl.name)" [ngClass]="formControl.styleClass ?? []"
-                               (bsValueChange)="dateChange($event, elem)" formControlName="{{getName(formControl.name)}}" [required]="!!formControl.required"
-                               bsDatepicker [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'YYYY-MM-DD', returnFocusToInput: true }"  [readonly]="update && formControl.readonly!">
+<!--                        <input autocomplete="new-password" #elem class="form-control" [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"-->
+<!--                               type="text" placeholder="YYYY-MM-DD" [name]="formControl.name" [id]="getName(formControl.name)" [ngClass]="formControl.styleClass ?? []"-->
+<!--                               (bsValueChange)="dateChange($event, elem)" formControlName="{{getName(formControl.name)}}" [required]="!!formControl.required"-->
+<!--                               bsDatepicker [readonly]="update && formControl.readonly!"-->
+<!--                               [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'YYYY-MM-DD', returnFocusToInput: true, containerClass: 'theme-dark-blue' }">-->
+                        <div class="date">
+                            <div class="input-group" [class.input-group-sm]="size === 'small'" [class.input-group-lg]="size === 'large'">
+                                <input type="text" class="form-control"
+                                       placeholder="YYYY-MM-DD" [name]="formControl.name" [id]="getName(formControl.name)" [readonly]="update && formControl.readonly!"
+                                       formControlName="{{getName(formControl.name)}}" [required]="!!formControl.required" [matDatepicker]="datePicker">
+                                <button type="button" class="btn btn-outline-primary" (click)="datePicker.open()">
+                                    <i class="icofont icofont-ui-calendar"></i>
+                                </button>
+                            </div>
+                            <mat-datepicker #datePicker></mat-datepicker>
+                        </div>
                     </ng-container>
+<!--                    <ng-container *ngIf="formControl.type === 'time'">-->
+<!--                        <div class="date">-->
+<!--                            <div class="input-group" [class.input-group-sm]="size === 'small'" [class.input-group-lg]="size === 'large'">-->
+<!--                                <input type="text" class="form-control"-->
+<!--                                       placeholder="YYYY-MM-DD" [name]="formControl.name" [id]="getName(formControl.name)" [readonly]="update && formControl.readonly!"-->
+<!--                                       formControlName="{{getName(formControl.name)}}" [required]="!!formControl.required" [matDatepicker]="picker">-->
+<!--                                <button type="button" class="btn btn-outline-primary" (click)="picker.open()">-->
+<!--                                    <i class="icofont icofont-ui-calendar"></i>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                            <mat-datepicker #picker></mat-datepicker>-->
+<!--                        </div>-->
+<!--                    </ng-container>-->
+<!--                    <ng-container *ngIf="formControl.type === 'datetime'">-->
+
+<!--                    </ng-container>-->
                     <ng-container *ngIf="formControl.type === 'select' && formControl.options">
                         <ng-container *ngIf="formControl.options.labelKey">
                             <ng-select #select [attr.data-name]="getName(formControl.name)" [class]="size" [ngClass]="formControl.styleClass ?? []"
@@ -51,6 +79,20 @@
                         <mat-slide-toggle [id]="getName(formControl.name)" [name]="getName(formControl.name)"
                                           [ngClass]="formControl.styleClass ?? []"
                                           formControlName="{{getName(formControl.name)}}"></mat-slide-toggle>
+                    </ng-container>
+                    <ng-container *ngIf="formControl.type === 'textarea'">
+                        <textarea [attr.data-match]="formControl.matchesWith ?? undefined" autocomplete="new-password" class="form-control"
+                                  [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"
+                                  [ngClass]="formControl.styleClass ?? []" formControlName="{{getName(formControl.name)}}"
+                                  [name]="formControl.name" [id]="getName(formControl.name)" [rows]="formControl.rows"
+                                  [required]="!!formControl.required" [readonly]="update && formControl.readonly!"></textarea>
+                    </ng-container>
+                    <ng-container *ngIf="formControl.type === 'tag'">
+                        <ng-tag-input [attr.data-name]="getName(formControl.name)" formControlName="{{getName(formControl.name)}}"
+                                      [id]="getName(formControl.name)" [ngClass]="formControl.styleClass" [required]="!!formControl.required"
+                                      [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"
+                                      [classList]="getClassList(size, formControl.styleClass, ['main-input', 'form-control'])"
+                                      [readonly]="update && formControl.readonly!"></ng-tag-input>
                     </ng-container>
                 </div>
             </div>

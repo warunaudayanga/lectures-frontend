@@ -1,0 +1,19 @@
+@import "src/variables";
+
+:host {
+    display: block;
+    height: 100%;
+}
+.content-header {
+    height: 30px !important;
+}
+.card-container {
+    height: calc(100% - 30px - #{$app-content-padding}) !important;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    gap: 30px;
+    overflow: auto;
+    padding-bottom: 30px;
+}

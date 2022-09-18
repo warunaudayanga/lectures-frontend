@@ -1,0 +1,104 @@
+:host {
+    display: block;
+    min-height: 38px;
+}
+
+.tag-input {
+    position: relative;
+    min-height: 38px;
+    .main-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        color: transparent;
+        background-color: transparent;
+        &:focus ~ .caret {
+            -webkit-animation: 1s blink step-end infinite;
+            -moz-animation: 1s blink step-end infinite;
+            //noinspection CssUnknownProperty
+            -ms-animation: 1s blink step-end infinite;
+            -o-animation: 1s blink step-end infinite;
+            animation: 1s blink step-end infinite;
+        }
+    }
+    .chips {
+        min-height: 38px;
+        top: 0;
+        left: 0;
+        padding: 3px;
+        display: flex;
+        flex-wrap: wrap;
+        .chip {
+            z-index: 1;
+        }
+        button {
+            border: none;
+            background-color: transparent;
+            padding: 0;
+            margin-left: 5px;
+        }
+        .label {
+            min-height: 32px;
+            margin-left: 5px;
+        }
+    }
+    div.form-control {
+        height: 38px;
+        padding: 0;
+    }
+}
+
+.caret {
+    font-weight: 100;
+    font-size: 25px;
+    position: relative;
+    top: 5px;
+    color: transparent;
+}
+
+@keyframes blink {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: black;
+    }
+}
+
+@-moz-keyframes blink {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: black;
+    }
+}
+
+@-webkit-keyframes blink {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: black;
+    }
+}
+
+@-ms-keyframes blink {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: black;
+    }
+}
+
+@-o-keyframes blink {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: black;
+    }
+}

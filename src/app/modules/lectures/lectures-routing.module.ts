@@ -8,6 +8,7 @@ import { ScheduleComponent } from "./components/schedule/schedule.component";
 import { Permission } from "../auth/enum/permission.enum";
 import { RoleGuard } from "../auth/guards";
 import { SlotComponent } from "./components/slot/slot.component";
+import { PollComponent } from "./components/poll/poll.component";
 
 const routes: Routes = [
     { path: "", redirectTo: "schedule" },
@@ -31,6 +32,9 @@ const routes: Routes = [
     } },
     { path: "module", component: CourseModuleComponent, canActivate: [RoleGuard], data: {
         permission: Permission.MODULE_LIST,
+    } },
+    { path: "polls", component: PollComponent, canActivate: [RoleGuard], data: {
+        permission: Permission.POLL_LIST,
     } },
 ];
 

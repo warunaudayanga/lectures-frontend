@@ -1,0 +1,10 @@
+<div class="tag-input" *ngIf="classList">
+    <div class="chips" (click)="tagInput.focus()">
+        <input #tagInput type="text" spellcheck="false" [readonly]="readonly" class="{{getClasses()}}"
+               (keyup)="input.textContent = tagInput.value" (keydown)="keyDown(input, $event)" [disabled]="disabled">
+        <span class="chip" *ngFor="let tag of tags">{{tag}}<button type="button" (click)="remove(tag)">&times;</button>
+        </span>
+        <span #input class="label d-inline-flex align-items-center" [class.d-none]="disabled"></span>
+        <span class="caret">|</span>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="dashboard-card {{theme || PollTheme.PRIMARY}}" style="{{'height: ' + height}}">
+    <div class="left">
+        <div class="icon">
+            <i class='{{icon}}'></i>
+        </div>
+        <h5 class="title ellipsis-1">{{title !== undefined? title: '&nbsp;'}}</h5>
+        <h5 class="sub-title ellipsis-3">{{subTitle !== undefined? subTitle: '&nbsp;'}}</h5>
+        <div class="together">
+            <div class="slot" *ngFor="let item of getData()">
+                <div class="number">{{item.count | number: '1.0'}}</div>
+                <div class="text">{{item.name}}</div>
+            </div>
+        </div>
+    </div>
+</div>

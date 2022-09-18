@@ -15,4 +15,5 @@ export const menuItems: MenuItem[] = [
     { id: "course", name: "Courses", path: "/course", icon: "icofont icofont-graduate", permission: Permission.COURSE_LIST },
     { id: "module", name: "Modules", path: "/module", icon: "icofont icofont-book-alt", permission: Permission.MODULE_LIST },
     { id: "lecturer", name: "Lecturers", path: "/lecturer", icon: "icofont icofont-man-in-glasses", permission: Permission.MODULE_LIST },
+    { id: "poll", name: "Polls", path: "/polls", icon: "icofont icofont-mail-box", permission: Permission.POLL_LIST },
 ];

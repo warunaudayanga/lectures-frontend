@@ -4,6 +4,10 @@
     display: block;
 }
 
+textarea {
+    resize: none;
+}
+
 ::ng-deep #wxForm {
     .ng-select .ng-select-container .ng-value-container {
         max-height: 150px !important;

@@ -29,7 +29,7 @@ export class FormComponent implements AfterViewInit, AppForm {
 
     @Input() formData?: FormGroupData<any, any> | FormControlData<any, any>[];
 
-    @Input() size: "small" | "large" | "" = "";
+    @Input() size: "small" | "large" | "" = ""; // 31 38 48
 
     // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onSubmit: EventEmitter<UntypedFormGroup> = new EventEmitter();
@@ -86,7 +86,6 @@ export class FormComponent implements AfterViewInit, AppForm {
                 : String(options?.values[i]);
     }
 
-    // @ts-ignore
     getName(name?: string | number | symbol): string {
         const names = String(name).split(".");
         return names[names.length ? names.length - 1 : 0];
@@ -120,5 +119,14 @@ export class FormComponent implements AfterViewInit, AppForm {
             return options.values.map(v => (v as IObject & BaseEntity)[options.valueKey!]);
         }
         return options.values as (string | number)[];
+    }
+
+    getClassList(size?: "small" | "large" | "", styleClass?: string[], moreStyles?: string[]): string[] {
+        return [
+            ...(size === "small" ? ["form-control-sm"] : []),
+            ...(size === "large" ? ["form-control-lg"] : []),
+            ...(styleClass ? styleClass : []),
+            ...(moreStyles ? moreStyles : []),
+        ];
     }
 }

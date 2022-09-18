@@ -20,7 +20,7 @@ import { GetAllDto } from "../dto/get-all.dto";
 
 export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols extends number = any, SubEntity = IObject> {
 
-    public abstract dataTable: DataTable
+    public abstract dataTable?: DataTable
 
     public loading: boolean = false;
 
@@ -138,9 +138,11 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
             .subscribe({
                 next: res => {
                     const response = this.onGetAll(res);
-                    this.data.dataSource = response.data;
-                    this.data.totalItems = response.rowCount;
-                    this.dataTable.update();
+                    if (this.data) {
+                        this.data.dataSource = response.data;
+                        this.data.totalItems = response.rowCount;
+                        this.dataTable?.update();
+                    }
                     this.afterGetAll(response);
                     this.loading = false;
                 },
@@ -205,13 +207,18 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
 
     public changeStatus(entity: Entity): void {
         const backup = { ...entity };
-        const index = this.data.dataSource.indexOf(entity);
-        // this.data.dataSource[index].status = !backup.status;
-        this.data.dataSource[index].status = backup.status === Status.ACTIVE ? Status.INACTIVE : Status.ACTIVE;
+        let index: number;
+        if (this.data) {
+            index = this.data.dataSource.indexOf(entity);
+            // this.data.dataSource[index].status = !backup.status;
+            this.data.dataSource[index].status = backup.status === Status.ACTIVE ? Status.INACTIVE : Status.ACTIVE;
+        }
         this.entityService.changeStatus(entity.id, entity.status)
             .subscribe({
                 error: (error: HttpError<EnumValue & CommonError>) => {
-                    this.data.dataSource[index] = backup;
+                    if (this.data && index) {
+                        this.data.dataSource[index] = backup;
+                    }
                     this.app.error(error.error?.message ?? CommonError.ERROR);
                     AppService.log(error);
                 },
