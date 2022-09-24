@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import moment, { Moment } from "moment";
 import { ScheduleService } from "../../services/schedule.service";
-import { DateOnly, HttpError, Time } from "../../../../core/interfaces";
+import { HttpError } from "../../../../core/interfaces";
 import { EnumValue } from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
 import { CommonError, Status, ClickType, ButtonType } from "../../../../core/enums";
 import { AppService } from "../../../../app.service";
@@ -173,8 +173,8 @@ export class ScheduleComponent implements OnInit {
                 ...s,
                 slot: undefined,
                 lecturer: null,
-                startAt: undefined as unknown as Time,
-                endAt: undefined as unknown as Time,
+                startAt: undefined as unknown as string,
+                endAt: undefined as unknown as string,
             })));
             this.schedule.sort((a, b) => ((a.startAt ?? a.startAtL2) > (b.startAt ?? b.startAtL2) ? 1 : -1));
             this.buildForms();
@@ -239,7 +239,7 @@ export class ScheduleComponent implements OnInit {
                 module: form.module,
                 lecturer: form.lecturer ?? null,
                 lecturerL2: form.lecturerL2 ?? null,
-                date: this.date.format("YYYY-MM-DD") as DateOnly,
+                date: this.date.format("YYYY-MM-DD") as string,
                 day: this.day?.toUpperCase() as Day,
                 status: Status.ACTIVE,
                 startAt: form.lecturer
@@ -292,7 +292,7 @@ export class ScheduleComponent implements OnInit {
             return;
         }
         this.app.startLoading();
-        this.scheduleService.saveSchedule(this.date.format("YYYY-MM-DD") as DateOnly, schedule)
+        this.scheduleService.saveSchedule(this.date.format("YYYY-MM-DD") as string, schedule)
             .subscribe({
                 next: () => {
                     this.app.stopLoading();

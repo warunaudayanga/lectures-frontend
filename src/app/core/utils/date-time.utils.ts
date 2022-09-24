@@ -2,7 +2,6 @@
 
 import { AbstractControl, ValidationErrors } from "@angular/forms";
 import moment from "moment";
-import { Time } from "../interfaces";
 
 export const stringToDate = (entity: {[key: string]: any}): void => {
     Object.keys(entity).forEach(key => {
@@ -30,12 +29,12 @@ export const dateTimeHtml = (date: Date): string => {
             </span>`;
 };
 
-export const hhmmaToHHmmss = (hh: string, mm: string, a: "am" | "pm" | string): Time => {
+export const hhmmaToHHmmss = (hh: string, mm: string, a: "am" | "pm" | string): string => {
     let HH = a === "am" ? hh === "12" ? "00" : hh : String(Number(hh) + 12);
     if (HH.length < 2) {
         HH = `0${HH}`;
     }
-    return `${HH}:${mm}:00` as Time;
+    return `${HH}:${mm}:00` as string;
 };
 
-export const time24To12 = (str: Time): string => moment(`2000-01-01 ${str}`).format("hh:mm a");
+export const time24To12 = (str: string): string => moment(`2000-01-01 ${str}`).format("hh:mm a");
