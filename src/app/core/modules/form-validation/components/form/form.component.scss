@@ -27,4 +27,7 @@ textarea {
     .ng-select ng-dropdown-panel > div {
         z-index: 2;
     }
+    [readonly] {
+        background-color: $disabled;
+    }
 }

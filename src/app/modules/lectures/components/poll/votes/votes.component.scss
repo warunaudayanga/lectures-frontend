@@ -1,0 +1,42 @@
+@import "src/variables";
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
+
+:host {
+    display: block;
+    height: 100%;
+}
+.user-percent {
+    width: calc(100% - 60px);
+}
+.result {
+    .data {
+        width: 60%;
+        margin: auto;
+        td:nth-child(2) {
+            text-align: right;
+        }
+    }
+    .options {
+        display: flex;
+        flex-wrap: nowrap;
+        .chip {
+            white-space: nowrap;
+        }
+    }
+    .percent {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        .content {
+            height: auto;
+        }
+    }
+}
+
+//@include media-breakpoint-down(md) {
+//    .content-header h1, .content-header h2, .content-header h3, .content-header h4 {
+//        margin-bottom: 0 !important;
+//    }
+//}

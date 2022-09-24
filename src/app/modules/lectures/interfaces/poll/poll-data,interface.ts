@@ -1,4 +1,5 @@
 export interface PollData {
     name: any;
-    count: number
+    count: number;
+    percent?: number;
 }

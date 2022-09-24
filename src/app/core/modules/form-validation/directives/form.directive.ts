@@ -24,7 +24,7 @@ export class FormDirective {
                 if (controlElement) {
                     controlElement.classList.add("is-invalid");
                     if (!i) {
-                        const label = this.element.nativeElement.querySelector(`[for="${controlElement.id}"]`)?.innerText
+                        const label = this.element.nativeElement.querySelector(`[for="${controlElement.id || controlElement.closest("[id]")?.id}"]`)?.innerText
                             .replace(" *", "");
                         const value = controlData.control.value;
                         const errors = controlData.control.errors ? controlData.control.errors : {};

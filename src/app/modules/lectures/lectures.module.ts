@@ -18,6 +18,12 @@ import { PollComponent } from "./components/poll/poll.component";
 import { AppCommonModule } from "../../common";
 import { PollCardComponent } from "./components/poll/poll-card/poll-card.component";
 import { FormValidationModule } from "../../core/modules/form-validation";
+import { VotesComponent } from "./components/poll/votes/votes.component";
+import { SelectOptionsDialogComponent } from "./components/poll/select-options-dialog/select-options-dialog.component";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { PaginationModule } from "../../core/modules/ui/ui.module";
 
 
 @NgModule({
@@ -31,6 +37,8 @@ import { FormValidationModule } from "../../core/modules/form-validation";
         SlotComponent,
         PollComponent,
         PollCardComponent,
+        VotesComponent,
+        SelectOptionsDialogComponent,
     ],
     imports: [
         CommonModule,
@@ -45,6 +53,10 @@ import { FormValidationModule } from "../../core/modules/form-validation";
         ReactiveFormsModule,
         AppCommonModule,
         FormValidationModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatSlideToggleModule,
+        PaginationModule,
     ],
 })
 export class LecturesModule { }

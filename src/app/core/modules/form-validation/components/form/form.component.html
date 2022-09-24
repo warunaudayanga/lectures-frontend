@@ -56,7 +56,7 @@
                         <ng-container *ngIf="formControl.options.labelKey">
                             <ng-select #select [attr.data-name]="getName(formControl.name)" [class]="size" [ngClass]="formControl.styleClass ?? []"
                                        formControlName="{{getName(formControl.name)}}" [id]="getName(formControl.name)"  [readonly]="update && formControl.readonly!"
-                                       [clearable]="!formControl.required" (close)="focusNext(getName(formControlData[f + 1].name))"
+                                       [clearable]="!formControl.required" (close)="formControlData[f + 1] ? focusNext(getName(formControlData[f + 1].name)) : ''"
                                        [searchable]="formControl.options.searchable ?? false" [multiple]="formControl.options.multiple ?? false"
                                        [closeOnSelect]="!(formControl.options.multiple ?? false)" appendTo="body"
                                        [items]="formControl.options.values" [bindLabel]="toString(formControl.options.labelKey)">
@@ -66,7 +66,7 @@
                             <!--suppress JSUnusedGlobalSymbols -->
                             <ng-select #select [attr.data-name]="getName(formControl.name)" [class]="size" [ngClass]="formControl.styleClass ?? []"
                                        formControlName="{{getName(formControl.name)}}" [id]="getName(formControl.name)"  [readonly]="update && formControl.readonly!"
-                                       [clearable]="!formControl.required" (close)="focusNext(getName(formControlData[f + 1].name))"
+                                       [clearable]="!formControl.required" (close)="formControlData[f + 1] ? focusNext(getName(formControlData[f + 1].name)) : ''"
                                        [searchable]="formControl.options.searchable ?? false" [multiple]="formControl.options.multiple ?? false"
                                        [closeOnSelect]="!(formControl.options.multiple ?? false)" appendTo="body">
                                 <ng-option *ngFor="let value of getValues(formControl.options), let i = index" [value]="value">
@@ -78,7 +78,7 @@
                     <ng-container *ngIf="formControl.type === 'checkbox'">
                         <mat-slide-toggle [id]="getName(formControl.name)" [name]="getName(formControl.name)"
                                           [ngClass]="formControl.styleClass ?? []"
-                                          formControlName="{{getName(formControl.name)}}"></mat-slide-toggle>
+                                          formControlName="{{getName(formControl.name)}}" [disabled]="formControl.readonly === true"></mat-slide-toggle>
                     </ng-container>
                     <ng-container *ngIf="formControl.type === 'textarea'">
                         <textarea [attr.data-match]="formControl.matchesWith ?? undefined" autocomplete="new-password" class="form-control"

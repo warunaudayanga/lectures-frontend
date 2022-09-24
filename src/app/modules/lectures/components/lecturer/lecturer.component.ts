@@ -27,7 +27,7 @@ export class LecturerComponent extends EntityComponent<LecturerEntity> {
 
     constructor(
         protected readonly app: AppService,
-        private readonly dialogService: DialogService,
+        protected readonly dialogService: DialogService,
         private readonly lecturerService: LecturerService,
     ) {
         super(app, dialogService, lecturerService, { name: "lecturer", key: "" });
@@ -72,7 +72,7 @@ export class LecturerComponent extends EntityComponent<LecturerEntity> {
             });
     }
 
-    protected formData(lecturer?: LecturerEntity): FormControlData<LecturerEntity>[] {
+    protected formData(lecturer?: Partial<LecturerEntity>): FormControlData<LecturerEntity>[] {
         return [
             { type: "select", name: "title", label: "Title", value: lecturer?.title ?? this.titles?.[0],
                 options: { values: this.titles }, required: true },

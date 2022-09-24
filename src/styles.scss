@@ -48,6 +48,13 @@ body {
     outline: none;
 }
 
+.bg-app-primary {
+    background-color: $app-primary-color;
+}
+.bg-app-secondary {
+    background-color: $app-secondary-color;
+}
+
 .ellipsis {
     text-overflow: ellipsis;
 }
@@ -203,6 +210,13 @@ app-notification {
     background-color: $app-primary-color !important;
     color: $app-text-invert-color !important;;
     opacity: 0.9 !important;
+}
+.btn-app-primary:disabled {
+    &:disabled {
+        background-color: $app-primary-color !important;
+        color: $app-text-invert-color !important;
+        opacity: 0.5;
+    }
 }
 .btn-warning:disabled {
 

@@ -1,0 +1,45 @@
+<div class="prompt-dialog" data-dialog>
+    <div mat-dialog-title class="text-center text-md-start">
+        <i class="dialog-icon {{style.icon}} text-{{style.colorClass}}"></i>
+        <span class="dialog-title">{{dialogData.title}}</span>
+    </div>
+    <mat-dialog-content>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-app-primary" (click)="addOption()">
+                <i class="icofont icofont-ui-add"></i>
+            </button>
+        </div>
+        <div class="mt-3">
+            <form>
+                <ng-container *ngFor="let input of inputs; let i = index">
+                    <div class="row g-3 align-items-center mb-3">
+                        <div class="col-12 col-md-5 col-lg-4 mt-3">
+                            <label class="col-form-label">
+                                {{getName(input.name)}} <span class='text-danger'>*</span>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-7 col-lg-8 mt-0 mt-md-3">
+                            <div class="input">
+                                <input [formControl]="input.control" class="form-control" [name]="input.name" required>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <span>Multi Choice</span>
+                                    <mat-slide-toggle [checked]="input.multi" (change)="input.multi = $event.checked"></mat-slide-toggle>
+                                </div>
+                            </div>
+                            <button [disabled]="inputs.length < 2" class="remove btn btn-danger" (click)="removeOption(input)"><i class="icofont icofont-ui-delete"></i></button>
+                        </div>
+                    </div>
+                </ng-container>
+                <!--suppress JSUnusedGlobalSymbols -->
+                <button #submitButton type="submit" class="d-none" (click)="submit()"></button>
+            </form>
+        </div>
+    </mat-dialog-content>
+    <mat-divider></mat-divider>
+    <mat-dialog-actions>
+        <button type="button" class="btn btn-secondary text-light d-block ms-auto"
+                (click)="close()" data-key="Escape">{{buttons?.cancel ? buttons?.cancel?.toUpperCase(): "CANCEL"}}</button>
+        <button type="button" (click)="submit()" class="btn btn-{{style.colorClass}} text-light d-block ms-3">
+            {{buttons?.ok ? buttons?.ok?.toUpperCase(): "OK"}}</button>
+    </mat-dialog-actions>
+</div>

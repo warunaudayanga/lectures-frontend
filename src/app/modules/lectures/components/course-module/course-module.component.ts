@@ -26,7 +26,7 @@ export class CourseModuleComponent extends EntityComponent<CourseModuleEntity>{
 
     constructor(
         protected readonly app: AppService,
-        private readonly dialogService: DialogService,
+        protected readonly dialogService: DialogService,
         private readonly moduleService: CourseModuleService,
     ) {
         super(app, dialogService, moduleService, { name: "module", key: "code" });
@@ -70,7 +70,7 @@ export class CourseModuleComponent extends EntityComponent<CourseModuleEntity>{
             });
     }
 
-    protected formData(module?: CourseModuleEntity): FormControlData<CourseModuleEntity>[] {
+    protected formData(module?: Partial<CourseModuleEntity>): FormControlData<CourseModuleEntity>[] {
         return [
             { type: "text", name: "name", value: module?.name ?? "", required: true,
                 validators: [Validators.minLength(3)] },
