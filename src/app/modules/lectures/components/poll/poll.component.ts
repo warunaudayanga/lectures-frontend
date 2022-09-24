@@ -90,9 +90,9 @@ export class PollComponent extends EntityComponent<PollEntity> implements OnInit
             ...tagInputs,
             { type: "select", name: "color", value: poll?.options?.themeClass ?? PollTheme.PRIMARY, required: true,
                 options: { values: Object.values(PollTheme), labels: each(Object.values(PollTheme), toLowerCase, toTitleCase) } },
-            { type: "checkbox", name: "requireIdentity", value: poll?.requireIdentity ?? false, readonly: true },
-            { type: "checkbox", name: "updatable", value: poll?.updatable ?? true },
-            { type: "checkbox", name: "removable", value: poll?.removable ?? true },
+            // { type: "checkbox", name: "requireIdentity", value: poll?.requireIdentity ?? false, readonly: true },
+            // { type: "checkbox", name: "updatable", value: poll?.updatable ?? true },
+            // { type: "checkbox", name: "removable", value: poll?.removable ?? true },
         ] as FormControlData<PollEntity>[];
     }
 

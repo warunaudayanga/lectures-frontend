@@ -78,7 +78,7 @@
                     <ng-container *ngIf="formControl.type === 'checkbox'">
                         <mat-slide-toggle [id]="getName(formControl.name)" [name]="getName(formControl.name)"
                                           [ngClass]="formControl.styleClass ?? []"
-                                          formControlName="{{getName(formControl.name)}}" [disabled]="formControl.readonly === true"></mat-slide-toggle>
+                                          formControlName="{{getName(formControl.name)}}" [disabled]="update && formControl.readonly === true"></mat-slide-toggle>
                     </ng-container>
                     <ng-container *ngIf="formControl.type === 'textarea'">
                         <textarea [attr.data-match]="formControl.matchesWith ?? undefined" autocomplete="new-password" class="form-control"
