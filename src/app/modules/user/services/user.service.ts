@@ -19,6 +19,10 @@ export class UserService extends Service<UserEntity> {
         return this.http.get<UserEntity>(`${this.apiUrl}/me`);
     }
 
+    getCount(): Observable<number> {
+        return this.http.get<number>(`${this.apiUrl}/count`);
+    }
+
     updateMe(id: number, updateUserDto: Partial<UserEntity>): Observable<IStatusResponse> {
         return this.http.patch<IStatusResponse>(`${this.apiUrl}/${id}`, updateUserDto );
     }

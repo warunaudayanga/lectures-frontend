@@ -1,33 +1,16 @@
 :host {
     display: block;
     min-height: 38px;
+    position: relative;
 }
-
 .tag-input {
     position: relative;
     min-height: 38px;
-    .main-input {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        color: transparent;
-        background-color: transparent;
-        &:focus ~ .caret {
-            -webkit-animation: 1s blink step-end infinite;
-            -moz-animation: 1s blink step-end infinite;
-            //noinspection CssUnknownProperty
-            -ms-animation: 1s blink step-end infinite;
-            -o-animation: 1s blink step-end infinite;
-            animation: 1s blink step-end infinite;
-        }
-    }
     .chips {
         min-height: 38px;
         top: 0;
         left: 0;
-        padding: 3px;
+        padding: 3px 3px 6px;
         display: flex;
         flex-wrap: wrap;
         .chip {
@@ -48,14 +31,6 @@
         height: 38px;
         padding: 0;
     }
-}
-
-.caret {
-    font-weight: 100;
-    font-size: 25px;
-    position: relative;
-    top: 5px;
-    color: transparent;
 }
 
 @keyframes blink {

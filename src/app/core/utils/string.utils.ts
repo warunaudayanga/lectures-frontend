@@ -39,6 +39,15 @@ export const toTitleCase = (str?: string): string => {
         .join(" ");
 };
 
+export const toCamelCase = (str?: string): string => {
+    if (!str) {
+        return "";
+    }
+    return breakToWords(str)
+        .map((s, i) => (i === 0 ? s.toLowerCase() : toFirstCase(s)))
+        .join("");
+};
+
 export const toLowerCase = (str?: string): string => {
     if (!str) {
         return "";
@@ -68,6 +77,12 @@ export const toUpperCaseBreak = (str?: string): string => {
     }
     return breakToWords(str)
         .map((s) => s.toUpperCase())
+        .join(" ");
+};
+
+export const toSentenceCase = (str: string): string => {
+    return breakToWords(str)
+        .map((s, i) => (i === 0 ? toFirstCase(s) : toLowerCase(s)))
         .join(" ");
 };
 

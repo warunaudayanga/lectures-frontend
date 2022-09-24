@@ -1,13 +1,15 @@
-<div class="dashboard-card {{theme || PollTheme.PRIMARY}}" style="{{'height: ' + height}}">
-    <div class="left">
+<div *ngIf="poll" class="dashboard-card {{poll.options.themeClass || PollTheme.PRIMARY}}" style="{{'height: ' + height}}">
+    <button *ngIf="app.can(app.Do.POLL_UPDATE)" class="edit btn btn-light text-warning" [class.move-left]="app.can(app.Do.POLL_DELETE)"><i class="icofont icofont-ui-edit" (click)="onEdit()"></i></button>
+    <button *ngIf="app.can(app.Do.POLL_DELETE)" class="delete btn btn-light text-danger"><i class="icofont icofont-ui-delete" (click)="onDelete()"></i></button>
+    <div class="left" [routerLink]="['/poll/' + poll.code]" [state]="{ poll }">
         <div class="icon">
             <i class='{{icon}}'></i>
         </div>
-        <h5 class="title ellipsis-1">{{title !== undefined? title: '&nbsp;'}}</h5>
-        <h5 class="sub-title ellipsis-3">{{subTitle !== undefined? subTitle: '&nbsp;'}}</h5>
+        <h5 class="title ellipsis-1">{{poll.name !== undefined? poll.name: '&nbsp;'}}</h5>
+        <h5 class="sub-title ellipsis-3">{{poll.description !== undefined? poll.description: '&nbsp;'}}</h5>
         <div class="together">
             <div class="slot" *ngFor="let item of getData()">
-                <div class="number">{{item.count | number: '1.0'}}</div>
+                <div class="number">{{item.percent || 0 | number: '1.0-0'}}%</div>
                 <div class="text">{{item.name}}</div>
             </div>
         </div>

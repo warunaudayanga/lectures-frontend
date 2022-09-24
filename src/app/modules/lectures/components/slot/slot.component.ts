@@ -22,7 +22,7 @@ export class SlotComponent extends EntityComponent<SlotEntity> {
 
     constructor(
         protected readonly app: AppService,
-        private readonly dialogService: DialogService,
+        protected readonly dialogService: DialogService,
         private readonly slotService: SlotService,
     ) {
         super(app, dialogService, slotService, { name: "slot", key: "number" });
@@ -51,7 +51,7 @@ export class SlotComponent extends EntityComponent<SlotEntity> {
         } as DataTableData<SlotEntity, 4>;
     }
 
-    protected formData(slot?: SlotEntity): FormControlData<SlotEntity>[] {
+    protected formData(slot?: Partial<SlotEntity>): FormControlData<SlotEntity>[] {
         return [
             { type: "number", name: "number", label: "Slot", value: slot?.number ?? 1,
                 validators: [Validators.min(1)], required: true },

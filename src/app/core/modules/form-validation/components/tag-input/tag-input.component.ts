@@ -49,7 +49,7 @@ export class TagInputComponent implements ControlValueAccessor {
         this.disabled = isDisabled;
     }
 
-    keyDown(input: HTMLSpanElement, e: KeyboardEvent): void {
+    keyDown(e: KeyboardEvent): void {
         const tagInput = (e.target as HTMLInputElement);
         if (e.key === "Enter") {
             e.preventDefault();
@@ -60,7 +60,6 @@ export class TagInputComponent implements ControlValueAccessor {
                     this.tags = [tagInput.value];
                 }
             }
-            input.textContent = "";
             tagInput.value = "";
             this.onChange(this.tags);
         }

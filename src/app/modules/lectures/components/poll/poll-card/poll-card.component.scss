@@ -1,4 +1,7 @@
 @import "src/variables";
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
 
 :host {
     display: inline-block;
@@ -41,6 +44,29 @@
     &:hover{
         transform: translateY(-7px);
     }
+    .edit {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        border-radius: 50%;
+        height: 45px;
+        width: 45px;
+        font-size: 20px;
+        &.move-left {
+            right: 65px;
+        }
+    }
+    .delete {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        border-radius: 50%;
+        height: 45px;
+        width: 45px;
+        font-size: 20px;
+    }
     .left {
         position: relative;
         width: 100%;
@@ -48,7 +74,7 @@
         .icon {
             position: absolute;
             right: 0;
-            top: 30%;
+            top: 40%;
             color: #fff;
             z-index: 9;
             i {
@@ -70,7 +96,7 @@
             margin-bottom: 5px;
         }
         .number {
-            font-size: 42px;
+            font-size: 30px;
             line-height: 52px;
             font-weight: 600;
             color: #fff;
@@ -187,6 +213,28 @@
         background-image: linear-gradient(to right, #4caf50, #4caf50);
         &::after {
             background: #357a38;
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .dashboard-card {
+        min-width: auto;
+        width: calc(100vw - #{$app-content-padding} * 2);
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .dashboard-card {
+        height: 85px !important;
+        .together, .sub-title, .icon {
+            display: none !important;
+        }
+        .title {
+            font-size: 20px !important;
+        }
+        .edit, .delete {
+            top: 20px !important;
         }
     }
 }
