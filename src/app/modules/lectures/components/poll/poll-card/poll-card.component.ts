@@ -43,7 +43,7 @@ export class PollCardComponent {
     getData(): PollData[] {
         const data: PollData[] = [];
         const keys = this.poll!.options?.selections?.[0].values ?? [];
-        const firstSelection = this.poll!.votes.map(v => ({
+        const firstSelection = this.poll!.votes?.map(v => ({
             ...v,
             option: {
                 ...v.option,
@@ -52,7 +52,8 @@ export class PollCardComponent {
                 },
             },
         }));
-        const dataMap = groupBy(
+        let dataMap: Map<PollOptionValue[] | undefined | null, Array<PollVoteEntity>> | undefined;
+        if (firstSelection) dataMap = groupBy(
             firstSelection,
             (vote: PollVoteEntity & { option: { selection: { value: PollOptionValue[] } } }) => vote.option?.selection.value,
         );
@@ -62,7 +63,7 @@ export class PollCardComponent {
                 name: key,
                 count: 0,
             });
-            for (const keyArr of dataMap.keys()) {
+            if (dataMap) for (const keyArr of dataMap.keys()) {
                 if (keyArr?.includes(key)) {
                     const datum = data.find(d => d.name === key);
                     if (datum) datum.count++;

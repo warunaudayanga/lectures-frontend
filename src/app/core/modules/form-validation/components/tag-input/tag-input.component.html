@@ -2,5 +2,5 @@
     <div class="chips">
         <span class="chip" *ngFor="let tag of tags">{{tag}}<button *ngIf="!readonly" type="button" (click)="remove(tag)">&times;</button></span>
     </div>
-    <input type="text" spellcheck="false" [readonly]="readonly" class="{{getClasses()}}" (keydown)="keyDown($event)" [disabled]="disabled">
+    <input *ngIf="name" type="text" [name]="name" spellcheck="false" [readonly]="readonly" class="{{getClasses()}}" (keydown)="keyDown($event)" [disabled]="disabled">
 </div>

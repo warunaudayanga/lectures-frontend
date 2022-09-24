@@ -17,6 +17,7 @@ import { SelectOptionsDialogComponent } from "./select-options-dialog/select-opt
 import { SelectDialogResponse, TagOptions } from "../../interfaces/poll/select-dialog-response";
 import { PollSelection } from "../../interfaces/poll/poll-option.interface";
 import { DialogLevel } from "../../../../core/modules/dialog/enums";
+import { tagInputMin } from "../../../../core/modules/form-validation/directives/form.validators";
 
 @Component({
     selector: "app-poll",
@@ -78,6 +79,7 @@ export class PollComponent extends EntityComponent<PollEntity> implements OnInit
                         type: "tag", name: this.tagOptions[i].name!, value, required: true,
                         info: `Option ${i + 1} (Press \`Enter\` to add)`, readonly: true,
                         label: `${this.tagOptions[i].label} ${this.tagOptions[i].multiple ? "<br>(multi choice)" : ""}`,
+                        validators: [tagInputMin(2)],
                     });
                 }
             }

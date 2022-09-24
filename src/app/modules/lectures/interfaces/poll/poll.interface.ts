@@ -12,7 +12,7 @@ export interface PollEntity extends BaseEntity {
     startTime?: Date;
     endTime?: Date;
     options: PollOptions;
-    votes: PollVoteEntity[];
+    votes?: PollVoteEntity[];
     requireIdentity: boolean;
     updatable: boolean;
     removable: boolean;

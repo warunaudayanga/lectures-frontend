@@ -5,7 +5,7 @@
             <div class="row g-3 align-items-center mb-3">
                 <div class="col-12 col-md-5 col-lg-4 mt-3">
                     <label *ngIf="formControl.type !== 'hidden'" [for]="getName(formControl.name)" class="col-form-label">
-                        <span [innerHTML]="getLabel(formControl.name, formControl.label) + (formControl.required? requiredHTML :'')"></span>
+                        <span class="name" [innerHTML]="getLabel(formControl.name, formControl.label) + (formControl.required? requiredHTML :'')"></span>
                         <div class="small text-secondary" [innerHTML]="formControl.info"></div>
                     </label>
                 </div>
@@ -88,7 +88,7 @@
                                   [required]="!!formControl.required" [readonly]="update && formControl.readonly!"></textarea>
                     </ng-container>
                     <ng-container *ngIf="formControl.type === 'tag'">
-                        <ng-tag-input [attr.data-name]="getName(formControl.name)" formControlName="{{getName(formControl.name)}}"
+                        <ng-tag-input [name]="getName(formControl.name)" formControlName="{{getName(formControl.name)}}"
                                       [id]="getName(formControl.name)" [ngClass]="formControl.styleClass" [required]="!!formControl.required"
                                       [class.form-control-sm]="size === 'small'" [class.form-control-lg]="size === 'large'"
                                       [classList]="getClassList(size, formControl.styleClass, ['main-input', 'form-control'])"

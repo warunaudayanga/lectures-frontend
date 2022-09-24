@@ -192,14 +192,16 @@ export class VotesComponent extends EntityComponent<PollVoteEntity> implements O
         // console.log(keyArrayList);
         let total: number = 0;
         for (const keyArray of keyArrayList) {
-            for (const voteOption of this.poll!.votes.map(v => v.option)) {
-                let has = 0;
-                for (let i = 0; i < keyArray.keys.length; i++) {
-                    if (voteOption?.selections?.[i]?.values?.includes(keyArray.keys[i])) has++;
-                }
-                if ( has === keyArray.keys.length) {
-                    keyArray.count++;
-                    total++;
+            if (this.poll!.votes) {
+                for (const voteOption of this.poll!.votes!.map(v => v.option)) {
+                    let has = 0;
+                    for (let i = 0; i < keyArray.keys.length; i++) {
+                        if (voteOption?.selections?.[i]?.values?.includes(keyArray.keys[i])) has++;
+                    }
+                    if (has === keyArray.keys.length) {
+                        keyArray.count++;
+                        total++;
+                    }
                 }
             }
         }

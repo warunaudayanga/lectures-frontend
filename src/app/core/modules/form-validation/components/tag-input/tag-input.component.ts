@@ -17,6 +17,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 })
 export class TagInputComponent implements ControlValueAccessor {
 
+    @Input() name?: string;
+
     @Input() readonly?: boolean;
 
     @Input() classList?: string[];
