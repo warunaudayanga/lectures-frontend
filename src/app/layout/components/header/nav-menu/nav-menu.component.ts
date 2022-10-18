@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { Subscription } from "rxjs";
 import { AuthService } from "../../../../modules/auth/services";
-import { AppService } from "../../../../app.service";
 
 @Component({
     selector: "app-nav-menu",
@@ -16,7 +15,7 @@ export class NavMenuComponent {
 
     loggedSubscription: Subscription;
 
-    constructor(private readonly authService: AuthService, public readonly appService: AppService) {
+    constructor(private readonly authService: AuthService) {
         this.logged = authService.logged;
         this.loggedSubscription = authService.getLoggedInListener()
             .subscribe(logged => {

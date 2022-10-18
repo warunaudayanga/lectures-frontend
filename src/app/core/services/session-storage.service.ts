@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { Injectable } from "@angular/core";
 import { TokenData, UserEntity } from "../../modules/auth/interfaces";
 

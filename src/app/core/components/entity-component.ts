@@ -17,10 +17,11 @@ import { toFirstCase } from "../utils";
 import { Sort, SortFields } from "../modules/data-table/interfaces/sort-fields.interface";
 import { FormControlData } from "../modules/form-validation/interfaces";
 import { GetAllDto } from "../dto/get-all.dto";
+import { MatDialog } from "@angular/material/dialog";
 
 export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols extends number = any, SubEntity = IObject> {
 
-    public abstract dataTable: DataTable
+    public abstract dataTable?: DataTable
 
     public loading: boolean = false;
 
@@ -38,14 +39,18 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
 
     protected constructor(
         protected app: AppService,
-        protected dialog: DialogService,
-        protected entityService: Service<Entity>,
+        protected dialogService: DialogService,
+        protected entityService: Service<Entity> | undefined,
         protected options: { name: string, key: string },
     ) {
         // this.socketService.onEvent<Entity>(options.name)?.subscribe(entity => this.onEvent(entity));
     }
 
-    protected abstract formData(entity?: any): FormControlData<Entity, SubEntity>[];
+    protected get dialog(): MatDialog {
+        return this.dialogService.dialog;
+    }
+
+    protected abstract formData<T = any, SubEntity =IObject>(entity?: Partial<Entity & T>): FormControlData<Entity & T, SubEntity>[];
 
     protected abstract viewDialogData(entity: Entity): ViewOptions<Entity, number, SubEntity>
 
@@ -56,13 +61,13 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
     }
 
     // protected onEvent(entity: Entity): void {
-    //     const existingEntity = this.entityService.entities.find(e => e.id === entity.id);
+    //     const existingEntity = this.entityService?.entities.find(e => e.id === entity.id);
     //     if (existingEntity) {
-    //         this.entityService.entities[this.entityService.entities.indexOf(existingEntity)] = entity;
+    //         this.entityService?.entities[this.entityService?.entities.indexOf(existingEntity)] = entity;
     //     } else {
-    //         this.entityService.entities.push(entity);
+    //         this.entityService?.entities.push(entity);
     //     }
-    //     // this.entityService.entities.sort((a, b) => {
+    //     // this.entityService?.entities.sort((a, b) => {
     //     //     const sa = String(a[this.options.key as keyof Entity]).toLowerCase();
     //     //     const sb = String(b[this.options.key as keyof Entity]).toLowerCase();
     //     //     if ( sa < sb ){
@@ -82,8 +87,8 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
         this.addDialog(this.formData());
     }
 
-    public edit(entity: Entity): void {
-        this.editDialog(entity, this.formData(entity));
+    public edit<T = Entity>(entity: Partial<Entity & T>): void {
+        this.editDialog<T>(entity, this.formData<T>(entity));
     }
 
     public view(entity: Entity): void {
@@ -94,11 +99,11 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
         return getAllDto;
     };
 
-    protected beforeAdd(formValues: any, data?: Partial<Entity>): Entity {
+    protected beforeAdd(formValues: any, data?: Partial<Entity>): Partial<Entity> {
         return { ...formValues, ...data };
     }
 
-    protected beforeEdit(formValues: any, data?: Partial<Entity>): Entity {
+    protected beforeEdit(formValues: any, data?: Partial<Entity>): Partial<Entity> {
         return { ...formValues, ...data };
     }
 
@@ -123,7 +128,7 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
             width: "550px",
             updateForm: update,
         };
-        return this.dialog.prompt(options);
+        return this.dialogService.prompt(options);
     }
 
     public getAll(): void {
@@ -134,13 +139,15 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
             keyword: this.keyword,
             sort: this.sort,
         };
-        this.entityService.getAll(this.beforeGetAll(getAllDto))
+        this.entityService?.getAll(this.beforeGetAll(getAllDto))
             .subscribe({
                 next: res => {
                     const response = this.onGetAll(res);
-                    this.data.dataSource = response.data;
-                    this.data.totalItems = response.rowCount;
-                    this.dataTable.update();
+                    if (this.data) {
+                        this.data.dataSource = response.data;
+                        this.data.totalItems = response.rowCount;
+                        this.dataTable?.update();
+                    }
                     this.afterGetAll(response);
                     this.loading = false;
                 },
@@ -162,7 +169,7 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
             .subscribe(response => {
                 if (response.form.valid) {
                     this.app.startLoading();
-                    this.entityService.create(this.beforeAdd(response.form.value, data))
+                    this.entityService?.create(this.beforeAdd(response.form.value, data))
                         .subscribe({
                             next: entity => {
                                 response.prompt.close();
@@ -180,12 +187,12 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
             });
     }
 
-    protected editDialog<SubEntity = IObject>(entity: Entity, formData: FormControlData<Entity, SubEntity>[], data?: Partial<Entity>): void {
+    protected editDialog<T = any, SubEntity = IObject>(entity: Partial<Entity & T>, formData: FormControlData<Entity & T, SubEntity>[], data?: Partial<Entity & T>): void {
         this.generateFormDialog(formData, true)
             .subscribe((response: PromptResponse) => {
                 if (response.form.valid) {
                     this.app.startLoading();
-                    this.entityService.update(entity.id, this.beforeEdit(response.form.value, data))
+                    this.entityService?.update(entity.id!, this.beforeEdit(response.form.value, data))
                         .subscribe({
                             next: successResponse => {
                                 response.prompt.close();
@@ -205,13 +212,18 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
 
     public changeStatus(entity: Entity): void {
         const backup = { ...entity };
-        const index = this.data.dataSource.indexOf(entity);
-        // this.data.dataSource[index].status = !backup.status;
-        this.data.dataSource[index].status = backup.status === Status.ACTIVE ? Status.INACTIVE : Status.ACTIVE;
-        this.entityService.changeStatus(entity.id, entity.status)
+        let index: number;
+        if (this.data) {
+            index = this.data.dataSource.indexOf(entity);
+            // this.data.dataSource[index].status = !backup.status;
+            this.data.dataSource[index].status = backup.status === Status.ACTIVE ? Status.INACTIVE : Status.ACTIVE;
+        }
+        this.entityService?.changeStatus(entity.id, entity.status)
             .subscribe({
                 error: (error: HttpError<EnumValue & CommonError>) => {
-                    this.data.dataSource[index] = backup;
+                    if (this.data && index) {
+                        this.data.dataSource[index] = backup;
+                    }
                     this.app.error(error.error?.message ?? CommonError.ERROR);
                     AppService.log(error);
                 },
@@ -219,14 +231,14 @@ export abstract class EntityComponent<Entity extends IObject & BaseEntity, cols 
     }
 
     public delete(entity: Entity): void {
-        this.dialog.confirm(`Are you sure you want to delete ${this.options.name} '${this.options.name}'`, DialogLevel.WARNING)
+        this.dialogService.confirm(`Are you sure you want to delete ${this.options.name} '${this.options.name}'`, DialogLevel.WARNING)
             .subscribe(result => {
                 if (result) {
-                    this.entityService.delete(entity.id)
+                    this.entityService?.delete(entity.id)
                         .subscribe({
                             next: () => {
                                 this.app.success(`${toFirstCase(this.options.name)} '${entity[this.options.key as keyof Entity]}' was deleted successfully`);
-                                this.entityService.entities = this.entityService.entities?.filter(e => e.id !== entity.id);
+                                if (this.entityService) this.entityService.entities = this.entityService?.entities?.filter(e => e.id !== entity.id);
                                 this.getAll();
                                 this.dataChangeListener.next(true);
                             }, error: (err: HttpError<EnumValue & CommonError>) => {

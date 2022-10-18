@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import moment, { Moment } from "moment";
 import { ScheduleService } from "../../services/schedule.service";
-import { DateOnly, HttpError, Time } from "../../../../core/interfaces";
+import { HttpError } from "../../../../core/interfaces";
 import { EnumValue } from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
 import { CommonError, Status, ClickType, ButtonType } from "../../../../core/enums";
 import { AppService } from "../../../../app.service";
@@ -9,11 +9,11 @@ import { ScheduleEntryEntity } from "../../interfaces/schedule.interface";
 import { Day } from "../../enums";
 import { CourseModuleService, CourseService, LecturerService, SlotService } from "../../services";
 import { CourseModuleEntity, LecturerEntity, SlotEntity, TimetableEntryEntity } from "../../interfaces";
-import { AbstractControl, FormArray, FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
+import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
 import { ScheduleDto } from "../../interfaces/schedule-dto";
 import { hhmmaToHHmmss } from "../../../../core/utils";
-import { MatCalendarCellClassFunction, MatCalendarCellCssClasses } from "@angular/material/datepicker/calendar-body";
+import { MatCalendarCellClassFunction, MatCalendarCellCssClasses } from "@angular/material/datepicker";
 import { ClickService } from "../../../../core/services/click.service";
 
 @Component({
@@ -43,7 +43,7 @@ export class ScheduleComponent implements OnInit {
 
     lecturers?: LecturerEntity[];
 
-    formGroup?: FormGroup;
+    formGroup?: UntypedFormGroup;
 
     lectureDates?: string[];
 
@@ -53,7 +53,7 @@ export class ScheduleComponent implements OnInit {
 
     constructor(
         public readonly app: AppService,
-        private readonly fb: FormBuilder,
+        private readonly fb: UntypedFormBuilder,
         private readonly slotService: SlotService,
         private readonly scheduleService: ScheduleService,
         private readonly courseService: CourseService,
@@ -136,12 +136,12 @@ export class ScheduleComponent implements OnInit {
     }
 
     buildForms(): void {
-        const groups: FormGroup[] = [];
+        const groups: UntypedFormGroup[] = [];
         for (const slot of this.slots!) {
             groups.push(this.fb.group(this.getConfig(this.schedule?.find(s => s.slot === slot.number))));
         }
-        this.formGroup = new FormGroup({
-            forms: new FormArray(groups),
+        this.formGroup = new UntypedFormGroup({
+            forms: new UntypedFormArray(groups),
         });
     }
 
@@ -173,8 +173,8 @@ export class ScheduleComponent implements OnInit {
                 ...s,
                 slot: undefined,
                 lecturer: null,
-                startAt: undefined as unknown as Time,
-                endAt: undefined as unknown as Time,
+                startAt: undefined as unknown as string,
+                endAt: undefined as unknown as string,
             })));
             this.schedule.sort((a, b) => ((a.startAt ?? a.startAtL2) > (b.startAt ?? b.startAtL2) ? 1 : -1));
             this.buildForms();
@@ -219,16 +219,16 @@ export class ScheduleComponent implements OnInit {
     }
 
     isGrouped(i: number): boolean {
-        return ((this.formGroup?.controls.forms as FormArray).controls[i] as FormGroup).controls?.module?.value?.grouped === true;
+        return ((this.formGroup?.controls.forms as UntypedFormArray).controls[i] as UntypedFormGroup).controls?.module?.value?.grouped === true;
     }
 
     // noinspection JSUnusedGlobalSymbols
     getGroupControls(i: number): { [p: string]: AbstractControl } {
-        return ((this.formGroup?.controls.forms as FormArray).controls[i] as FormGroup).controls;
+        return ((this.formGroup?.controls.forms as UntypedFormArray).controls[i] as UntypedFormGroup).controls;
     }
 
-    getForms(): FormArray {
-        return this.formGroup?.controls.forms as FormArray;
+    getForms(): UntypedFormArray {
+        return this.formGroup?.controls.forms as UntypedFormArray;
     }
 
     onSubmit(): void {
@@ -239,7 +239,7 @@ export class ScheduleComponent implements OnInit {
                 module: form.module,
                 lecturer: form.lecturer ?? null,
                 lecturerL2: form.lecturerL2 ?? null,
-                date: this.date.format("YYYY-MM-DD") as DateOnly,
+                date: this.date.format("YYYY-MM-DD") as string,
                 day: this.day?.toUpperCase() as Day,
                 status: Status.ACTIVE,
                 startAt: form.lecturer
@@ -292,7 +292,7 @@ export class ScheduleComponent implements OnInit {
             return;
         }
         this.app.startLoading();
-        this.scheduleService.saveSchedule(this.date.format("YYYY-MM-DD") as DateOnly, schedule)
+        this.scheduleService.saveSchedule(this.date.format("YYYY-MM-DD") as string, schedule)
             .subscribe({
                 next: () => {
                     this.app.stopLoading();

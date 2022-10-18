@@ -1,0 +1,28 @@
+<div id="polls" class="content">
+    <div class="text-center content-header mb-0">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <h1 class="fw-bold">Polls</h1>
+            </div>
+            <div class="col-4">
+                <div class="button-bar d-flex justify-content-end">
+                    <button [disabled]="!app.can(app.Do.POLL_CREATE)" class="btn btn-option btn-app-primary"
+                            (click)="onAdd()"
+                            data-key="NumpadAdd"><i class='icofont icofont-ui-add'></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-container mt-3">
+        <ng-container *ngIf="polls?.length">
+            <app-poll-card *ngFor="let poll of polls"
+                           [poll]="poll"
+                           [icon]="'icofont icofont-mail-box'"
+                           (edit)="onEdit(poll)"
+                           (delete)="onDelete(poll)">
+            </app-poll-card>
+        </ng-container>
+    </div>
+</div>

@@ -3,7 +3,7 @@ import { ScheduleEntryEntity } from "../../modules/lectures/interfaces/schedule.
 import { TimetableEntryEntity } from "../../modules/lectures/interfaces";
 import { ButtonType, ClickType } from "../enums";
 
-export interface ClickEntity extends BaseEntity{
+export interface ClickEntity extends BaseEntity {
     id: number;
     type: ClickType;
     button: ButtonType;

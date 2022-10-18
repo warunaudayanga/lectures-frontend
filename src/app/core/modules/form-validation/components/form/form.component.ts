@@ -4,7 +4,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, Input, Outp
 import moment from "moment";
 import { toTitleCase } from "../../../../utils";
 import { NgSelectComponent } from "@ng-select/ng-select";
-import { FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { DOCUMENT } from "@angular/common";
 import { IObject } from "../../../dialog/interfaces";
 import { AppForm, FormControlData, FormControlDataOptions, FormGroupData } from "../../interfaces";
@@ -29,33 +29,33 @@ export class FormComponent implements AfterViewInit, AppForm {
 
     @Input() formData?: FormGroupData<any, any> | FormControlData<any, any>[];
 
-    @Input() size: "small" | "large" | "" = "";
+    @Input() size: "small" | "large" | "" = ""; // 31 38 48
 
     // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-    @Output() onSubmit: EventEmitter<FormGroup> = new EventEmitter();
+    @Output() onSubmit: EventEmitter<UntypedFormGroup> = new EventEmitter();
 
     public formControlData?: FormControlData<any, any>[];
 
-    public formGroup?: FormGroup;
+    public formGroup?: UntypedFormGroup;
 
-    public requiredHTML = " <span class='text-danger'>*</span>"
+    public requiredHTML = " <span class='text-danger'>*</span>";
 
-    public normalTypes = ["color", "datetime-local", "email", "image", "month", "number", "password", "tel", "text", "time"]
+    public normalTypes = ["color", "datetime-local", "email", "image", "month", "number", "password", "tel", "text", "time"];
 
     constructor(@Inject(DOCUMENT) readonly document: Document, public readonly app: AppService) {}
 
     init(): boolean {
         if (!this.initialized) {
             if (this.formData) {
-                const groupData: { [key: string]: FormControl } = {};
+                const groupData: { [key: string]: UntypedFormControl } = {};
                 this.formControlData = Array.isArray(this.formData) ? this.formData : this.formData.formControlData;
                 this.formControlData.forEach(input => {
                     let validators: ValidatorFn[] = [];
                     if (input.validators?.length) validators = input.validators;
                     if (input.required) validators.push(Validators.required);
-                    groupData[this.getName(input.name)] = new FormControl(input.value ?? "", validators);
+                    groupData[this.getName(input.name)] = new UntypedFormControl(input.value ?? "", validators);
                 });
-                this.formGroup = new FormGroup(groupData, (this.formData as FormGroupData<any, any>).validatorOrOpts ?? undefined);
+                this.formGroup = new UntypedFormGroup(groupData, (this.formData as FormGroupData<any, any>).validatorOrOpts ?? undefined);
                 this.initialized = true;
             }
         }
@@ -86,7 +86,6 @@ export class FormComponent implements AfterViewInit, AppForm {
                 : String(options?.values[i]);
     }
 
-    // @ts-ignore
     getName(name?: string | number | symbol): string {
         const names = String(name).split(".");
         return names[names.length ? names.length - 1 : 0];
@@ -120,5 +119,14 @@ export class FormComponent implements AfterViewInit, AppForm {
             return options.values.map(v => (v as IObject & BaseEntity)[options.valueKey!]);
         }
         return options.values as (string | number)[];
+    }
+
+    getClassList(size?: "small" | "large" | "", styleClass?: string[], moreStyles?: string[]): string[] {
+        return [
+            ...(size === "small" ? ["form-control-sm"] : []),
+            ...(size === "large" ? ["form-control-lg"] : []),
+            ...(styleClass ? styleClass : []),
+            ...(moreStyles ? moreStyles : []),
+        ];
     }
 }

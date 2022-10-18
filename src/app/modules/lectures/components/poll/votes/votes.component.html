@@ -1,0 +1,68 @@
+<div id="polls" class="content">
+    <div class="text-center content-header mb-0">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1 class="fw-bold ellipsis-1">{{ poll?.name }}</h1>
+            </div>
+            <div class="col-md-2">
+                <div class="button-bar d-flex justify-content-end">
+                    <button class="btn btn-option btn-app-primary" (click)="vote()" [disabled]="isVoted() || !app.can(app.Do.POLL_VOTE)"
+                            data-key="NumpadAdd"><i class='icofont icofont-send-mail'></i> {{isVoted() ? "Voted" : "Vote"}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content result px-4">
+        <h4 class="fw-bold ellipsis-3 text-secondary text-center">{{ poll?.description }}</h4>
+
+        <table class="data table">
+            <tbody>
+            <tr class="fw-bold">
+                <td class="border-bottom-0">Voted</td>
+                <td class="border-bottom-0" *ngIf="poll && userCount">{{poll.users?.length}} / {{userCount}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" *ngIf="poll && userCount">
+                   <div class="d-flex align-items-center justify-content-between">
+                       <wx-progress-bar class="user-percent" [value]="(poll.users?.length || 0) * 100 / userCount" colorClass="bg-app-secondary"></wx-progress-bar>
+                       <div>{{(poll.users?.length || 0) * 100 / userCount | number:'0.0-2'}}%</div>
+                   </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="data px-2 mt-3" *ngFor="let selection of poll?.options?.selections">
+            <div class="fw-bold mb-2">{{selection.label}}{{selection.multiple? ' (Multiple Choice)': ''}}</div>
+            <div >
+                <span class="chip" *ngFor="let value of selection.values">{{value}}</span>
+            </div>
+        </div>
+
+        <h2 class="text-center mt-5">Result</h2>
+
+        <table class="w-100">
+            <ng-container *ngFor="let item of result">
+                <tr>
+                    <td colspan="2">
+                        <div class="options">
+                            <span class="chip" *ngFor="let key of item.keys">{{key}}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-100">
+                        <div class="percent">
+                            <wx-progress-bar [value]="item.percent || 0" colorClass="bg-app-secondary"></wx-progress-bar>
+                        </div>
+                    </td>
+                    <td class="text-end px-3">
+                        {{item.percent | number:'0.1-2'}}%
+                    </td>
+                </tr>
+            </ng-container>
+        </table>
+    </div>
+</div>

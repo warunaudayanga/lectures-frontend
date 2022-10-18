@@ -1,5 +1,5 @@
 import { DialogLevel } from "../enums";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 import { PromptDialogComponent } from "../components";
 import { Columns, CSSLength, IObject, ObjectKeys } from "./common.interfaces";
 import { BaseEntity } from "../../../entity";
@@ -48,5 +48,5 @@ export type PromptData<Entity, SubEntity> = PromptOptions<Entity, SubEntity>;
 
 export interface PromptResponse {
     prompt: PromptDialogComponent;
-    form: FormGroup;
+    form: UntypedFormGroup;
 }

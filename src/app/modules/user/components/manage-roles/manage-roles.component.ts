@@ -26,7 +26,7 @@ export class ManageRolesComponent extends EntityComponent<RoleEntity> {
 
     constructor(
         protected readonly app: AppService,
-        private readonly dialogService: DialogService,
+        protected readonly dialogService: DialogService,
         private readonly roleService: RoleService,
     ) {
         super(app, dialogService, roleService, { name: "role", key: "name" });
@@ -80,7 +80,7 @@ export class ManageRolesComponent extends EntityComponent<RoleEntity> {
         return template;
     }
 
-    protected formData(role?: RoleEntity): FormControlData<RoleEntity>[] {
+    protected formData(role?: Partial<RoleEntity>): FormControlData<RoleEntity>[] {
         if (role?.permissions) {
             role.permissions.sort((a, b) => (a > b ? 1 : -1));
         }

@@ -4,7 +4,6 @@ import { map, Observable, take } from "rxjs";
 import { environment } from "../../../../environments/environment";
 import { ScheduleEntryEntity } from "../interfaces/schedule.interface";
 import { ScheduleEntryData } from "../interfaces/schedule-entry-data.interface";
-import { DateOnly } from "../../../core/interfaces";
 import moment from "moment";
 
 export const SCHEDULE_URL = `${environment.apiUrl}/schedule`;
@@ -34,7 +33,7 @@ export class ScheduleService {
             .pipe(take(1));
     }
 
-    saveSchedule(date: DateOnly, schedules: ScheduleEntryEntity[]): Observable<ScheduleEntryEntity[]> {
+    saveSchedule(date: string, schedules: ScheduleEntryEntity[]): Observable<ScheduleEntryEntity[]> {
         return this.http.post<ScheduleEntryEntity[]>(`${SCHEDULE_URL}`, { date, schedules })
             .pipe(take(1));
     }

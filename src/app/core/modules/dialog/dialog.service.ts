@@ -21,15 +21,15 @@ import { Breakpoint } from "../../enums";
 })
 export class DialogService {
 
-    public maxWidth?: CSSMeasurement
+    public maxWidth?: CSSMeasurement;
 
-    public initialBreakpoint?: Breakpoint
+    public initialBreakpoint?: Breakpoint;
 
-    private alertWidth = "450px";
+    public alertWidth = "450px";
 
     private alertClass = "dialog-container";
 
-    constructor(private readonly dialog: MatDialog) { }
+    constructor(public readonly dialog: MatDialog) { }
 
     public alert(options: AlertOptions): Observable<boolean> {
         const dialogRef = this.dialog.open(AlertDialogComponent, {

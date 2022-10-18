@@ -19,15 +19,15 @@ import { FormControlData } from "../../../../core/modules/form-validation/interf
     templateUrl: "./course.component.html",
     styleUrls: ["./course.component.scss"],
 })
-export class CourseComponent extends EntityComponent<CourseEntity>{
+export class CourseComponent extends EntityComponent<CourseEntity> {
 
-    @ViewChild("dataTable") public dataTable!: DataTable
+    @ViewChild("dataTable") public dataTable!: DataTable;
 
     courseTypes?: string[];
 
     constructor(
         protected readonly app: AppService,
-        private readonly dialogService: DialogService,
+        protected readonly dialogService: DialogService,
         private readonly courseService: CourseService,
     ) {
         super(app, dialogService, courseService, { name: "course", key: "code" });
@@ -69,7 +69,7 @@ export class CourseComponent extends EntityComponent<CourseEntity>{
             });
     }
 
-    protected formData(course?: CourseEntity): FormControlData<CourseEntity>[] {
+    protected formData(course?: Partial<CourseEntity>): FormControlData<CourseEntity>[] {
         return [
             { type: "text", name: "name", label: "Name", value: course?.name ?? "", required: true,
                 validators: [Validators.minLength(3)] },

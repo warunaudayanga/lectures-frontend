@@ -35,7 +35,7 @@ export class ManageUserComponent extends EntityComponent<UserEntity> {
 
     constructor(
         protected readonly app: AppService,
-        private readonly dialogService: DialogService,
+        protected readonly dialogService: DialogService,
         private readonly userService: UserService,
         private readonly roleService: RoleService,
         private readonly courseService: CourseService,
