@@ -21,7 +21,7 @@ export interface FormControlData<Entity, SubEntity = IObject> {
     info?: string;
     styleClass?: string[],
     // @ts-ignore
-    name: keyof Entity | keyof SubEntity | `${keyof Entity}.${keyof SubEntity}` | string | number | symbol;
+    name: keyof Entity | keyof SubEntity;
     options?: FormControlDataOptions<SubEntity>
     value?: string | number | IObject;
     required?: boolean;
