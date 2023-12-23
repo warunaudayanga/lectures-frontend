@@ -14,7 +14,7 @@ export interface TimetableEntryEntity extends BaseEntity {
     startAt: string;
     endAt: string;
     course: CourseEntity;
-    module: CourseModuleEntity;
+    module?: CourseModuleEntity;
     lecturer: LecturerEntity;
     lecturerL2?: LecturerEntity | null;
     slot: SlotEntity;
