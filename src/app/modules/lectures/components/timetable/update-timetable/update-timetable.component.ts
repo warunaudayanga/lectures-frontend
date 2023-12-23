@@ -83,7 +83,7 @@ export class UpdateTimetableComponent implements OnInit {
         return moment(`2000-01-01 ${time}`).format("hh:mm a");
     }
 
-    getDays(slot: SlotEntity): TimetableEntryEntity[] | undefined {
+    getDays(slot: SlotEntity): Partial<TimetableEntryEntity>[] | undefined {
         const row = this.tableRows.find(r => r.slot.number === slot.number)!;
         if (row) {
             return Object.values(row.data);

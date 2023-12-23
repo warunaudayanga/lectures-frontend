@@ -219,7 +219,7 @@ export class ScheduleComponent implements OnInit {
     }
 
     isGrouped(i: number): boolean {
-        return ((this.formGroup?.controls.forms as UntypedFormArray).controls[i] as UntypedFormGroup).controls?.module?.value?.grouped === true;
+        return ((this.formGroup?.controls.forms as UntypedFormArray).controls[i] as UntypedFormGroup).controls?.module?.value?.grouped;
     }
 
     // noinspection JSUnusedGlobalSymbols

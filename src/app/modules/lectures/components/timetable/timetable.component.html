@@ -33,8 +33,8 @@
                             <div class="module-name fw-bold">{{item.value.module.name}}</div>
                         </div>
                         <ng-container *ngIf="item.value.lecturer">
-                            <div class="lecturer small" [class.mt-2]="item.value.module.grouped === true"><span class="l" *ngIf="item.value.module.grouped === true">L1 - </span>{{item.value.lecturer.name}}</div>
-                            <div class="row links" [class.mt-2]="item.value.module.grouped === true" [class.ps-4]="item.value.module.grouped === true">
+                            <div class="lecturer small" [class.mt-2]="item.value.module.grouped"><span class="l" *ngIf="item.value.module.grouped">L1 - </span>{{item.value.lecturer.name}}</div>
+                            <div class="row links" [class.mt-2]="item.value.module.grouped" [class.ps-4]="item.value.module.grouped">
                                 <div *ngIf="item.value.recordingsUrl">
                                     <a class="fw-bold small" [href]="item.value.recordingsUrl"
                                        (mousedown)="captureClick($event, item.value, ClickType.PLAYLIST)" target="_blank">View recordings</a>
@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                         </ng-container>
-                        <ng-container *ngIf="item.value.module.grouped === true && item.value.lecturerL2">
+                        <ng-container *ngIf="item.value.module.grouped && item.value.lecturerL2">
                             <div class="lecturer small mt-2"><span class="l">L2 - </span>{{item.value.lecturerL2.name}}</div>
                             <div class="row links ps-4" *ngIf="item.value.lecturerL2">
                                 <div *ngIf="item.value.recordingsUrlL2">
